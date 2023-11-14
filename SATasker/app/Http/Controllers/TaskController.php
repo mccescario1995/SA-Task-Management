@@ -4,52 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
-use Session;
-use App\Models\User;
 
-class OfficeAdminDashboardController extends Controller
+class TaskController extends Controller
 {
-    
-    
     /**
      * Display a listing of the resource.
      */
-    //View all tasks - not used
-     public function index()
+    public function index()
     {
+        //
         $tasks = Task::all();
         return view('office.office_dashboard', compact('tasks'));
     }
 
-    //view active tasks
-    public function active()
-    {
-        //$tasks = Task::all();
-        $user = $this->getuserID();
-        $tasks = Task::where('isActive', true)->get();
-        return view('office.office_dashboard_active', compact('tasks','user'));
-    }
-
-    //view inactive tasks
-
-    public function inactive()
-    {
-        //$tasks = Task::all();
-        $user = $this->getuserID();
-        $tasks = Task::where('isActive', false)->get();
-        return view('office.office_dashboard_inactive', compact('user','tasks'));
-    }
-
-    public function getuserID()
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
         //
-        $user_id = session('user_id');
-        $user = User::find($user_id);
-        return $user;
+        //return view('tasks.create');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
@@ -68,8 +46,25 @@ class OfficeAdminDashboardController extends Controller
         //$task->assigned_office = $request->input('assigned_office');
         $task->save();
 
-        session()->flash('add_task_success', 'Task added successfully!');
         return redirect()->route('office.admin.active.dashboard');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+        //return view('tasks.show', compact('task'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+        //return view('tasks.edit', compact('task'));
     }
 
     /**
@@ -90,8 +85,7 @@ class OfficeAdminDashboardController extends Controller
         $task->note = $request->input('note');
         $task->assigned_office = $request->input('assigned_office');
         $task->save();
-        
-        session()->flash('edit_task_success', 'Task edited successfully!');
+    
         //return redirect()->route('tasks.show', $task);
         return redirect()->route('office.admin.inactive.dashboard');
     }
@@ -99,26 +93,8 @@ class OfficeAdminDashboardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function cancel(string $id)
+    public function destroy(string $id)
     {
         //
-        $task = Task::findOrFail($id);
-        $task->isActive = false;
-        $task->delete_at = now();
-        $task->save();
-
-        session()->flash('cancel_task_success', 'Task canceled successfully!');
-        return redirect()->route('office.admin.inactive.dashboard');
-
-    }
-    public function delete(string $id)
-    {
-        //
-        $task = Task::findOrFail($id);
-        $task->delete();
-
-        session()->flash('delete_task_success', 'Task deleted successfully!');
-        return redirect()->route('office.admin.inactive.dashboard');
-
     }
 }
