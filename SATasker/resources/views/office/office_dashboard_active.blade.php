@@ -37,45 +37,70 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col" style="background: #d9d9d9;">TASK NO.</th>
-                                <th scope="col" style="background: #d9d9d9;">DATE &amp; TIME</th>
-                                <th scope="col" style="background: #d9d9d9;">PROGRAM</th>
+                                <th scope="col" style="background: #d9d9d9;">Task No.</th>
+                                <th scope="col" style="background: #d9d9d9;">Date &amp; Time</th>
+                                <th scope="col" style="background: #d9d9d9;">Program</th>
                                 <th style="background: #d9d9d9;">Task</th>
                                 <th style="background: #d9d9d9;">Hours</th>
-                                <th style="background: #d9d9d9;">NOTE</th>
+                                <th style="background: #d9d9d9;">Note</th>
                                 <th style="background: #d9d9d9;">Task Accepts</th>
+                                <th style="background: #d9d9d9;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($tasks as $task)
-                            <tr>
-                                <td data-label="{{$task->id}}" scope="row">{{$task->id}}</td>
-                                <td data-label="{{$task->start_date}}">{{$task->start_date}}</td>
-                                <td data-label="{{$task->preffred_program}}">{{$task->preffred_program}}</td>
-                                <td data-label="{{$task->to_be_done}}">{{$task->to_be_done}}</td>
-                                <td data-label="{{$task->id}}">{{$task->end_date}}</td>
-                                <td data-label="{{$task->id}}">{{$task->note}}</td>
-                                <td data-label="{{$task->id}}">{{$task->number_of_sa}}</td>
+                            @if($tasks->count() == 0)
+                                <tr>
+                                        <td data-label="Attributes" scope="row" colpan="6"><strong> No Active Task Available </strong></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        
+                                </tr>
+                            @else
+                                @foreach($tasks as $task)
+                                <tr>
+                                    @php
+                                        $startTime = strtotime($task->start_time);
+                                        $endTime = strtotime($task->end_time);
+                                        $startTimeampm = date("h:i A", strtotime($task->start_time));
+                                        $endTimeampm = date("h:i A", strtotime($task->end_time));
+                                        $totalHours = round(($endTime - $startTime) / 3600, 1);
+                                        $saCount = (DB::table('user_tasks')->where('task_id',$task->id)->where('task_status_id',1)->count()) ? DB::table('user_tasks')->where('task_id',$task->id)->where('task_status_id',1)->count() : '0' ;
+                                    @endphp
 
-                                @if($task->isActive == true)
-                                    <td style="font-weight: bold;">
-                                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#cancelTaskModal-{{ $task->id }}">Cancel</button>
+                                    <td data-label="{{$task->id}}" scope="row">{{$task->id}}</td>
+                                    <td data-label="{{$task->start_date}}">
+                                        <div>
+                                            <p style="margin: 0px;">{{$task->start_date}}</p>
+                                            <p style="font-size: 12px">{{$startTimeampm}} - {{$endTimeampm}}</p>
+                                        </div>    
                                     </td>
-                                    @include('modals.cancel_task')
-                                @endif
-                                @if($task->isActive == false)
-                                    <td style="font-weight: bold;">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTaskModal-{{ $task->id }}">Edit</button>
+                                    <td data-label="{{$task->preffred_program}}">{{$task->preffred_program}}</td>
+                                    <td data-label="{{$task->to_be_done}}">{{$task->to_be_done}}</td>
+                                    <td data-label="{{$totalHours}}">{{$totalHours}} Hrs</td>
+                                    <td data-label="{{$task->note}}">{{$task->note}}</td>
+                                    <td data-label="{{ $saCount }} /{{$task->number_of_sa}} ">
+                                        <a href="{{ route('office.saList', $task->id) }}" class="btn btn-info" > 
+                                            {{ $saCount }} /{{$task->number_of_sa}} 
+                                        </a>
                                     </td>
-                                    @include('modals.edit_task')
 
-                                    <td style="font-weight: bold;">
-                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTaskModal-{{ $task->id }}">Delete</button>
-                                    </td>
-                                    @include('modals.delete_task')
-                                @endif
-                            </tr>
-                            @endforeach
+                                    @if($task->isActive == true && now()->diffInHours($task->start_date, false) <= 24 && now() <= $task->start_date)
+                                        <td style="font-weight: bold;">
+                                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#cancelTaskModal-{{ $task->id }}">Cancel</button>
+                                        </td>
+                                        @include('modals.cancel_task')
+                                    @else
+                                        <td style="font-weight: bold;">
+                                            <button class="btn btn-secondary" disabled>Cancel</button>
+                                        </td>
+                                    @endif
+                                </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -89,7 +114,9 @@
                     &nbsp;
                     Add Task</button></div>
         </div>
-    @include('modals.edit_task')
+        @if($tasks->count() >= 1)
+            @include('modals.edit_task')
+        @endif
     @include('modals.add_task')
     @include('nav.offcanvas_menu_office')
 @endsection

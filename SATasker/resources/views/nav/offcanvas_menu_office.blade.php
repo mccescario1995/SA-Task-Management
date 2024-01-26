@@ -4,10 +4,10 @@
             </div>
             <div class="offcanvas-body">
                 <div style="margin: 5px;padding: 5px;">
-                    <span style="width: 100%;"><a href="#" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">Tasks</a></span>
+                    <span style="width: 100%;"><a href="route('office.admin.active.dashboard')" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">Tasks</a></span>
                 </div>
                 <div style="margin: 5px;padding: 5px;">
-                    <span style="width: 100%;"><a href="#" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">SA Reports</a></span>
+                    <span style="width: 100%;"><a href="route('office.admin.taskview.dashboard')" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">SA Reports</a></span>
                 </div>
                 <div style="margin: 5px;padding: 5px;">
                     <span style="width: 100%;"><a href="#" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">Office Reports</a></span>

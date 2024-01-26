@@ -13,7 +13,7 @@ class Task extends Model
         'isActive', 
         'preffred_program', 
         'start_date', 
-        'end_date', 
+        //'end_date', 
         'number_of_sa', 
         'status', 
         'assignment_type', 

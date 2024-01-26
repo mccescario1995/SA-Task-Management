@@ -35,7 +35,7 @@ class TaskController extends Controller
         $task = new Task();
         $task->preffred_program = $request->input('preffred_program');
         $task->start_date = $request->input('start_date');
-        $task->end_date = $request->input('end_date');
+        //$task->end_date = $request->input('end_date');
         $task->start_time = $request->input('start_time');
         $task->end_time = $request->input('end_time');
         $task->number_of_sa = $request->input('number_of_sa');
@@ -77,7 +77,7 @@ class TaskController extends Controller
 
         $task->preffred_program = $request->input('preffred_program');
         $task->start_date = $request->input('start_date');
-        $task->end_date = $request->input('end_date');
+        //$task->end_date = $request->input('end_date');
         $task->number_of_sa = $request->input('number_of_sa');
         $task->status = $request->input('status');
         $task->assignment_type = $request->input('assignment_type');

@@ -6,22 +6,25 @@
     <!-- Your content here -->
     @include('include.nav_bar')
     <div>
-    <div style="padding: 3em;border-bottom-style: dashed;">
-            @foreach($userProfile as $userProfile)
-            <div class="d-lg-flex align-items-lg-center">
-                <p class="d-lg-flex" style="font-weight: bold;">Name :&nbsp;</p>
+        <div style="padding: 3em;border-bottom-style: dashed;">
+            <div>
+                <h2>User Profile</h2>
+            </div>
+            @foreach($userProfiles as $userProfile)
+            <div class="d-lg-flex align-items-lg-center mt-3">
+                <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Name :&nbsp;</p>
                 <p>{{$userProfile->first_name}} {{$userProfile->middle_initial}}. {{$userProfile->last_name}}</p>
             </div>
             <div class="d-lg-flex align-items-lg-center">
-                <p class="d-lg-flex" style="font-weight: bold;">Student ID :&nbsp;</p>
+                <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Student ID :&nbsp;</p>
                 <p>{{$user->id_number}}</p>
             </div>
             <div class="d-lg-flex align-items-lg-center">
-                <p class="d-lg-flex" style="font-weight: bold;">Program :&nbsp;</p>
+                <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Program :&nbsp;</p>
                 <p>{{$userProfile->course_program}}</p>
             </div>
             <div class="d-lg-flex align-items-lg-center">
-                <p class="d-lg-flex" style="font-weight: bold;">Contact Details :&nbsp;</p>
+                <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Contact Details :&nbsp;</p>
                 <p>{{$user->email}} | {{$userProfile->contact_number}}</p>
             </div>
             @endforeach

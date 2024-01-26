@@ -8,6 +8,12 @@
 
     <div>
         <div class="d-flex d-lg-flex justify-content-center justify-content-lg-center align-items-lg-center" style="padding: 3em;">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" aria-label="Close">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        </div>
+                    @endif
             <div class="row">
                     <div class="col text-center" style="margin: auto;border-bottom-style: none;padding: 1em;">
                         <button onclick="window.location.href='{{ route('sa.manager.dashboard.ongoing') }}'" class="btn btn-warning" type="button" style="width: 20em;color: rgb(0,0,0);font-weight: bold;height: 3em;font-size: 1em;border-style: none;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;">
@@ -66,16 +72,16 @@
 
                                             <td>{{ $task->note }}</td>
                                             <td>
-                                                <p style="margin: 0px;">{{ $task->hours_rendered }}</p>  
+                                                <p style="margin: 0px;">{{ $task->total_hours }}</p>  
                                             </td>
 
-                                            <form action="{{ route( 'sa.accept', $task->id ) }}" method="post">
-                                                @csrf
+
                                                 <td>
-                                                    <input type="hidden" name="task_id" value="{{ $task->id }}">    
-                                                    <button type="submit" class="btn btn-warning fw-bold">View # SA</button>
+                                                    <a href="{{ route('sa.manager.saList', $task->id) }}" class="btn btn-warning fw-bold" > 
+                                                        View # SA
+                                                    </a>
                                                 </td>
-                                            </form>
+
                                             
                                         </tr>
                                         

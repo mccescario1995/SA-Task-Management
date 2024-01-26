@@ -15,7 +15,7 @@
                     </div>
                     <div class="col text-center" style="margin: auto;padding: 1em;">
                         <button onclick="window.location.href='{{ route('office.admin.inactive.dashboard') }}'" class="btn btn-warning" type="button" style="width: 20em;color: rgb(0,0,0);font-weight: bold;margin: auto;height: 3em;font-size: 1em;border-style: none;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;">
-                            Inactive
+                            Cancelled
                         </button>
                     </div>
                 </div>
@@ -37,36 +37,61 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col" style="background: #d9d9d9;">TASK NO.</th>
-                                <th scope="col" style="background: #d9d9d9;">DATE &amp; TIME</th>
-                                <th scope="col" style="background: #d9d9d9;">PROGRAM</th>
+                                <th scope="col" style="background: #d9d9d9;">Task No.</th>
+                                <th scope="col" style="background: #d9d9d9;">Date &amp; Time</th>
+                                <th scope="col" style="background: #d9d9d9;">Program</th>
                                 <th style="background: #d9d9d9;">Task</th>
                                 <th style="background: #d9d9d9;">Hours</th>
-                                <th style="background: #d9d9d9;">NOTE</th>
+                                <th style="background: #d9d9d9;">Note</th>
                                 <th style="background: #d9d9d9;">Task Accepts</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($tasks as $task)
-                            <tr>
-                                <td data-label="{{$task->id}}" scope="row">{{$task->id}}</td>
-                                <td data-label="{{$task->start_date}}">{{$task->start_date}}</td>
-                                <td data-label="{{$task->preffred_program}}">{{$task->preffred_program}}</td>
-                                <td data-label="{{$task->to_be_done}}">{{$task->to_be_done}}</td>
-                                <td data-label="{{$task->id}}">{{$task->end_date}}</td>
-                                <td data-label="{{$task->id}}">{{$task->note}}</td>
-                                <td data-label="{{$task->id}}">{{$task->number_of_sa}}</td>
+                            @if($tasks->count() == 0)
+                                <tr>
+                                        <td data-label="Attributes" scope="row" colpan="6"><strong> No Inactive Task Available </strong></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        
+                                </tr>
+                            @else
+                                @foreach($tasks as $task)
+                                    @php
+                                        $startTime = strtotime($task->start_time);
+                                        $endTime = strtotime($task->end_time);
+                                        $startTimeampm = date("h:i A", strtotime($task->start_time));
+                                        $endTimeampm = date("h:i A", strtotime($task->end_time));
+                                        $totalHours = round(($endTime - $startTime) / 3600, 1);
+                                    @endphp
+                                <tr>
+                                    <td data-label="{{$task->id}}" scope="row">{{$task->id}}</td>
+                                    <td data-label="{{$task->start_date}}">
+                                        <div>
+                                            <div>{{$task->start_date}}</div>
+                                            <div style="font-size: 11px">{{$startTimeampm}} - {{$endTimeampm}}</div>
+                                        </div>    
+                                    </td>
+                                    <td data-label="{{$task->preffred_program}}">{{$task->preffred_program}}</td>
+                                    <td data-label="{{$task->to_be_done}}">{{$task->to_be_done}}</td>
+                                    <td data-label="{{$task->id}}">{{$totalHours}}</td>
+                                    <td data-label="{{$task->id}}">{{$task->note}}</td>
+                                    <td data-label="{{$task->id}}">{{$task->number_of_sa}}</td>
 
-                                <td style="font-weight: bold;">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTaskModal-{{ $task->id }}">Edit</button>
-                                </td>
-                                @include('modals.edit_task')
-                                <td style="font-weight: bold;">
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTaskModal-{{ $task->id }}">Delete</button>
-                                </td>
-                                @include('modals.delete_task')
-                            </tr>
-                            @endforeach
+                                    <td style="font-weight: bold;">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTaskModal-{{ $task->id }}">Edit</button>
+                                    </td>
+                                    @include('modals.edit_task')
+                                    <td style="font-weight: bold;">
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTaskModal-{{ $task->id }}">Delete</button>
+                                    </td>
+                                    @include('modals.delete_task')
+                                </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -76,7 +101,9 @@
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg> &nbsp;Add Task</button></div>
         </div>
-    @include('modals.edit_task')
+        @if($tasks->count() >= 1)
+            @include('modals.edit_task')
+        @endif
     @include('modals.add_task')
     @include('nav.offcanvas_menu_office')
 @endsection

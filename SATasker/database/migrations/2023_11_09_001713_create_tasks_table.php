@@ -16,7 +16,7 @@ return new class extends Migration
             $table->boolean('isActive')->default(true);
             $table->string('preffred_program')->nullable();
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->time('start_time');
             $table->time('end_time');
             $table->integer('number_of_sa');

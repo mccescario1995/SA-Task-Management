@@ -66,16 +66,15 @@
 
                                             <td>{{ $task->note }}</td>
                                             <td>
-                                                <p style="margin: 0px;">{{ $task->hours_rendered }}</p>  
+                                                <p style="margin: 0px;">{{ $task->total_hours }}</p>  
                                             </td>
 
-                                            <form action="{{ route( 'sa.accept', $task->id ) }}" method="post">
-                                                @csrf
                                                 <td>
-                                                    <input type="hidden" name="task_id" value="{{ $task->id }}">    
-                                                    <button type="submit" class="btn btn-warning fw-bold">View # SA</button>
+                                                    <a href="{{ route('sa.manager.saListDone', $task->id) }}" class="btn btn-warning fw-bold" > 
+                                                        View # SA
+                                                    </a>
                                                 </td>
-                                            </form>
+  
                                             
                                         </tr>
                                         

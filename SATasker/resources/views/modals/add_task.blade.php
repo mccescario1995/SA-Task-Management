@@ -23,18 +23,20 @@
                                                     <input name="end_time" type="time" style="width: 150px;margin: auto;">
                                                 </div>
                                             </div>
-                                            <div class="col" style="margin: 1em;">
-                                                <div><label class="form-label"><strong>No. of student assistant *</strong></label></div>
-                                                <div><input name="number_of_sa" type="number" style="width: 5em;font-size: 20px;"></div>
+                                            <div>
+                                                <div class="col" style="margin: 1em;">
+                                                    <div><label class="form-label"><strong>No. of Student Assistant *</strong></label></div>
+                                                    <div><input name="number_of_sa" type="number" style="width: 5em;font-size: 20px;"></div>
+                                                </div>
                                             </div>
                                             <div class="col" style="margin: 1em;">
                                                 <div><label class="form-label"><strong>Program </strong>(optional)</label></div>
                                                 <div>
-                                                    <select class="form-select form-select-m" name="preffred_program" aria-label="Default select example">
+                                                    <select class="form-select" name="preffred_program" aria-label="Default select example">
                                                         <option selected disable>Select a Program</option>
-                                                        <option value="Course 2">Course 2</option>
-                                                        <option value="Course 3">Course 3</option>
-                                                        <option value="Course 4">Course 4</option>
+                                                        @foreach($courses as $course)
+                                                        <option value="{{$course->name}}">{{$course->name}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -56,7 +58,7 @@
                                                         <label class="form-check-label" for="formCheck-3" >Auto Assignment</label></div>
                                                     <div class="form-check" style="margin: auto;">
                                                         <input class="form-check-input" type="radio" name="assignment_type" id="formCheck-4" value="2" >
-                                                        <label class="form-check-label" for="formCheck-4">Urgent</label></div>
+                                                        <label class="form-check-label" for="formCheck-4">Voluntary</label></div>
                                                 </div>
                                             </div>
                                             <div class="col" style="margin: 1em;">
@@ -77,7 +79,7 @@
                     </div>
                     <div class="modal-footer d-xl-flex justify-content-xl-center">
                         <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-primary" type="submit" style="background: rgb(248,190,91);color: rgb(0,0,0);">Add Task</button></div>
+                        <button class="btn " type="submit" style="background: rgb(248,190,91);color: rgb(0,0,0);">Add Task</button></div>
                     </div>
                     </form>
             </div>
