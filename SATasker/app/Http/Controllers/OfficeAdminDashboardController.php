@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SaTaskTimeLog;
 use App\Models\UserTask;
 use Illuminate\Http\Request;
 use App\Models\Task;
@@ -84,15 +85,17 @@ class OfficeAdminDashboardController extends Controller
         $saLists = User::join('user_tasks','users.id','=','user_tasks.user_id')
         ->join('tasks','user_tasks.task_id','=','tasks.id')
         ->join('sa_profiles','users.id_number','=','sa_profiles.user_id')
-        ->leftJoin('user_tasks_timelog', function ($join) {
+        ->leftJoin('user_tasks_timelog', function ($join) use ($taskId) {
             $join->on('user_tasks_timelog.task_id', '=', 'tasks.id')
-                ->on('user_tasks_timelog.user_id', '=', 'users.id');
+                ->where('user_tasks_timelog.task_id', '=', $taskId); // Filter timelogs by taskId
         })
         ->select(
+            'user_tasks_timelog.id AS timelogId',
             'sa_profiles.user_id',
             'sa_profiles.first_name',
             'sa_profiles.last_name',
             'sa_profiles.course_program',
+            'tasks.start_date',
             DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'), 
             DB::raw('DATE_FORMAT(user_tasks_timelog.time_out, "%H:%i") AS timeout')
         )
@@ -100,6 +103,25 @@ class OfficeAdminDashboardController extends Controller
         ->get();
        
         return view('office.salist_task', compact('saLists','user','taskId'));
+    }
+
+    public function addFeedback(Request $request)
+    {   
+        $timeLogId = $request->input('timelogId');
+        $feedback = $request->input('feedback');
+
+        // Retrieve the specific time log using first()
+        $timeLog = SaTaskTimeLog::where('id', $timeLogId)->first();
+
+        if ($timeLog) {
+            $timeLog->feedback = $feedback;
+            $timeLog->save();
+
+            return redirect()->back()->with('success', 'Feedback saved successfully!');
+        } else {
+            // Handle the error case where a time log is not found
+            return redirect()->back()->with('error', 'Time log not found.');
+        }
     }
 
     /**

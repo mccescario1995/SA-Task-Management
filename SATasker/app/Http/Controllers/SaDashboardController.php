@@ -105,32 +105,32 @@ class SaDashboardController extends Controller
     }
 
     public function addTimeOut(Request $request)
-    {
-        $taskId = $request->input('task_id');
-        $userId = $request->input('user_id');
-        $timeout = now();
+{
+    $taskId = $request->input('task_id');
+    $userId = $request->input('user_id');
+    $timeout = now();
 
-        $timeLog = SaTaskTimeLog::where('task_id', $taskId)
-                                ->where('user_id', $userId)
-                                ->whereDate('time_in', $timeout->toDateString())
-                                ->whereNull('time_out') 
-                                ->first();
+    $timeLog = SaTaskTimeLog::where('task_id', $taskId)
+        ->where('user_id', $userId)
+        ->whereDate('time_in', $timeout->toDateString())
+        ->whereNull('time_out')
+        ->where('time_in', '<=', $timeout->subMinutes(30)) // Enforce 30-minute rule
+        ->first();
 
-        if ($timeLog) {
+    if ($timeLog) {
+        $timeOutCarbon = Carbon::parse($timeout);
+        $timeInCarbon = Carbon::parse($timeLog->time_in);
 
-            $timeOutCarbon = Carbon::parse($timeLog->time_out);
-            $timeInCarbon = Carbon::parse($timeLog->time_in);
+        $totalHours = number_format($timeOutCarbon->diffInSeconds($timeInCarbon) / 3600, 2);
 
-            $totalHours = number_format($timeOutCarbon->diffInSeconds($timeInCarbon) / 3600, 2);
+        $timeLog->time_out = $timeout;
+        $timeLog->total_hours = $totalHours;
+        $timeLog->is_Approved_out = 'Pending';
+        $timeLog->save();
 
-            $timeLog->time_out = $timeout;
-            $timeLog->total_hours = $totalHours;
-            $timeLog->is_Approved_out = 'Pending'; 
-            $timeLog->save();
-
-            return redirect()->back()->with('success', 'Time-out logged successfully, awaiting approval.');
-        } else {
-            return redirect()->back()->with('error', 'No matching time-in record found.');
-        }
+        return redirect()->back()->with('success', 'Time-out logged successfully, awaiting approval.');
+    } else {
+        return redirect()->back()->with('error', 'No matching time-in record found or time-in is less than 30 minutes ago.');
     }
+}
 }

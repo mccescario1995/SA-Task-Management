@@ -17,5 +17,6 @@ class SaTaskTimeLog extends Model
         'total_hours',
         'is_Approved_In',
         'is_Approved_out',
+        'feedback',
     ];
 }

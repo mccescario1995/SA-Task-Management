@@ -59,6 +59,7 @@ Route::post('/office_admin/add', [OfficeAdminDashboardController::class, 'store'
 Route::post('/office_admin/{task}/delete', [OfficeAdminDashboardController::class, 'delete'])->name('office.delete');
 Route::post('/office_admin/{task}/cancel', [OfficeAdminDashboardController::class, 'cancel'])->name('office.cancel');
 Route::get('/office_admin/{taskId}/sa_list', [OfficeAdminDashboardController::class,'taskSaList'])->name('office.saList');
+Route::put('/office_admin/feedback', [OfficeAdminDashboardController::class, 'addFeedback'])->name('office.feedback');
 
 //Route::resource('tasks', TaskController::class);
 
