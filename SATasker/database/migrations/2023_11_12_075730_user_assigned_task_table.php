@@ -12,13 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('user_tasks', function (Blueprint $table) {
+        Schema::create('user_tasks_timelog', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('task_id');
-            $table->foreignId('task_status_id');
-            $table->integer('hours_rendered')->nullable();
-            $table->string('feedback')->nullable();
+            $table->foreignId('task_status');
+            $table->timestamps('time_in');
+            $table->timestamps('time_out');
+            $table->integer('11');
+            $table->string('is_Approve_in');
+            $table->string('is_Approve_out');
+            $table->string('feedback');
             $table->timestamps();
             $table->softDeletes();
         });

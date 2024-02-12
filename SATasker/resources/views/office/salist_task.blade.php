@@ -38,6 +38,7 @@
                         <th style="background: #d9d9d9;">Latest Time In</th>
                         <th style="background: #d9d9d9;">Latest Time Out</th>
                         <th style="background: #d9d9d9;">Hours Rendered</th>
+                        <th style="background: #d9d9d9;">Feedback</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,8 +70,8 @@
                                 @endif
                             </td>
                             <td style="font-weight: bold;">
-                                <button class="btn btn-info" type="button" style="font-size: 18px;color: rgb(0,0,0);font-weight: bold;border-style: none;" data-bs-toggle="modal" data-bs-target="#feedbackModal-{{ $saList->timelogId }}">
-                                    Feedback TimeLogID: {{ $saList->timelogId }}
+                                <button class="btn {{ $saList->feedback ? 'btn-info' : 'btn-warning '}}" type="button" style="font-size: 18px;color: rgb(0,0,0);font-weight: bold;border-style: none;" data-bs-toggle="modal" data-bs-target="#feedbackModal-{{ $saList->timelogId }}">
+                                    {{ $saList->feedback ? 'View' : 'Add'}}
                                 </button>
                                 @include('modals.feedback')
                             </td>

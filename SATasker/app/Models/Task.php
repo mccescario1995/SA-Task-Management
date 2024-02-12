@@ -11,6 +11,7 @@ class Task extends Model
 
     protected $fillable = [
         'isActive', 
+        'office_id',
         'preffred_program', 
         'start_date', 
         //'end_date', 

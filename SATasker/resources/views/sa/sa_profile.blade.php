@@ -66,12 +66,15 @@
                         <thead>
                             <tr>
                                 <th scope="col" style="background: #d9d9d9;">Task no.</th>
-                                <th scope="col" style="background: #d9d9d9;">Date &amp; Time</th>
+                                <th scope="col" style="background: #d9d9d9;">Task Date &amp; Time</th>
+                                <th scope="col" style="background: #d9d9d9;">Time-In</th>
+                                <th scope="col" style="background: #d9d9d9;">Time-Out</th>
+                                <th style="background: #d9d9d9;">Hours Rendered</th>
                                 <th style="background: #d9d9d9;">Program</th>
                                 <th scope="col" style="background: #d9d9d9;">Task</th>
                                 <th style="background: #d9d9d9;">Office</th>
                                 <th style="background: #d9d9d9;">Note</th>
-                                <th style="background: #d9d9d9;">Hours</th>
+                                
                                 <th style="background: #d9d9d9;">Feedback</th>
                             </tr>
                         </thead>
@@ -80,11 +83,14 @@
                             <tr>
                                 <td data-label="Task No." scope="row">{{$taskHistory->id}}</td>
                                 <td data-label="Date &amp; Time">{{$taskHistory->start_date}}</td>
+                                <td data-label="{{$taskHistory->time_in}}">{{$taskHistory->time_in}}</td>
+                                <td data-label="{{$taskHistory->time_out}}">{{$taskHistory->time_out}}</td>
+                                <td data-label="Hours">{{$taskHistory->total_hours}}</td>
                                 <td data-label="Program">{{$taskHistory->preffred_program}}</td>
                                 <td data-label="Task">{{$taskHistory->to_be_done}}</td>
                                 <td data-label="Office">{{$taskHistory->assigned_office}}</td>
                                 <td data-label="Note">{{$taskHistory->note}}</td>
-                                <td data-label="Hours">{{$taskHistory->hours_rendered}}</td>
+                                
                                 <td data-label="Feedback">{{$taskHistory->feedback}}</td>
                             </tr>
                             @endforeach

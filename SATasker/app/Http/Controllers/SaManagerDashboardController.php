@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Session;
 
 
 class SaManagerDashboardController extends Controller
@@ -18,29 +19,29 @@ class SaManagerDashboardController extends Controller
     }
 
     public function onGoing(){
-        $assignedTasks = DB::table('user_tasks')
-        ->join('tasks', 'user_tasks.task_id', '=', 'tasks.id')
-        ->join('users', 'user_tasks.user_id', '=', 'users.id')
-        ->leftJoin('user_tasks_timelog', 'user_tasks_timelog.task_id', '=', 'user_tasks.task_id')
+        $user = $this->getuserID();
+        $assignedTasks = DB::table('user_tasks_timelog')
+        ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
+        ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('tasks.isActive', 1)
-        ->select('user_tasks.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'), 'tasks.note') 
-        ->groupBy('user_tasks.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
-        ->orderBy('user_tasks.id', 'asc')
+        ->select('user_tasks_timelog.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'), 'tasks.note') 
+        ->groupBy('user_tasks_timelog.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
+        ->orderBy('user_tasks_timelog.id', 'asc')
         ->paginate(5);  
-        return view('sam.sam_dashboard_ongoing', compact('assignedTasks'));//,'user'
+        return view('sam.sam_dashboard_ongoing', compact('assignedTasks','user'));
     }
 
     public function finished(){
-        $assignedTasks = DB::table('user_tasks')
-        ->join('tasks', 'user_tasks.task_id', '=', 'tasks.id')
-        ->join('users', 'user_tasks.user_id', '=', 'users.id')
-        ->leftJoin('user_tasks_timelog', 'user_tasks_timelog.task_id', '=', 'user_tasks.task_id')
+        $user = $this->getuserID();
+        $assignedTasks = DB::table('user_tasks_timelog')
+        ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
+        ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('tasks.isActive', 0)
-        ->select('user_tasks.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'), 'tasks.note')
-        ->groupBy('user_tasks.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
-        ->orderBy('user_tasks.id', 'asc')
+        ->select('user_tasks_timelog.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'), 'tasks.note')
+        ->groupBy('user_tasks_timelog.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
+        ->orderBy('user_tasks_timelog.id', 'asc')
         ->paginate(5);
-        return view('sam.sam_dashboard_done', compact('assignedTasks'));//,'user'
+        return view('sam.sam_dashboard_done', compact('assignedTasks','user'));
     }
 
     public function viewSaList(Request $request)
@@ -49,13 +50,9 @@ class SaManagerDashboardController extends Controller
         $user = User::find($user_id);
         $taskId = $request->route('taskId');
 
-        $saLists = User::join('user_tasks','users.id','=','user_tasks.user_id')
-        ->join('tasks','user_tasks.task_id','=','tasks.id')
+        $saLists = User::join('user_tasks_timelog','users.id','=','user_tasks_timelog.user_id')
+        ->join('tasks','user_tasks_timelog.task_id','=','tasks.id')
         ->join('sa_profiles','users.id_number','=','sa_profiles.user_id')
-        ->leftJoin('user_tasks_timelog', function ($join) {
-            $join->on('user_tasks_timelog.task_id', '=', 'tasks.id')
-                ->on('user_tasks_timelog.user_id', '=', 'users.id');
-        })
         ->select(
             'sa_profiles.user_id',
             'sa_profiles.first_name',
@@ -64,6 +61,8 @@ class SaManagerDashboardController extends Controller
             'user_tasks_timelog.id AS timelogId',
             DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'), 
             DB::raw('DATE_FORMAT(user_tasks_timelog.time_out, "%H:%i") AS timeout'),
+            'user_tasks_timelog.is_Approved_in',
+            'user_tasks_timelog.is_Approved_out',
             'user_tasks_timelog.total_hours' 
         )
         ->where('tasks.id','=', $taskId)
@@ -72,19 +71,51 @@ class SaManagerDashboardController extends Controller
         return view('sam.sam_salist_task_ongoing', compact('saLists','user','taskId'));
     }
 
+    public function acceptTimeIn($id)
+    {
+        // Find the saList record
+        $saList = SaTaskTimeLog::findOrFail($id);
+
+        // Check if pending and allow only if pending
+        if ($saList->is_Approved_in !== 'Pending') {
+            abort(403, 'Unauthorized action: Time-in status is not Pending.');
+        }
+
+        // Update status to Approved
+        $saList->is_Approved_in = 'Approved';
+        $saList->save();
+
+        // Redirect appropriately (e.g., back to the same page)
+        return redirect()->back()->with('success', ' Student Time-In Successfully Approved!');
+    } 
+
+    public function acceptTimeOut($id)
+    {
+        // Find the saList record
+        $saList = SaTaskTimeLog::findOrFail($id);
+
+        // Check if pending and allow only if pending
+        if ($saList->is_Approved_out !== 'Pending') {
+            abort(403, 'Unauthorized action: Time-in status is not Pending.');
+        }
+
+        // Update status to Approved
+        $saList->is_Approved_out = 'Approved';
+        $saList->save();
+
+        // Redirect appropriately (e.g., back to the same page)
+        return redirect()->back()->with('success', ' Student Time-Out Approved Successfully!');
+    } 
+
     public function viewSaListDone(Request $request)
     {   
         $user_id = session('user_id');
         $user = User::find($user_id);
         $taskId = $request->route('taskId');
 
-        $saLists = User::join('user_tasks','users.id','=','user_tasks.user_id')
-        ->join('tasks','user_tasks.task_id','=','tasks.id')
+        $saLists = User::join('user_tasks_timelog','users.id','=','user_tasks_timelog.user_id')
+        ->join('tasks','user_tasks_timelog.task_id','=','tasks.id')
         ->join('sa_profiles','users.id_number','=','sa_profiles.user_id')
-        ->leftJoin('user_tasks_timelog', function ($join) {
-            $join->on('user_tasks_timelog.task_id', '=', 'tasks.id')
-                ->on('user_tasks_timelog.user_id', '=', 'users.id');
-        })
         ->select(
             'sa_profiles.user_id',
             'sa_profiles.first_name',
@@ -127,4 +158,10 @@ class SaManagerDashboardController extends Controller
         return redirect()->back()->with('success', $request->add_hours.' Hour/s added successfully!');
     }
 
+    public function getuserID()
+    {
+        $user_id = session('user_id');
+        $user = User::find($user_id);
+        return $user;
+    }
 }

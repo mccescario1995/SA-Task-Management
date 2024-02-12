@@ -36,7 +36,7 @@
                                 <div class="text-start" style="padding: 3em;width: 100%;height: 100%;">
                                     <div style="padding: 0% 2%;">
                                         <h5 class="text-start d-xl-flex">Feedback</h5>
-                                        <textarea style="width: 100%;" name="feedback"></textarea>
+                                        <textarea style="width: 100%;" name="feedback" placeholder="{{$saList->feedback}}"></textarea>
                                         <input type="hidden" name="timelogId" value="{{ $saList->timelogId }}">
                                     </div>
                                 </div>
@@ -45,7 +45,7 @@
                         </div>
                         <div class="modal-footer d-xl-flex justify-content-xl-center">
                             <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
-                            <button class="btn btn-primary" type="submit" style="background: rgb(248,190,91);color: rgb(0,0,0);border-style: none;">Add Feedback</button>
+                            <button class="btn {{ $saList->feedback ? 'btn-info' : 'btn-warning '}}" type="submit"  >{{ $saList->feedback ? 'Update Feedback' : 'Add Feedback'}}</button>
                         </div>
                     </form>
                 </div>

@@ -64,11 +64,11 @@
                                 @else
                                     @foreach ($urgentTasks as $task)
                                         @php
-                                            $saCount = DB::table('user_tasks')
+                                            $saCount = DB::table('user_tasks_timelog')
                                                 ->where('task_id',$task->id)
-                                                ->where('task_status_id',1)
+                                                ->where('task_status',1)
                                                 ->count();
-                                            $isAccepted = DB::table('user_tasks')
+                                            $isAccepted = DB::table('user_tasks_timelog')
                                                 ->where('user_id','=', $user->id)
                                                 ->where('task_id', '=',$task->id)
                                                 ->exists();

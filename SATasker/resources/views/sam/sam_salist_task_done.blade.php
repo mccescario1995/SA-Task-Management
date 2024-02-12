@@ -75,5 +75,5 @@
         </div>
     </section>
 </div>
-    @include('nav.offcanvas_menu_office')
+    @include('nav.offcanvas_menu_sam')
 @endsection

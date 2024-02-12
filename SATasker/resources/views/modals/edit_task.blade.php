@@ -79,8 +79,8 @@
                             </div>
                         </div>
                     <div class="modal-footer d-xl-flex justify-content-xl-center">
-                        <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-primary" type="submit" style="background: rgb(248,190,91);color: rgb(0,0,0);border-style: none;">Edit Task</button>
+                        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-outline-success" type="submit" name="action" value="repost">Save</button>
                     </div>
                     </form>
                 </div>

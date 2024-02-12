@@ -10,6 +10,7 @@ use App\Models\UserTask;
 use App\Models\SaTaskTimeLog;
 use App\Models\User;
 use Carbon\Carbon;
+use Session;
 
 class SaDashboardController extends Controller
 {
@@ -24,13 +25,13 @@ class SaDashboardController extends Controller
         //->select('tasks.id')
         ->orderby('tasks.id', 'asc')->paginate(3);
 
-        $assignedTasks = DB::table('user_tasks')
-        ->join('tasks', 'user_tasks.task_id', '=', 'tasks.id')
-        ->join('users', 'user_tasks.user_id', '=', 'users.id')
+        $assignedTasks = DB::table('user_tasks_timelog')
+        ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
+        ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('users.id', $user->id)
-        ->where('task_status_id',1)
-        ->select('user_tasks.id','tasks.id AS task_id','tasks.start_date','tasks.start_time','tasks.end_time','tasks.preffred_program','users.email' , 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note')
-        ->orderby('user_tasks.id', 'asc')->paginate(5);    
+        ->where('task_status',1)
+        ->select('user_tasks_timelog.id','tasks.id AS task_id','tasks.start_date','tasks.start_time','tasks.end_time','tasks.preffred_program','users.email' , 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note')
+        ->orderby('user_tasks_timelog.id', 'asc')->paginate(5);    
         return view('sa.sa_dashboard', compact('urgentTasks','assignedTasks','user'));
     }
 
@@ -45,10 +46,10 @@ class SaDashboardController extends Controller
     public  function acceptTask($id){
         $user = $this->getuserID();
         $task = Task::find($id);
-        $userTask = new UserTask();
+        $userTask = new SaTaskTimeLog();
         $userTask->user_id = $user->id;
         $userTask->task_id = $task->id;
-        $userTask->task_status_id = 1;
+        $userTask->task_status = 1;
         $userTask->save();
 
         session()->flash('accept_task_success', 'Task accepted successfully!');
@@ -57,7 +58,7 @@ class SaDashboardController extends Controller
 
     public function saCounter($num_sa,$task)
     {
-        $saCount = DB::table('user_tasks')
+        $saCount = DB::table('user_tasks_timelog')
         ->where('task_id',$task->id)
         ->where('task_status_id',1)
         ->count();
@@ -68,12 +69,22 @@ class SaDashboardController extends Controller
     public function profile(){
         $user = $this->getuserID();
         $userProfiles = SaProfile::where('user_id', $user->id_number)->get();
-        $taskHistory = DB::table('user_tasks')
-        ->join('tasks', 'user_tasks.task_id', '=', 'tasks.id')
-        ->join('users', 'user_tasks.user_id', '=', 'users.id')
+        $taskHistory = DB::table('user_tasks_timelog')
+        ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
+        ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('users.id', $user->id)
-        ->select('tasks.id','tasks.start_date','tasks.preffred_program', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note', 'user_tasks.hours_rendered', 'user_tasks.feedback')
-        ->orderby('user_tasks.id', 'asc')->paginate(5);
+        ->select(
+            'tasks.id','tasks.start_date',
+            'tasks.preffred_program',
+            'tasks.to_be_done', 
+            'tasks.assigned_office', 
+            'tasks.note', 
+            'user_tasks_timelog.time_in', 
+            'user_tasks_timelog.time_out', 
+            'user_tasks_timelog.feedback', 
+            'user_tasks_timelog.total_hours'
+            )
+        ->orderby('user_tasks_timelog.id', 'asc')->paginate(5);
         return view('sa.sa_profile', compact('user','userProfiles', 'taskHistory'));
     }
 

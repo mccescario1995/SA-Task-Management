@@ -5,12 +5,12 @@
             <div class="offcanvas-body">
                 <div style="margin: 5px;padding: 5px;">
                     <span style="width: 100%;">
-                        <a class="btn" onclick="window.location.href='{{ route('sa.dashboard') }}'" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">Tasks</a>
+                        <a class="btn" href="{{ route('sa.dashboard') }}" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">Tasks</a>
                     </span>
                 </div>
                 <div style="margin: 5px;padding: 5px;">
                     <span style="width: 100%;">
-                        <a class="btn" onclick="window.location.href='{{ route('sa.profile') }}'" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">Profile</a>
+                        <a class="btn" href="{{ route('sa.profile') }}" style="padding: 5px;color: rgb(0,0,0);font-weight: bold;">Profile</a>
                     </span>
                 </div>
                 <form action="{{ route('logout') }}" method="post">
