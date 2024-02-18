@@ -69,12 +69,10 @@
                                         <td data-label="{{$task->total_hours}}" class="
                                             @if ($task->total_hours == 0)
                                                 table-danger 
-                                            @elseif ($task->total_hours == 90) 
-                                                table-success
                                             @elseif ($task->total_hours > 0) 
                                                 table-primary
                                             @endif    
-                                        ">{{$task->total_hours}}</td>
+                                        "><strong>{{$task->total_hours}}</strong></td>
                                     </tr>
                                     @endforeach
                                 @endif
@@ -83,7 +81,7 @@
                             <tbody>
                                 @if($saLists->count() == 0)
                                     <tr>
-                                            <td data-label="Attributes" scope="row" colpan="6"><strong> No On-Going SA with Task </strong></td>
+                                            <td data-label="Attributes" scope="row" colpan="6"><strong> No Completed SA Task </strong></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>                                        
@@ -102,7 +100,13 @@
                                             @elseif ($task->total_hours > 0) 
                                                 table-primary
                                             @endif    
-                                        ">{{$task->total_hours}}</td>
+                                            ">  <strong>{{$task->total_hours}}  
+                                            
+                                                @if ($task->total_hours == 90) 
+                                                    (Completed)
+                                                @endif 
+                                                </strong>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 @endif

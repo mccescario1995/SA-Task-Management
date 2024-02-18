@@ -53,7 +53,7 @@
                                                     <strong>Task Assignment Type </strong>*</label>
                                                 </div>
                                                 <div class="d-xl-flex align-items-xl-center">
-                                                    <div class="form-check" style="margin: auto;">
+                                                    <div class="form-check" style="margin: auto;"> 
                                                         <input class="form-check-input" type="radio" name="assignment_type" id="formCheck-3" value="1" >
                                                         <label class="form-check-label" for="formCheck-3" >Auto Assignment</label></div>
                                                     <div class="form-check" style="margin: auto;">

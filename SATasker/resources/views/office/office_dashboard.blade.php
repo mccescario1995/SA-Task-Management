@@ -28,50 +28,35 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if($tasks->count() == 0)
+                            @if(empty($tasksWithInfo))  
                                 <tr>
-                                        <td data-label="No Inactive Task Available" scope="row" colpan="6"><strong> No Inactive Task Available </strong></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        
+                                    <td data-label="No Task Available" scope="row" colspan="8"><strong> No Task Available </strong></td> 
                                 </tr>
                             @else
-                                @foreach($tasks as $task)
-                                    @php
-                                        $startTime = strtotime($task->start_time);
-                                        $endTime = strtotime($task->end_time);
-                                        $startTimeampm = date("h:i A", strtotime($task->start_time));
-                                        $endTimeampm = date("h:i A", strtotime($task->end_time));
-                                        $totalHours = round(($endTime - $startTime) / 3600, 1);
-                                        $saCount = (DB::table('user_tasks_timelog')->where('task_id',$task->id)->where('task_status',1)->count()) ? DB::table('user_tasks_timelog')->where('task_id',$task->id)->where('task_status',1)->count() : '0' ;
-                                    @endphp
+                                @foreach($tasksWithInfo as $task)
                                 <tr>
                                     <td data-label="{{$task->id}}" scope="row">{{$task->id}}</td>
                                     <td data-label="{{$task->start_date}}">
                                         <div>
                                             <div>{{$task->start_date}}</div>
-                                            <div style="font-size: 11px">{{$startTimeampm}} - {{$endTimeampm}}</div>
+                                            <div style="font-size: 11px">{{$task->startTimeFormatted}} - {{$task->endTimeFormatted}}</div>
                                         </div>    
                                     </td>
                                     <td data-label="{{$task->preffred_program}}">{{$task->preffred_program}}</td>
                                     <td data-label="{{$task->to_be_done}}">{{$task->to_be_done}}</td>
-                                    <td data-label="{{$task->id}}">{{$totalHours}}</td>
+                                    <td data-label="{{$task->id}}">{{$task->totalHours}}</td>
                                     <td data-label="{{$task->id}}">{{$task->note}}</td>
-                                    <td data-label="{{ $saCount }} /{{$task->number_of_sa}} ">
+                                    <td data-label="{{ $task->saCount }} /{{$task->number_of_sa}} ">
                                         <a href="{{ route('office.saList', $task->id) }}" class="btn 
-                                        @if ($saCount < $task->number_of_sa)
-                                             btn-outline-success 
-                                        @elseif ($saCount == $task->number_of_sa) 
+                                        @if ($task->saCount < $task->number_of_sa)
+                                            btn-outline-success 
+                                        @elseif ($task->saCount = $task->number_of_sa) 
                                             btn-outline-danger 
                                         @endif
                                         " > 
-                                        @if ($saCount < $task->number_of_sa)
-                                            {{ $saCount }} /{{$task->number_of_sa}} 
-                                        @elseif ($saCount == $task->number_of_sa) 
+                                        @if ($task->saCount < $task->number_of_sa)
+                                            {{ $task->saCount }} /{{$task->number_of_sa}} 
+                                        @elseif ($task->saCount = $task->number_of_sa) 
                                             Full
                                         @endif
                                             
@@ -94,11 +79,10 @@
             <div style="text-align: center;">
                 <button class="btn btn-success" type="button"  data-bs-toggle="modal" data-bs-target="#addTask">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-plus-lg" style="width: 25px;height: 25px;">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
-                    </svg> &nbsp;Add Task</button></div>
+                    </svg> &nbsp;Add Task
+                </button>
+            </div>
         </div>
-        @if($tasks->count() >= 1)
-            @include('modals.edit_task')
-        @endif
     @include('modals.add_task')
     @include('nav.offcanvas_menu_office')
 @endsection

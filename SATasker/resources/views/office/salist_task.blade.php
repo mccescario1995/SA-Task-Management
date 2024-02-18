@@ -7,12 +7,6 @@
     @include('include.nav_bar')
     <div class="text-center" style="padding: 3em;">
     <section>
-            @if (session('add_task_success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('add_task_success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </div>
-            @endif
             @if (session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert" aria-label="Close">
                             {{ session('success') }}
@@ -42,41 +36,47 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($saLists as $saList)
-                        <tr>
-                            <td data-label="Attributes" scope="row">{{$saList->user_id}}</td>
-                            <td data-label="Base Class">{{$saList->first_name}} {{$saList->last_name}}</td>
-                            <td data-label="Simulated Case">{{$saList->course_program}}</td>
-                            <td>
-                                @if($saList->timein == null)
-                                    No Time-In Yet
-                                @else
-                                    {{$saList->timein}}
-                                @endif
-                            </td>
-                            <td>
-                                @if($saList->timeout == null)
-                                    No Time-Out Yet
-                                @else
-                                    {{$saList->timeout}}
-                                @endif
-                            </td>
+                    @if(empty($saLists))  
+                                <tr>
+                                    <td data-label="No SA Available" scope="row" colspan="8"><strong> No SA Available </strong></td> 
+                                </tr>
+                    @else
+                        @foreach($saLists as $saList)
+                            <tr>
+                                <td data-label="Attributes" scope="row">{{$saList->user_id}}</td>
+                                <td data-label="Base Class">{{$saList->first_name}} {{$saList->last_name}}</td>
+                                <td data-label="Simulated Case">{{$saList->course_program}}</td>
+                                <td>
+                                    @if($saList->timein == null)
+                                        No Time-In Yet
+                                    @else
+                                        {{$saList->timein}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($saList->timeout == null)
+                                        No Time-Out Yet
+                                    @else
+                                        {{$saList->timeout}}
+                                    @endif
+                                </td>
 
-                            <td>
-                                @if($saList->total_hours <= 0 )
-                                    Not Yet Started
-                                @else
-                                    {{$saList->total_hours}} Hr(s) 
-                                @endif
-                            </td>
-                            <td style="font-weight: bold;">
-                                <button class="btn {{ $saList->feedback ? 'btn-info' : 'btn-warning '}}" type="button" style="font-size: 18px;color: rgb(0,0,0);font-weight: bold;border-style: none;" data-bs-toggle="modal" data-bs-target="#feedbackModal-{{ $saList->timelogId }}">
-                                    {{ $saList->feedback ? 'View' : 'Add'}}
-                                </button>
-                                @include('modals.feedback')
-                            </td>
-                        </tr>
-                    @endforeach
+                                <td>
+                                    @if($saList->total_hours <= 0 )
+                                        Not Yet Started
+                                    @else
+                                        {{$saList->total_hours}} Hr(s) 
+                                    @endif
+                                </td>
+                                <td style="font-weight: bold;">
+                                    <button class="btn {{ $saList->feedback ? 'btn-info' : 'btn-warning '}}" type="button" style="font-size: 18px;color: rgb(0,0,0);font-weight: bold;border-style: none;" data-bs-toggle="modal" data-bs-target="#feedbackModal-{{ $saList->timelogId }}">
+                                        {{ $saList->feedback ? 'View' : 'Add'}}
+                                    </button>
+                                    @include('modals.feedback')
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
