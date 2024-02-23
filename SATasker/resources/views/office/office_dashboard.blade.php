@@ -44,8 +44,8 @@
                                     </td>
                                     <td data-label="{{$task->preffred_program}}">{{$task->preffred_program}}</td>
                                     <td data-label="{{$task->to_be_done}}">{{$task->to_be_done}}</td>
-                                    <td data-label="{{$task->id}}">{{$task->totalHours}}</td>
-                                    <td data-label="{{$task->id}}">{{$task->note}}</td>
+                                    <td data-label="{{$task->totalHours}}">{{$task->totalHours}}</td>
+                                    <td data-label="{{$task->note}}">{{$task->note}}</td>
                                     <td data-label="{{ $task->saCount }} /{{$task->number_of_sa}} ">
                                         <a href="{{ route('office.saList', $task->id) }}" class="btn 
                                         @if ($task->saCount < $task->number_of_sa)

@@ -18,15 +18,36 @@ class SaManagerDashboardController extends Controller
         return view('sam.sam_dashboard');
     }
 
+    private function calculateTaskHours($startTime, $endTime)
+{
+    $start = Carbon::parse($startTime);
+    $end = Carbon::parse($endTime);
+    dd($start->diffInHours($end));
+
+    return $start->diffInHours($end); 
+}
+
     public function onGoing(){
         $user = $this->getuserID();
         $assignedTasks = DB::table('user_tasks_timelog')
         ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
         ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('tasks.isActive', 1)
-        ->select('user_tasks_timelog.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'), 'tasks.note') 
-        ->groupBy('user_tasks_timelog.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
-        ->orderBy('user_tasks_timelog.id', 'asc')
+        ->select(
+            'tasks.id', 
+            'tasks.start_date', 
+            'tasks.start_time', 
+            'tasks.end_time', 
+            'tasks.preffred_program', 
+            'users.email', 
+            'tasks.to_be_done', 
+            'tasks.assigned_office', 
+            DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'), 
+            'tasks.note',
+            DB::raw("TIMESTAMPDIFF(HOUR, CONCAT(tasks.start_date, ' ', tasks.start_time), CONCAT(tasks.start_date, ' ', tasks.end_time)) as task_hours")
+            ) 
+        ->groupBy('tasks.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
+        ->orderBy('tasks.id', 'asc')
         ->paginate(5);  
         return view('sam.sam_dashboard_ongoing', compact('assignedTasks','user'));
     }
@@ -37,10 +58,21 @@ class SaManagerDashboardController extends Controller
         ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
         ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('tasks.isActive', 0)
-        ->select('user_tasks_timelog.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'), 'tasks.note')
-        ->groupBy('user_tasks_timelog.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
-        ->orderBy('user_tasks_timelog.id', 'asc')
-        ->paginate(5);
+        ->select(
+            'tasks.id',
+            'tasks.start_date',
+            'tasks.start_time',
+            'tasks.end_time',
+            'tasks.preffred_program',
+            'users.email',
+            'tasks.to_be_done',
+            'tasks.assigned_office',
+            DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'), 
+            'tasks.note',
+            DB::raw("TIMESTAMPDIFF(HOUR, CONCAT(tasks.start_date, ' ', tasks.start_time), CONCAT(tasks.start_date, ' ', tasks.end_time)) as task_hours")
+            )
+        ->groupBy('tasks.id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.preffred_program', 'users.email', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
+        ->orderBy('tasks.id', 'asc');
         return view('sam.sam_dashboard_done', compact('assignedTasks','user'));
     }
 

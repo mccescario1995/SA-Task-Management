@@ -296,9 +296,44 @@ class OfficeAdminDashboardController extends Controller
     public function update(Request $request, string $id)
     {
         //
+
+
         $task = Task::findOrFail($id);
 
-        $task->update($request->all());
+        //dd($request->all());
+        $validatedData = $request->validate([
+            // ... your other validations
+            'start_time' => 'required', 
+            'end_time' => 'required',
+        ]);
+    
+        // Update the time portions
+        $task->start_time = $validatedData['start_time']; 
+        $task->end_time = $validatedData['end_time']; 
+
+        //$task->update($request->all());
+
+        $validatedData = $request->validate([
+            'start_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'number_of_sa' => 'required|integer',
+            'preffred_program' => 'nullable|string',
+            'assignment_type' => 'nullable|in:1,2',
+            'to_be_done' => 'nullable|string',
+            'note' => 'nullable|string',
+        ]);
+    
+        // Directly update the task properties
+        $task->start_date = $validatedData['start_date'];
+        $task->start_time = $validatedData['start_time'];
+        $task->end_time = $validatedData['end_time'];
+        $task->number_of_sa = $validatedData['number_of_sa'];
+        $task->preffred_program = $validatedData['preffred_program'];
+        $task->assignment_type = $validatedData['assignment_type'];
+        $task->to_be_done = $validatedData['to_be_done'];
+        $task->note = $validatedData['note'];
+
         /* Check for button action
         if ($request->input('action') === 'save_draft') {
             $task->isActive = 0; // Save as draft

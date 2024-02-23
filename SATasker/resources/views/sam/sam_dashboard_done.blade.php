@@ -41,13 +41,7 @@
                         <tbody>
                                 @if($assignedTasks->count() == 0)
                                     <tr>
-                                        <td data-label="Attributes" scope="row" colpan="5"><strong> No Urgent Task Available </strong></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        
+                                        <td data-label="No Task Available" scope="row" colpan="8"><strong> No Task Available </strong></td>   
                                     </tr>
                                 @else
                                     @foreach ($assignedTasks as $task)
