@@ -109,7 +109,7 @@ class SaDashboardController extends Controller
             $timeLog->is_Approved_In = 'Pending'; 
             $timeLog->save();
 
-            return redirect()->back()->with('success', 'Time-in logged successfully, awaiting approval.');
+            return redirect()->back()->with('success', 'Time-in logged successfully.');
         } else {
             return redirect()->back()->with('warning', 'Time-in already exists for this task and date.');
         }
