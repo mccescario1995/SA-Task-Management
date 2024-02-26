@@ -116,20 +116,12 @@
 
                                 
                             </td>
-                            @php
-                            $timeIn = \Carbon\Carbon::parse($saList->timein);
-                            $timeOut = \Carbon\Carbon::parse($saList->timeout);
-
-                            // Calculate working hours difference
-                            $workingHours = $timeOut->diffInMinutes($timeIn) / 60;
-                            $roundedWHrs = round($workingHours,3);
-
-                            @endphp
+                            
                             <td>
-                                @if($roundedWHrs <= 0 )
+                                @if($saList->total_hours <= 0 )
                                     Not Yet Started
                                 @else
-                                    {{$roundedWHrs}} Hr(s) 
+                                    {{$saList->total_hours}} Hr(s) 
                                 @endif
                             </td>
                         </tr>

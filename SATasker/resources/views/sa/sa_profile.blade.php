@@ -25,14 +25,14 @@
             </div>
             <div class="d-lg-flex align-items-lg-center">
                 <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Contact Details :&nbsp;</p>
-                <p>{{$user->email}} | {{$userProfile->contact_number}}</p>
+                <p>{{$user->email}} | +{{$userProfile->contact_number}}</p>
             </div>
             @endforeach
         </div>
         <div style="padding: 2em;">
             <section>
                 <h3 style="text-align: center;">Class Schedule</h3>
-                <h6 style="text-align: center;margin-bottom: 0px;">SY 2023- 2024 Term 1</h6>
+                <h6 style="text-align: center;margin-bottom: 0px;">SY {{$term}} Term 1</h6>
                 <div class="table-responsive" style="padding: 1em;">
                     <table class="table table-hover">
                         <thead>
@@ -45,13 +45,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td data-label="Subject Code" scope="row">Attribute 1</td>
-                                <td data-label="Section">Cell 2</td>
-                                <td data-label="Day">Cell 3</td>
-                                <td data-label="Time">Cell 4</td>
-                                <td data-label="Instructor">Cell 5</td>
-                            </tr>
+                            @foreach($schedule as $class)
+                                <tr>
+                                    <td data-label="Subject Code">{{ $class->subject_code }}</td>
+                                    <td data-label="Section">{{ $class->section }}</td>
+                                    <td data-label="Day">{{ $class->day }}</td> 
+                                    <td data-label="Time">{{ $class->time_constraints }}</td>
+                                    <td data-label="Instructor"> TBA </td> <!-- {{ $class->instructor->name ?? 'TBA'}} -->
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -60,7 +62,15 @@
         <div style="padding: 2em;">
             <section>
                 <h3 style="text-align: center;">Task History</h3>
-                <h6 style="text-align: center;margin-bottom: 0px;">0/90 Hours Rendered</h6>
+                <h6 style="text-align: center;margin-bottom: 0px;">
+                @if(empty($rendered)&&$rendered = null)
+                    0
+                @else
+                    @foreach($rendered as $render)
+                        {{$render->total_hours}}
+                    @endforeach
+                @endif
+                /90 Hours Rendered</h6>
                 <div class="table-responsive" style="padding: 1em;">
                     <table class="table table-hover">
                         <thead>
@@ -79,21 +89,44 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($taskHistory as $taskHistory)
-                            <tr>
-                                <td data-label="Task No." scope="row">{{$taskHistory->id}}</td>
-                                <td data-label="Date &amp; Time">{{$taskHistory->start_date}}</td>
-                                <td data-label="{{$taskHistory->time_in}}">{{$taskHistory->time_in}}</td>
-                                <td data-label="{{$taskHistory->time_out}}">{{$taskHistory->time_out}}</td>
-                                <td data-label="Hours">{{$taskHistory->total_hours}}</td>
-                                <td data-label="Program">{{$taskHistory->preffred_program}}</td>
-                                <td data-label="Task">{{$taskHistory->to_be_done}}</td>
-                                <td data-label="Office">{{$taskHistory->assigned_office}}</td>
-                                <td data-label="Note">{{$taskHistory->note}}</td>
-                                
-                                <td data-label="Feedback">{{$taskHistory->feedback}}</td>
-                            </tr>
-                            @endforeach
+                            @if(empty($taskHistory) || $taskHistory==null )
+                                <td data-label="Attributes" scope="row" colpan="6"><strong> No Pending Task/s </strong></td>
+                            @else
+                                @foreach($taskHistory as $taskHistory)
+                                <tr>
+                                    <td data-label="Task No." scope="row">{{$taskHistory->id}}</td>
+                                    <td data-label="Date &amp; Time">{{$taskHistory->start_date}}</td>
+                                    <td data-label="{{$taskHistory->time_in}}">
+                                        @if($taskHistory->time_in == null)
+                                            No Time-In Yet
+                                        @else
+                                            {{$taskHistory->time_in}}
+                                        @endif
+                                    </td>
+                                    <td data-label="{{$taskHistory->time_out}}">
+                                        @if($taskHistory->time_out == null)
+                                            No Time-Out Yet
+                                        @else
+                                            {{$taskHistory->time_out}}
+                                        @endif
+                                    </td>
+                                    <td data-label="Hours" class="text-center">{{$taskHistory->total_hours}}</td>
+                                    <td data-label="Program">{{$taskHistory->preffred_program}}</td>
+                                    <td data-label="Task">{{$taskHistory->to_be_done}}</td>
+                                    <td data-label="Office">{{$taskHistory->assigned_office}}</td>
+                                    <td data-label="Note">{{$taskHistory->note}}</td>
+                                    
+                                    <td data-label="Feedback">
+                                    
+                                        @if($taskHistory->feedback == null)
+                                            No Feedback
+                                        @else
+                                            {{$taskHistory->feedback}}
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -104,3 +137,4 @@
 
     @include('nav.offcanvas_menu_sa')
 @endsection
+

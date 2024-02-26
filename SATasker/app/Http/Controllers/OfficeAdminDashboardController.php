@@ -190,28 +190,6 @@ class OfficeAdminDashboardController extends Controller
         return view('reports.office_report', ['officeLists'=>$officeLists,'user'=>$user]);
     }
 
-    function autoAssignTask($newTask) 
-    {
-        $eligibleSAs = SaProfile::where('course_program', $newTask->course_program)->get();
-
-        foreach ($eligibleSAs as $sa) { 
-            if ($this->isSAavailable($sa, $newTask->start_time, $newTask->end_time)) { // Placeholder - complex logic here
-                $this->createAssignment($sa, $newTask);
-                return; // Assuming you assign to one SA at a time, if not, remove 'return'
-            }
-        }
-
-        // Optional: What if no SAs are found? Logging, alerts...
-    }
-
-    private function isSAavailable($sa, $startTime, $endTime) {
-        // Replace with logic depending on how SA schedules are stored
-        // Example: IF simple, stored intervals...
-        if ($startTime >= $sa->available_start && $endTime <= $sa->available_end) {
-            return true; 
-        } 
-        return false; 
-    }
 
     /**
      * Update the specified resource in storage.
@@ -219,6 +197,7 @@ class OfficeAdminDashboardController extends Controller
     public function store(Request $request)
     {   
         $now = Carbon::now();
+        $user = $this->getuserID();
 
         $validator = Validator::make($request->all(), [
             'start_date' => 'required|date|after_or_equal:today',
@@ -227,9 +206,6 @@ class OfficeAdminDashboardController extends Controller
                 'date_format:H:i', 
                 function ($attribute, $value, $fail) use ($now) {
                     $startTime = Carbon::parse($value);
-
-                    \Log::debug("Start Time: " . $startTime->format('Y-m-d H:i:s'));
-                    \Log::debug("Current Time (now): " . $now->format('Y-m-d H:i:s')); 
                     if ($startTime->lt(Carbon::parse('08:00')) || $startTime->gt(Carbon::parse('22:00')) || $startTime->lt($now)) {
                         $fail('Start time must be between 8 AM and 10 PM, and after the current time.');
                     }
@@ -247,7 +223,7 @@ class OfficeAdminDashboardController extends Controller
                 },
             ],
             'number_of_sa' => 'required|integer',
-            'preffered_program' => [
+            'preffred_program' => [
                 'nullable',
                 'string',
                 function ($attribute, $value, $fail) {
@@ -268,7 +244,9 @@ class OfficeAdminDashboardController extends Controller
         }
 
         $validatedData = $validator->validated(); // Get validated data 
-        $task = new Task($validatedData);
+        $task = new Task($validatedData);   
+        $task->office_id = $user->id;
+        $task->assigned_office = $user->faculty;
         $task->save();
 
         if ($task['assignment_type'] == 1) {
@@ -282,15 +260,10 @@ class OfficeAdminDashboardController extends Controller
     }
 
     private function handleAutoAssignment(Task $task, array $data)
-    {
+    {   
         // Find SAs with matching program (if provided)
-        $eligibleSAs = SaProfile::whereHas('courses', function($query) use ($data) {
-            if ($data['preffered_program']) {
-                $query->where('is_offered', 1);
-                $query->where('name', $data['preffered_program']);
-            }
-        })->get();
-
+        $eligibleSAs = SaProfile::where('course_program', $data['preffred_program'])
+                               ->get();
         // Find SAs with available time slots
         $availableSAs = $this->findSAsWithAvailability($eligibleSAs, $task);
 
@@ -302,13 +275,16 @@ class OfficeAdminDashboardController extends Controller
     {
         return $eligibleSAs->filter(function($sa) use ($task) {
             // Check if the SA has any schedule conflicts
-            return !$sa->schedules()
+            return !DB::table('student_schedules')
                 ->join('subject_offerings', 'subject_offerings.id', '=', 'student_schedules.subject_offering_id')
                 ->join('subject_offering_details', 'subject_offering_details.subject_offering_id', '=', 'subject_offerings.id')
-                //These lines check if the SA has any classes that either: Start during the task's time frame. End during the task's time frame.
                 ->where(function ($query) use ($task) {
-                    $query->whereBetween('subject_offering_details.time_start', [$task->start_time, $task->end_time])
-                        ->orWhereBetween('subject_offering_details.time_end', [$task->start_time, $task->end_time]);
+                    $query->where(function($query) use ($task) { // Check for starts within task time
+                            $query->whereRaw('SUBSTRING_INDEX(subject_offering_details.time_constraints, "-", 1) BETWEEN ? AND ?', [$task->start_time, $task->end_time]);
+                        })
+                        ->orWhere(function($query) use ($task) { // Check for ends within task time
+                            $query->whereRaw('SUBSTRING_INDEX(subject_offering_details.time_constraints, "-", -1) BETWEEN ? AND ?', [$task->start_time, $task->end_time]);
+                        });
                 })
                 ->exists();
         }); 
@@ -320,11 +296,11 @@ class OfficeAdminDashboardController extends Controller
         $numberOfSAsNeeded = $task->number_of_sa; // Or retrieve dynamically if your task can handle a range
 
         foreach ($availableSAs as $sa) {
-            $task->assigned_sa_id = $sa->id;
-            $task->save();
 
-            // Notify assigned SA (to be implemented)
+            // Notify assigned SA (to be implemented i think)
             //$this->notifySA($sa, $task); 
+
+            $this->acceptTaskAndLog($task, $sa); 
 
             $saIndex++;
             if ($saIndex >= $numberOfSAsNeeded) {
@@ -332,6 +308,17 @@ class OfficeAdminDashboardController extends Controller
             }
         }
     }
+
+    private function acceptTaskAndLog(Task $task, SaProfile $sa)
+{
+    // Assuming 'user_id' represents the SA in your user_tasks_timelog table
+    $taskLog = new SaTaskTimeLog([
+        'task_id' => $task->id,
+        'user_id' => $sa->id,
+    ]);
+    $taskLog->task_status = 1;
+    $taskLog->save();
+}
 
     private function handleVoluntary(Task $task)
     {

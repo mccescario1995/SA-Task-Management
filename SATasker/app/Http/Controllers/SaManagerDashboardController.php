@@ -17,16 +17,6 @@ class SaManagerDashboardController extends Controller
     public function index(){
         return view('sam.sam_dashboard');
     }
-
-    private function calculateTaskHours($startTime, $endTime)
-{
-    $start = Carbon::parse($startTime);
-    $end = Carbon::parse($endTime);
-    dd($start->diffInHours($end));
-
-    return $start->diffInHours($end); 
-}
-
     public function onGoing(){
         $user = $this->getuserID();
         $assignedTasks = DB::table('user_tasks_timelog')

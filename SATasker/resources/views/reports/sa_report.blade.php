@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'SA Reports - Office')
+@section('title', 'SA Reports - Student Assistant Manager')
 
 @section('content')
     <!-- Your content here -->
@@ -82,9 +82,7 @@
                                 @if($saLists->count() == 0)
                                     <tr>
                                             <td data-label="Attributes" scope="row" colpan="6"><strong> No Completed SA Task </strong></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>                                        
+                                                                                  
                                     </tr>
                                 @else
                                     @foreach($saLists as $task)
@@ -115,6 +113,6 @@
                     </table>
                 </div>
             </section>
-    @include('nav.offcanvas_menu_office')
+    @include('nav.offcanvas_menu_sam')
 </div>
 @endsection

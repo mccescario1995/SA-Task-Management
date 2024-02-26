@@ -15,6 +15,8 @@ class Task extends Model
         'preffred_program', 
         'start_date', 
         //'end_date', 
+        'start_time', 
+        'end_time', 
         'number_of_sa', 
         'status', 
         'assignment_type', 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'SA Reports - Office')
+@section('title', 'SA Reports - Student Assistant Manager')
 
 @section('content')
     <!-- Your content here -->
@@ -47,6 +47,6 @@
                     </table>
                 </div>
             </section>
-    @include('nav.offcanvas_menu_office')
+    @include('nav.offcanvas_menu_sam')
 </div>
 @endsection

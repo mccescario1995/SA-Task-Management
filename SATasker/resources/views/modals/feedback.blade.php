@@ -13,7 +13,13 @@
                                 <h5>Task {{ $taskId }}</h5>
                                 <div style="padding-left: 5%;">
                                     <h6>Name: {{$saList->first_name}} {{$saList->last_name}}</h6>
-                                    <h6>Start Date: {{$saList->start_date}}</h6>
+                                    <h6>Start Date: {{$saList->start_date}}
+                                        @if($saList->start_date == null)
+                                            No Start date
+                                        @else
+                                            {{$saList->start_date}}
+                                        @endif
+                                    </h6>
                                     <h6>
                                         Time-In: 
                                         @if($saList->timein == null)
