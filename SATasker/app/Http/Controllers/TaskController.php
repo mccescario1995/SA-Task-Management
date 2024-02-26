@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\Task;
 
 class TaskController extends Controller
@@ -31,6 +33,34 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        $now = Carbon::now(); // get the time now
+
+        $request->validate([
+            'start_date' => 'required|date|after_or_equal:today', // Must be today or in the future
+            'start_time' => [
+                'required',
+                'date_format:H:i', 
+                Rule::closure(function ($attribute, $value, $fail) use ($now) {
+                    $startTime = Carbon::parse($value);
+                    if ($startTime->lt(Carbon::parse('08:00')) || $startTime->lt($now)) {
+                        $fail('Start time must be between 8 AM and the current time.');
+                    }
+                }),
+            ],
+            'end_time' => [
+                'required', 
+                'date_format:H:i', 
+                'after:start_time',  
+                Rule::closure(function ($attribute, $value, $fail) {
+                    $endTime = Carbon::parse($value);
+                    if ($endTime->gt(Carbon::parse('22:00'))) {
+                        $fail('End time must be before or at 10 PM.');
+                    }
+                }),
+            ],
+            // ... Validation for other fields ('preffred_program', 'number_of_sa', etc.) 
+        ]);
+
         //
         $task = new Task();
         $task->preffred_program = $request->input('preffred_program');
@@ -97,4 +127,6 @@ class TaskController extends Controller
     {
         //
     }
+
+    
 }

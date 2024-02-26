@@ -58,6 +58,7 @@ Route::get('/office_admin/dashboard/', [OfficeAdminDashboardController::class, '
 Route::get('/office_admin/dashboard/task_view', [OfficeAdminDashboardController::class, 'taskView'])->name('office.admin.taskview.dashboard');
 Route::put('/office_admin/{task}/edit', [OfficeAdminDashboardController::class, 'update'])->name('office.edit');
 Route::post('/office_admin/add', [OfficeAdminDashboardController::class, 'store'])->name('office.add');
+Route::get('/office_admin/add_task', [OfficeAdminDashboardController::class, 'addtask'])->name('office.add.task');
 Route::post('/office_admin/{task}/delete', [OfficeAdminDashboardController::class, 'delete'])->name('office.delete');
 Route::post('/office_admin/{task}/cancel', [OfficeAdminDashboardController::class, 'cancel'])->name('office.cancel');
 Route::get('/office_admin/{taskId}/sa_list', [OfficeAdminDashboardController::class,'taskSaList'])->name('office.saList');

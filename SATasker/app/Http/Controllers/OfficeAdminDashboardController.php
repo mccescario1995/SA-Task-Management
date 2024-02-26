@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\SaTaskTimeLog;
 use App\Models\SaProfile;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Rule;
+use Illuminate\Support\Facades\Validator;
+
 use App\Models\Task;
 use App\Models\Courses;
 use Session;
@@ -30,6 +34,11 @@ class OfficeAdminDashboardController extends Controller
     {
         $program = Courses::where('is_offered',true)->get();
         return $program;
+    }
+
+    public function StartTime()
+    {
+
     }
 
     //view inactive tasks
@@ -208,18 +217,57 @@ class OfficeAdminDashboardController extends Controller
      * Update the specified resource in storage.
      */
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'start_date' => 'required|date',
-            'start_time' => 'required',
-            'end_time' => 'required',
+    {   
+        $now = Carbon::now();
+
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|date|after_or_equal:today',
+            'start_time' => [
+                'required',
+                'date_format:H:i', 
+                function ($attribute, $value, $fail) use ($now) {
+                    $startTime = Carbon::parse($value);
+
+                    \Log::debug("Start Time: " . $startTime->format('Y-m-d H:i:s'));
+                    \Log::debug("Current Time (now): " . $now->format('Y-m-d H:i:s')); 
+                    if ($startTime->lt(Carbon::parse('08:00')) || $startTime->gt(Carbon::parse('22:00')) || $startTime->lt($now)) {
+                        $fail('Start time must be between 8 AM and 10 PM, and after the current time.');
+                    }
+                },
+            ],
+            'end_time' => [
+                'required', 
+                'date_format:H:i', 
+                'after:start_time',  
+                function ($attribute, $value, $fail) {
+                    $endTime = Carbon::parse($value);
+                    if ($endTime->gt(Carbon::parse('22:00'))) {
+                        $fail('End time must be before or at 10 PM.');
+                    }
+                },
+            ],
             'number_of_sa' => 'required|integer',
-            'preffered_program' => 'nullable|string',
+            'preffered_program' => [
+                'nullable',
+                'string',
+                function ($attribute, $value, $fail) {
+                    if ($value && !DB::table('courses')->where('name', $value)->exists()) {
+                        $fail('The selected preferred program is invalid.');
+                    }
+                },
+            ],
             'assignment_type' => 'required|in:1,2',
             'to_be_done' => 'nullable|string', 
             'note' => 'nullable|string',
         ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()
+                         ->withErrors($validator)
+                         ->withInput(); // Preserve user input
+        }
 
+        $validatedData = $validator->validated(); // Get validated data 
         $task = new Task($validatedData);
         $task->save();
 
@@ -229,7 +277,8 @@ class OfficeAdminDashboardController extends Controller
             $this->handleVoluntary($task);
         }
 
-        return redirect()->back()->with('success', 'Task added successfully!');
+        // Return success response
+        return redirect()->route('office.dashboard')->with('success', 'Task added successfully!'); 
     }
 
     private function handleAutoAssignment(Task $task, array $data)
@@ -344,7 +393,14 @@ class OfficeAdminDashboardController extends Controller
 
         $task->save();
         
-        return redirect()->back()->with('success', 'Task editted successfully!');
+        return redirect()->back()->with('success', 'Task edited successfully!');
+    }
+
+    public function addTask()
+    {
+        $courses = $this->program();
+        $user = $this->getuserID();
+        return view('office.office_add_task',compact('user','courses'));
     }
 
     /**

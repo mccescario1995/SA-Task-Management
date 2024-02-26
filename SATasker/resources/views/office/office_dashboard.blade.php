@@ -13,6 +13,16 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                     </div>
                 @endif
+                @error('start_date')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                @error('start_time')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                @error('end_time')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                
                 <div class="table-responsive" style="padding: 1em;">
                     <table class="table table-hover table-bordered">
                         <thead>
@@ -77,10 +87,11 @@
                 </div>
             </section>
             <div style="text-align: center;">
-                <button class="btn btn-success" type="button"  data-bs-toggle="modal" data-bs-target="#addTask">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-plus-lg" style="width: 25px;height: 25px;">
+                <a class="btn btn-success" href="{{ route('office.add.task') }}" >&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-plus-lg" style="width: 25px;height: 25px;">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg> &nbsp;Add Task
-                </button>
+                </a>
             </div>
         </div>
     @include('modals.add_task')
