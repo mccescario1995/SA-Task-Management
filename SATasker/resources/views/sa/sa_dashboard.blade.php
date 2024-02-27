@@ -153,9 +153,9 @@
                                         <td style="font-weight: bold;">
                                             <form action="{{ route('sa.timein') }}" method="POST">
                                                 @csrf
-                                                <input type="hidden" name="task_id" value="{{ $assignedtask->id }}">
+                                                <input type="hidden" name="task_id" value="{{ $assignedtask->task_id }}">
                                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                                @if (!SaTaskTimeLog::where('task_id', $assignedtask->id)
+                                                @if (!SaTaskTimeLog::where('task_id', $assignedtask->task_id)
                                                     ->where('user_id', $user->id)
                                                     ->whereDate('time_in', now()->toDateString())
                                                     ->exists())
