@@ -206,7 +206,7 @@ class OfficeAdminDashboardController extends Controller
                 'date_format:H:i', 
                 function ($attribute, $value, $fail) use ($now) {
                     $startTime = Carbon::parse($value);
-                    if ($startTime->lt(Carbon::parse('08:00')) || $startTime->gt(Carbon::parse('22:00')) || $startTime->lt($now)) {
+                    if ($startTime->lt(Carbon::parse('08:00')) || $startTime->gt(Carbon::parse('22:00'))) {
                         $fail('Start time must be between 8 AM and 10 PM, and after the current time.');
                     }
                 },
