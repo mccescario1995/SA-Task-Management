@@ -102,7 +102,7 @@ class OfficeAdminDashboardController extends Controller
         ->join('tasks','user_tasks_timelog.task_id','=','tasks.id')
         ->join('sa_profiles','users.id_number','=','sa_profiles.user_id')
         ->select(
-            'user_tasks_timelog.id AS timelogId',
+            
             'user_tasks_timelog.feedback',
             'user_tasks_timelog.total_hours',
             'sa_profiles.user_id',
@@ -310,15 +310,19 @@ class OfficeAdminDashboardController extends Controller
     }
 
     private function acceptTaskAndLog(Task $task, SaProfile $sa)
-{
-    // Assuming 'user_id' represents the SA in your user_tasks_timelog table
-    $taskLog = new SaTaskTimeLog([
-        'task_id' => $task->id,
-        'user_id' => $sa->id,
-    ]);
-    $taskLog->task_status = 1;
-    $taskLog->save();
-}
+    {   
+        $userId = DB::table('users')
+                ->where('id_number', $sa->user_id) 
+                ->value('id'); 
+
+        // Assuming 'user_id' represents the SA in your user_tasks_timelog table
+        $taskLog = new SaTaskTimeLog([
+            'task_id' => $task->id,
+            'user_id' => $userId,
+        ]);
+        $taskLog->task_status = 1;
+        $taskLog->save();
+    }
 
     private function handleVoluntary(Task $task)
     {
