@@ -63,13 +63,15 @@
             <section>
                 <h3 style="text-align: center;">Task History</h3>
                 <h6 style="text-align: center;margin-bottom: 0px;">
-                @if(empty($rendered)&&$rendered = null)
-                    0
-                @else
-                    @foreach($rendered as $render)
+                
+                @foreach($rendered as $render)
+                    @if(empty($render->total_hours) && $render->total_hours === null)
+                        0
+                    @else
                         {{$render->total_hours}}
-                    @endforeach
-                @endif
+                    @endif
+                @endforeach
+                
                 /90 Hours Rendered</h6>
                 <div class="table-responsive" style="padding: 1em;">
                     <table class="table table-hover">

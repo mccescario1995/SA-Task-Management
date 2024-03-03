@@ -103,7 +103,7 @@ class SaDashboardController extends Controller
             'user_tasks_timelog.feedback', 
             'user_tasks_timelog.total_hours'
             )
-        ->orderby('user_tasks_timelog.id', 'asc')->paginate(5);
+        ->orderby('user_tasks_timelog.id', 'asc')->get();
 
         $rendered = DB::table('user_tasks_timelog')
         ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
@@ -114,7 +114,7 @@ class SaDashboardController extends Controller
             DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'),)
         ->get();
         
-        
+        // dd($rendered);
 
         return view('sa.sa_profile', compact('user','userProfiles', 'taskHistory','rendered','schedule','term'));
     }
