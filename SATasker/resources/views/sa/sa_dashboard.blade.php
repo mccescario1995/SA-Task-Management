@@ -147,7 +147,7 @@
                                         <td>{{ $assignedtask->to_be_done }}</td>
                                         <td>
                                             <p style="margin: 0px;">{{ $assignedtask->assigned_office }}</p>
-                                            <p style="font-size: 12px;">{{ $assignedtask->email }}</p>
+                                            <p style="font-size: 12px;">{{ DB::table('users')->where('users.id', '=', $assignedtask->office_id)->select('users.email')->first()->email }}</p>
                                         </td>
                                         <td>{{ $assignedtask->note }}</td>
                                         <td style="font-weight: bold;">

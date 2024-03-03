@@ -112,7 +112,14 @@
                                             {{$taskHistory->time_out}}
                                         @endif
                                     </td>
-                                    <td data-label="Hours" class="text-center">{{$taskHistory->total_hours}}</td>
+                                    
+                                    <td data-label="{{$taskHistory->total_hours}}">
+                                        @if($taskHistory->total_hours == null)
+                                            No Rendered Hrs
+                                        @else
+                                            {{$taskHistory->total_hours}}
+                                        @endif
+                                    </td>
                                     <td data-label="Program">{{$taskHistory->preffred_program}}</td>
                                     <td data-label="Task">{{$taskHistory->to_be_done}}</td>
                                     <td data-label="Office">{{$taskHistory->assigned_office}}</td>

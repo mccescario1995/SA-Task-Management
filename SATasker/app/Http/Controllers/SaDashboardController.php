@@ -21,10 +21,7 @@ class SaDashboardController extends Controller
     public function index(){
         $user = $this->getuserID();
         $urgentTasks = DB::table('tasks')
-        //->join('user_tasks','user_tasks.task_id','tasks.id')
         ->where('assignment_type', 2)
-        //->where('user_tasks.task_status_id','=',1)
-        //->select('tasks.id')
         ->orderby('tasks.id', 'asc')->paginate(3);
 
         $assignedTasks = DB::table('user_tasks_timelog')
@@ -39,7 +36,7 @@ class SaDashboardController extends Controller
             'tasks.start_time',
             'tasks.end_time',
             'tasks.preffred_program',
-            'users.email' , 
+            'tasks.office_id' , 
             'tasks.to_be_done', 
             'tasks.assigned_office', 
             'tasks.note')
