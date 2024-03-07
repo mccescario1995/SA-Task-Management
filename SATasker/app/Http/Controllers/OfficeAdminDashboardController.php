@@ -102,7 +102,7 @@ class OfficeAdminDashboardController extends Controller
         ->join('tasks','user_tasks_timelog.task_id','=','tasks.id')
         ->join('sa_profiles','users.id_number','=','sa_profiles.user_id')
         ->select(
-            
+            'user_tasks_timelog.id AS timelogId',
             'user_tasks_timelog.feedback',
             'user_tasks_timelog.total_hours',
             'sa_profiles.user_id',
