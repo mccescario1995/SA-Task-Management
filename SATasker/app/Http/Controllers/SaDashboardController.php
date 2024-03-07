@@ -208,7 +208,7 @@ class SaDashboardController extends Controller
         ->where('user_id', $userId)
         ->whereDate('time_in', $timeout->toDateString())
         ->whereNull('time_out')
-        ->where('time_in', '<=', $timeout->subMinutes(30)) // Enforce 30-minute rule
+        //->where('time_in', '<=', $timeout->subMinutes(30)) // Enforce 30-minute rule
         ->first();
 
     if ($timeLog) {
