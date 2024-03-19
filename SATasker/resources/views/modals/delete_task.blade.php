@@ -4,7 +4,7 @@
                     <div class="modal-header border-0" >
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="{{ route('office.delete', $task->id) }}" method="POST">
+                    <form action="{{ route('office.cancel', $task->id) }}" method="POST">
                         @csrf
                         <div class="modal-body" style="margin: auto;text-align: center;">
                             <svg class="bi bi-x-circle-fill" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" style="width: 60px;height: 60px;color: var(--bs-red);">
@@ -12,7 +12,7 @@
                             </svg>
                             <h1 style="color: rgb(109,109,109);">Are you sure?</h1>
                             <p>
-                                Do you really want to cancel this Task.<br />
+                                Do you really want to <strong> DELETE </strong>this Task.<br />
                             </p>
                         </div>
                         <div class="modal-footer d-xl-flex justify-content-xl-center">

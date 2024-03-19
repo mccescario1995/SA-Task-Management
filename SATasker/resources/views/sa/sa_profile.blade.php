@@ -72,22 +72,22 @@
                     @endif
                 @endforeach
                 
-                / 90 Hour(s) Rendered</h6>
+                / {{$taskHistory->count() * 90}} Hour(s) Rendered </h6>
                 <div class="table-responsive" style="padding: 1em;">
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col" style="background: #d9d9d9;">Task no.</th>
                                 <th scope="col" style="background: #d9d9d9;">Task Date &amp; Time</th>
-                                <th scope="col" style="background: #d9d9d9;">Time-In</th>
-                                <th scope="col" style="background: #d9d9d9;">Time-Out</th>
+                                <th scope="col" style="background: #d9d9d9; ">Latest <br> Time-In</th>
+                                <th scope="col" style="background: #d9d9d9;">Latest <br> Time-Out</th>
                                 <th style="background: #d9d9d9;">Hours Rendered</th>
-                                <th style="background: #d9d9d9;">Program</th>
+                                <th style="background: #d9d9d9;">Program </th>
                                 <th scope="col" style="background: #d9d9d9;">Task</th>
                                 <th style="background: #d9d9d9;">Office</th>
                                 <th style="background: #d9d9d9;">Note</th>
                                 
-                                <th style="background: #d9d9d9;">Feedback</th>
+                                <th style="background: #d9d9d9;">Latest Feedback</th>
                             </tr>
                         </thead>
                         <tbody>
