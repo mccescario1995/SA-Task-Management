@@ -52,6 +52,7 @@
                                         @if($task->accumulated_hours < ($task->number_of_sa * 90)) 
                                         @php 
                                                 $taskFound = true; 
+                                                
                                             @endphp             
                                             <tr>
                                                 <td data-label="Attributes" scope="row">{{ $task->task_id }}</td>
