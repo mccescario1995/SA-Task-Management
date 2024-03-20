@@ -28,7 +28,6 @@ class SaDashboardController extends Controller
         ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
         ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('users.id', $user->id)
-        ->where('task_status',1)
         ->select(
             'user_tasks_timelog.id',
             'tasks.id AS task_id',

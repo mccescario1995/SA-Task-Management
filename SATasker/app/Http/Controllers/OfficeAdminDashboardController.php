@@ -57,17 +57,17 @@ class OfficeAdminDashboardController extends Controller
     {
         $processedTasks = [];
         foreach($tasks as $task) {
-        $startTime = strtotime($task->start_time); // Convert to Unix timestamp
-        $endTime = strtotime($task->end_time);
-        $task->startTimeFormatted = date("h:i A", strtotime($task->start_time));
-        $task->endTimeFormatted = date("h:i A", strtotime($task->end_time));
-        $task->totalHours = round(($endTime- $startTime) / 3600, 1); // Assumes these are timestamps
-        $task->saCount = DB::table('user_tasks_timelog')
-                               ->where('task_id', $task->id)
-                               ->where('task_status', 1)
-                               ->count();
-        $processedTasks[] = $task;
-    }
+            $startTime = strtotime($task->start_time); // Convert to Unix timestamp
+            $endTime = strtotime($task->end_time);
+            $task->startTimeFormatted = date("h:i A", strtotime($task->start_time));
+            $task->endTimeFormatted = date("h:i A", strtotime($task->end_time));
+            $task->totalHours = round(($endTime- $startTime) / 3600, 1); // Assumes these are timestamps
+            $task->saCount = DB::table('user_tasks_timelog')
+                                ->where('task_id', $task->id)
+                                ->where('task_status', 1)
+                                ->count();
+            $processedTasks[] = $task;
+        }
         return $processedTasks;
     }
 
@@ -432,7 +432,7 @@ class OfficeAdminDashboardController extends Controller
         $task->deleted_at = now();
         $task->save();
 
-        return redirect()->back()->with('success', 'Task cancelled successfully!');
+        return redirect()->back()->with('success', 'Task Deleted Successfully!');
 
     }
     public function delete(string $id)
