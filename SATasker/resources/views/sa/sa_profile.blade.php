@@ -138,7 +138,7 @@
                             @endif
                         </tbody>
                     </table>     
-                    <div class="pagination-secondary">
+                    <div>
                         {{ $taskHistories->onEachSide(5)->links() }}
                     </div>       
                 </div>

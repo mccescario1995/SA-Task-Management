@@ -94,13 +94,13 @@
                                                 </form>
                                             @endif
                                         </tr>
-                
-
-                                        
                                     @endforeach
                                 @endif
                         </tbody>
                     </table>
+                    <div>
+                        {{ $urgentTasks->links() }}
+                    </div> 
                 </div>
             </section>
         </div>
@@ -185,6 +185,9 @@
                             @endif
                         </tbody>
                     </table>
+                    <div>
+                        {{ $assignedTasks->links() }}
+                    </div> 
                 </div>
             </section>
         </div>
