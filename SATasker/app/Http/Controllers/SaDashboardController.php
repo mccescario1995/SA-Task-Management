@@ -98,7 +98,7 @@ class SaDashboardController extends Controller
         $userProfiles = SaProfile::where('user_id', $user->id_number)->get();
         $schedule = $this->getSchedule($user->id_number);
         $term = $this->getStudentSchoolYear($user->id_number);
-        $taskHistory = DB::table('user_tasks_timelog')
+        $taskHistories = DB::table('user_tasks_timelog')
         ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
         ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('users.id', $user->id)
@@ -113,7 +113,8 @@ class SaDashboardController extends Controller
             'user_tasks_timelog.feedback', 
             'user_tasks_timelog.total_hours'
             )
-        ->orderby('user_tasks_timelog.id', 'asc')->get();
+        ->orderby('user_tasks_timelog.id', 'asc')
+        ->paginate(3);
 
         $rendered = DB::table('user_tasks_timelog')
         ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
@@ -126,7 +127,7 @@ class SaDashboardController extends Controller
         
         // dd($rendered);
 
-        return view('sa.sa_profile', compact('user','userProfiles', 'taskHistory','rendered','schedule','term'));
+        return view('sa.sa_profile', compact('user','userProfiles', 'taskHistories','rendered','schedule','term'));
     }
 
     public function getStudentSchoolYear($student_id)

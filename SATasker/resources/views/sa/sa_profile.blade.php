@@ -72,7 +72,7 @@
                     @endif
                 @endforeach
                 
-                / {{$taskHistory->count() * 90}} Hour(s) Rendered </h6>
+                / {{$taskHistories->total() * 90}} Hour(s) Rendered </h6>
                 <div class="table-responsive" style="padding: 1em;">
                     <table class="table table-hover">
                         <thead>
@@ -91,10 +91,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(empty($taskHistory) || $taskHistory==null )
+                            @if(empty($taskHistories) || $taskHistories==null )
                                 <td data-label="Attributes" scope="row" colpan="6"><strong> No Pending Task/s </strong></td>
                             @else
-                                @foreach($taskHistory as $taskHistory)
+                                @foreach($taskHistories as $taskHistory)
                                 <tr>
                                     <td data-label="Task No." scope="row">{{$taskHistory->id}}</td>
                                     <td data-label="Date &amp; Time">{{$taskHistory->start_date}}</td>
@@ -137,7 +137,10 @@
                                 @endforeach
                             @endif
                         </tbody>
-                    </table>
+                    </table>     
+                    <div class="pagination-secondary">
+                        {{ $taskHistories->onEachSide(5)->links() }}
+                    </div>       
                 </div>
             </section>
         </div>
