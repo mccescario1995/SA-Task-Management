@@ -41,8 +41,6 @@ class SaDashboardController extends Controller
             'tasks.assigned_office', 
             'tasks.note')
         ->orderby('user_tasks_timelog.id', 'asc')->paginate(5); 
-        
-        
 
         return view('sa.sa_dashboard', compact('urgentTasks','assignedTasks','user'));
     }
@@ -252,6 +250,7 @@ class SaDashboardController extends Controller
             $totalHours = number_format($timeOutCarbon->diffInSeconds($timeInCarbon) / 3600, 2);
 
             $timeLog->time_out = $timeout;
+            $timeLog->task_status = 2;
             $timeLog->total_hours = $totalHours;
             // $timeLog->is_Approved_out = 'Pending';
             $timeLog->save();

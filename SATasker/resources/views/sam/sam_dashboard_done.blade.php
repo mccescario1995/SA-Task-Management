@@ -44,13 +44,12 @@
                                     @endphp 
                                 
                                     @foreach ($assignedTasks as $task)
-                                        @if($task->accumulated_hours >= ($task->number_of_sa * 90))
+                                        @if($task->task_status == 2)
                                             @php 
                                                 $taskFound = true; 
                                                 
                                             @endphp 
                                             <tr>
-                                            {{dd($task)}}
                                                 <td data-label="Attributes" scope="row">{{ $task->task_id }}</td>
                                                 <td data-label="Base Class">
                                                     <p style="margin: 0px;">{{ $task->start_date }}</p>
