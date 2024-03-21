@@ -68,7 +68,8 @@
 
                                                 <td>{{ $task->note }}</td>
                                                 <td>
-                                                    <p style="margin: 0px;">{{$task->accumulated_hours}} / {{ $task->number_of_sa * 90}}</p>  
+                                                    
+                                                    <p style="margin: 0px;">{{$task->accumulated_hours == null ? 0 : $task->accumulated_hours}} / {{ $task->number_of_sa * 90}}</p>  
                                                 </td>
 
                                                     <td>

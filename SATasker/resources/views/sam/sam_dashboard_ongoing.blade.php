@@ -49,8 +49,8 @@
                                             $taskFound = false; 
                                         @endphp 
                                     @foreach ($assignedTasks as $task)
-                                        @if($task->accumulated_hours < ($task->number_of_sa * 90)) 
-                                        @php 
+                                        @if($task->task_status == 1) 
+                                            @php 
                                                 $taskFound = true; 
                                                 
                                             @endphp             
@@ -72,7 +72,7 @@
 
                                                 <td>{{ $task->note }}</td>
                                                 <td>
-                                                    <p style="margin: 0px;">{{$task->accumulated_hours}} / {{ $task->number_of_sa * 90}}</p>  
+                                                    <p style="margin: 0px;">{{$task->accumulated_hours == null ? 0 : $task->accumulated_hours}} / {{ $task->number_of_sa * 90}}</p>  
                                                 </td>
 
 

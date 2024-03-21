@@ -25,6 +25,7 @@ class SaManagerDashboardController extends Controller
         ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->select(
             'user_tasks_timelog.task_id', 
+            'user_tasks_timelog.task_status',
             'tasks.start_date', 
             'tasks.start_time', 
             'tasks.end_time', 
@@ -36,7 +37,7 @@ class SaManagerDashboardController extends Controller
             'tasks.note',
             DB::raw("TIMESTAMPDIFF(HOUR, CONCAT(tasks.start_date, ' ', tasks.start_time), CONCAT(tasks.start_date, ' ', tasks.end_time)) as task_hours")
             ) 
-        ->groupBy('user_tasks_timelog.task_id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.number_of_sa', 'tasks.preffred_program', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note') // Group by all non-aggregated columns
+        ->groupBy('user_tasks_timelog.task_id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.number_of_sa', 'tasks.preffred_program', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note', 'task_status') // Group by all non-aggregated columns
         ->orderBy('user_tasks_timelog.task_id', 'asc')
         ->get();  
         
@@ -154,7 +155,7 @@ class SaManagerDashboardController extends Controller
             'user_tasks_timelog.total_hours' 
         )
         ->where('tasks.id','=', $taskId)
-        ->where('user_tasks_timelog.task_status',2)
+        ->where('user_tasks_timelog.task_status','=',2)
         ->get();
        
         return view('sam.sam_salist_task_done', compact('saLists','user','taskId'));
