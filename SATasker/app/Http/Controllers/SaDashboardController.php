@@ -28,8 +28,9 @@ class SaDashboardController extends Controller
         ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
         ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->where('users.id', $user->id)
+        ->where('task_status',1)
         ->select(
-            'user_tasks_timelog.id',
+            'user_tasks_timelog.id AS timelog_id',
             'tasks.id AS task_id',
             'tasks.start_date',
             'tasks.start_time',
@@ -39,8 +40,9 @@ class SaDashboardController extends Controller
             'tasks.to_be_done', 
             'tasks.assigned_office', 
             'tasks.note')
-        ->orderby('user_tasks_timelog.id', 'asc')->paginate(5); 
-
+        ->orderby('user_tasks_timelog.created_at', 'asc')
+        ->paginate(5); 
+    
         return view('sa.sa_dashboard', compact('urgentTasks','assignedTasks','user'));
     }
 
