@@ -1,3 +1,3 @@
 Todo:
 - Implementation of Guidance Role
-- UI Upgrades and Implementation
+- Some UI Upgrades and Implementation
