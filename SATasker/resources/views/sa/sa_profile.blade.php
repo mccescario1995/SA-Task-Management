@@ -5,142 +5,132 @@
 @section('content')
     <!-- Your content here -->
     @include('include.nav_bar')
-    <div>
-        <div style="padding: 3em;border-bottom-style: dashed;">
-            <div>
-                <h2>User Profile</h2>
-            </div>
-            @foreach($userProfiles as $userProfile)
-            <div class="d-lg-flex align-items-lg-center mt-3">
-                <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Name :&nbsp;</p>
-                <p>{{$userProfile->first_name}} {{$userProfile->middle_initial}}. {{$userProfile->last_name}}</p>
-            </div>
-            <div class="d-lg-flex align-items-lg-center">
-                <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Student ID :&nbsp;</p>
-                <p>{{$user->id_number}}</p>
-            </div>
-            <div class="d-lg-flex align-items-lg-center">
-                <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Program :&nbsp;</p>
-                <p>{{$userProfile->course_program}}</p>
-            </div>
-            <div class="d-lg-flex align-items-lg-center">
-                <p class="d-lg-flex" style="font-weight: bold;">&nbsp; Contact Details :&nbsp;</p>
-                <p>{{$user->email}} | +{{$userProfile->contact_number}}</p>
-            </div>
+    <div class="main-background p-4 ">
+        <div class="profile-divider" style="padding: 3em;">
+            @foreach ($userProfiles as $userProfile)
+                <div class="d-lg-flex align-items-lg-center mt-3">
+                    <p class="d-lg-flex  h4" style="font-weight: bold;">&nbsp; Name :&nbsp;</p>
+                    <p class="mb-0">{{ $userProfile->first_name }} {{ $userProfile->middle_initial }}. {{ $userProfile->last_name }}</p>
+                </div>
+                <div class="d-lg-flex align-items-lg-center">
+                    <p class="d-lg-flex  h4" style="font-weight: bold;">&nbsp; Student ID :&nbsp;</p>
+                    <p class="mb-0">{{ $user->id_number }}</p>
+                </div>
+                <div class="d-lg-flex  align-items-lg-center">
+                    <p class="d-lg-flex h4" style="font-weight: bold;">&nbsp; Program :&nbsp;</p>
+                    <p class="mb-0">{{ $userProfile->course_program }}</p>
+                </div>
+                <div class="d-lg-flex  align-items-lg-center">
+                    <p class="d-lg-flex h4" style="font-weight: bold;">&nbsp; Contact Details :&nbsp;</p>
+                    <p class="mb-0">{{ $user->email }} | +{{ $userProfile->contact_number }}</p>
+                </div>
             @endforeach
         </div>
-        <div style="padding: 2em;">
+        <div style="padding: 2em; ">
             <section>
-                <h3 style="text-align: center;">Class Schedule</h3>
-                <h6 style="text-align: center;margin-bottom: 0px;">SY {{$term}} Term 1</h6>
+                <h2 style="text-align: center;">Class Schedule</h2>
+                <h6 style="text-align: center;margin-bottom: 0px;">SY {{ $term }} Term 1</h6>
                 <div class="table-responsive" style="padding: 1em;">
-                    <table class="table table-hover">
-                        <thead>
+                    <table class="table table-hover table-border rounded">
+                        <thead class="background-accent1">
                             <tr>
-                                <th scope="col" style="background: #d9d9d9;">Subject</th>
-                                <th scope="col" style="background: #d9d9d9;">Section</th>
-                                <th scope="col" style="background: #d9d9d9;">Day</th>
-                                <th style="background: #d9d9d9;">Time</th>
-                                <th style="background: #d9d9d9;">Instructor</th>
+                                <th class="table-border2 rounded">Subject</th>
+                                <th class="table-border2 rounded">Section</th>
+                                <th class="table-border2 rounded">Day</th>
+                                <th class="table-border2 rounded">Time</th>
+                                <th class="table-border2 rounded">Instructor</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach($schedule as $class)
-                                <tr>
-                                    <td data-label="Subject Code">{{ $class->subject_code }}</td>
-                                    <td data-label="Section">{{ $class->section }}</td>
-                                    <td data-label="Day">{{ $class->day }}</td> 
-                                    <td data-label="Time">{{ $class->time_constraints }}</td>
-                                    <td data-label="Instructor"> TBA </td> <!-- {{ $class->instructor->name ?? 'TBA'}} -->
+                        <tbody class="background-accent3">
+                            @forelse($schedule as $class)
+                                <tr class="{{ $loop->odd ? 'bg-light' : 'bg-white' }} text-center">
+                                    <td class="table-border2 rounded" data-label="Subject Code" aria-label="Subject Code">
+                                        {{ $class->subject_code }}</td>
+                                    <td class="table-border2 rounded" data-label="Section" aria-label="Section">
+                                        {{ $class->section }}</td>
+                                    <td class="table-border2 rounded" data-label="Day" aria-label="Day">{{ $class->day }}</td>
+                                    <td class="table-border2 rounded" data-label="Time" aria-label="Time">
+                                        {{ $class->time_constraints }}</td>
+                                    <td class="table-border2 rounded" data-label="Instructor" aria-label="Instructor">
+                                        {{ $class->instructor->name ?? 'TBA' }}
+                                    </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr class="text-center">
+                                    <td class="table-border2 rounded" colspan="5">No Schedule Yet</td>
+                                </tr>
+                            @endforelse
                         </tbody>
+
                     </table>
                 </div>
             </section>
         </div>
-        <div style="padding: 2em;">
+        <div style="padding: 2em; padding-top:0;">
             <section>
-                <h3 style="text-align: center;">Task History</h3>
+                <h2 style="text-align: center;">Task History</h2>
                 <h6 style="text-align: center;margin-bottom: 0px;">
-                
-                @foreach($rendered as $render)
-                    @if(empty($render->total_hours) && $render->total_hours === null)
-                        0
-                    @else
-                        {{$render->total_hours}}
-                    @endif
-                @endforeach
-                
-                / {{$taskHistories->total() * 90}} Hour(s) Rendered </h6>
+
+                    @foreach ($rendered as $render)
+                        @if (empty($render->total_hours) && $render->total_hours === null)
+                            0
+                        @else
+                            {{ $render->total_hours }}
+                        @endif
+                    @endforeach
+
+                    / {{ $taskHistories->total() * 90 }} Hour(s) Rendered
+                </h6>
                 <div class="table-responsive" style="padding: 1em;">
-                    <table class="table table-hover">
+                    <table class="table table-hover table-border rounded">
                         <thead>
-                            <tr>
-                                <th scope="col" style="background: #d9d9d9;">Task no.</th>
-                                <th scope="col" style="background: #d9d9d9;">Task Date &amp; Time</th>
-                                <th scope="col" style="background: #d9d9d9; ">Latest <br> Time-In</th>
-                                <th scope="col" style="background: #d9d9d9;">Latest <br> Time-Out</th>
-                                <th style="background: #d9d9d9;">Hours Rendered</th>
-                                <th style="background: #d9d9d9;">Program </th>
-                                <th scope="col" style="background: #d9d9d9;">Task</th>
-                                <th style="background: #d9d9d9;">Office</th>
-                                <th style="background: #d9d9d9;">Note</th>
-                                
-                                <th style="background: #d9d9d9;">Latest Feedback</th>
+                            <tr class="text-center align-items-center background-accent1 ">
+                                <th class="table-border2 rounded">Task no.</th>
+                                <th class="table-border2 rounded">Task Date &amp; Time</th>
+                                <th class="table-border2 rounded">Latest Time-In</th>
+                                <th class="table-border2 rounded">Latest Time-Out</th>
+                                <th class="table-border2 rounded">Hours Rendered</th>
+                                <th class="table-border2 rounded">Program </th>
+                                <th class="table-border2 rounded">Task</th>
+                                <th class="table-border2 rounded">Office</th>
+                                <th class="table-border2 rounded">Note</th>
+                                <th class="table-border2 rounded">Latest Feedback</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @if(empty($taskHistories) || $taskHistories==null )
-                                <td data-label="Attributes" scope="row" colpan="6"><strong> No Pending Task/s </strong></td>
-                            @else
-                                @foreach($taskHistories as $taskHistory)
-                                <tr>
-                                    <td data-label="Task No." scope="row">{{$taskHistory->id}}</td>
-                                    <td data-label="Date &amp; Time">{{$taskHistory->start_date}}</td>
-                                    <td data-label="{{$taskHistory->time_in}}">
-                                        @if($taskHistory->time_in == null)
-                                            No Time-In Yet
-                                        @else
-                                            {{$taskHistory->time_in}}
-                                        @endif
+                        <tbody class="background-accent3">
+                            @forelse($taskHistories as $taskHistory)
+                                <tr class="{{ $loop->odd ? 'bg-light' : 'bg-white' }} text-center">
+                                    <td class="table-border2 rounded" data-label="Task No." scope="row">{{ $taskHistory->id }}</td>
+                                    <td class="table-border2 rounded" data-label="Date &amp; Time">{{ $taskHistory->start_date }}</td>
+                                    <td class="table-border2 rounded" data-label="Time In">
+                                        {{ $taskHistory->time_in ?? 'No Time-In Yet' }}
                                     </td>
-                                    <td data-label="{{$taskHistory->time_out}}">
-                                        @if($taskHistory->time_out == null)
-                                            No Time-Out Yet
-                                        @else
-                                            {{$taskHistory->time_out}}
-                                        @endif
+                                    <td class="table-border2 rounded" data-label="Time Out">
+                                        {{ $taskHistory->time_out ?? 'No Time-Out Yet' }}
                                     </td>
-                                    
-                                    <td data-label="{{$taskHistory->total_hours}}">
-                                        @if($taskHistory->total_hours == null)
-                                            No Rendered Hrs
-                                        @else
-                                            {{$taskHistory->total_hours}}
-                                        @endif
+                                    <td class="table-border2 rounded" data-label="Total Hours">
+                                        {{ $taskHistory->total_hours ?? 'No Rendered Hrs' }}
                                     </td>
-                                    <td data-label="Program">{{$taskHistory->preffred_program}}</td>
-                                    <td data-label="Task">{{$taskHistory->to_be_done}}</td>
-                                    <td data-label="Office">{{$taskHistory->assigned_office}}</td>
-                                    <td data-label="Note">{{$taskHistory->note}}</td>
-                                    
-                                    <td data-label="Feedback">
-                                    
-                                        @if($taskHistory->feedback == null)
-                                            No Feedback
-                                        @else
-                                            {{$taskHistory->feedback}}
-                                        @endif
+                                    <td class="table-border2 rounded" data-label="Program">{{ $taskHistory->preffred_program }}</td>
+                                    <td class="table-border2 rounded" data-label="Task">{{ $taskHistory->to_be_done }}</td>
+                                    <td class="table-border2 rounded" data-label="Office">{{ $taskHistory->assigned_office }}</td>
+                                    <td class="table-border2 rounded" data-label="Note">{{ $taskHistory->note }}</td>
+                                    <td class="table-border2 rounded" data-label="Feedback">
+                                        {{ $taskHistory->feedback ?? 'No Feedback' }}
                                     </td>
                                 </tr>
-                                @endforeach
-                            @endif
+                            @empty
+                                <tr class="text-center">
+                                    <td class="table-border2 rounded" colspan="10"><strong>No Pending Task/s</strong></td>
+                                </tr>
+                            @endforelse
                         </tbody>
-                    </table>     
+
+                        </tbody>
+                    </table>
                     <div>
                         {{ $taskHistories->onEachSide(5)->links() }}
-                    </div>       
+                    </div>
                 </div>
             </section>
         </div>
@@ -149,4 +139,3 @@
 
     @include('nav.offcanvas_menu_sa')
 @endsection
-

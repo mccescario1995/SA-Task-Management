@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('task_id');
             $table->foreignId('task_status');
-            $table->timestamps('time_in');
-            $table->timestamps('time_out');
-            $table->integer('11');
+            $table->timestamp('time_in')->nullable();
+            $table->timestamp('time_out')->nullable();
+            $table->integer('total_hours');
             $table->string('is_Approve_in');
             $table->string('is_Approve_out');
             $table->string('feedback');
@@ -34,6 +34,6 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::dropIfExists('taskAssignment');
+        Schema::dropIfExists('user_tasks_timelog');
     }
 };

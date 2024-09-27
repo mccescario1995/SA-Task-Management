@@ -5,11 +5,11 @@
 @section('content')
     <!-- Your content here -->
     @include('include.nav_bar')
-    <div>
+    <div class="main-background">
         @php
         use App\Models\SaTaskTimeLog;
         @endphp
-        <div style="padding: 3em;">
+        <div  style="padding: 3em;">
             <section>
                 <h1>Voluntary Tasks</h1>
                     @if (session('accept_task_success'))
@@ -32,7 +32,7 @@
                         </div>
                     @endif
 
-                    @if (session('error'))   
+                    @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert" aria-label="Close">
                             {{ session('error') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -53,7 +53,7 @@
                         <tbody>
                                 @if($urgentTasks->count() == 0)
                                     <tr>
-                                        <td data-label="No Task Available" scope="row" colspan="5"><strong> No Task Available </strong></td> 
+                                        <td data-label="No Task Available" scope="row" colspan="5"><strong> No Task Available </strong></td>
                                     </tr>
                                 @else
                                     @foreach ($urgentTasks as $task)
@@ -76,7 +76,7 @@
                                             <td>{{ $task->note }}</td>
                                             @if($saCount == $task->number_of_sa)
                                                 <td>
-                                                    <input type="hidden" name="task_id" value="{{ $task->id }}">    
+                                                    <input type="hidden" name="task_id" value="{{ $task->id }}">
                                                     <button type="submit" class="btn btn-secondary">Full</button>
                                                 </td>
                                             @elseif ($isAccepted)
@@ -100,7 +100,7 @@
                     </table>
                     <div>
                         {{ $urgentTasks->links() }}
-                    </div> 
+                    </div>
                 </div>
             </section>
         </div>
@@ -133,7 +133,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        
+
                                     </tr>
                             @else
                                 @foreach ($assignedTasks as $assignedtask)
@@ -187,7 +187,7 @@
                     </table>
                     <div>
                         {{ $assignedTasks->links() }}
-                    </div> 
+                    </div>
                 </div>
             </section>
         </div>

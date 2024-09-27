@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\SaDashboardController;
 use App\Http\Controllers\SaManagerDashboardController;
 use App\Http\Controllers\OfficeAdminDashboardController;
 //use App\Http\Controllers\TaskController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,14 +26,15 @@ Route::get('/', function () {
 */
 
 //Login Route
-Route::get('/', [LoginController::class, 'index'])->name('login');
-Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+Route::get('/', [Controller::class, 'index'])->name('landing');
+// Route::get('/login', [LoginController::class, 'login'])->name('login');
+// Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 
 //Logout Route
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth']], function () {
-    
+
 
 
 //Student Assistant Routes
@@ -72,3 +74,10 @@ Route::get('/office-report/', [OfficeAdminDashboardController::class, 'officeRep
 //Route::resource('tasks', TaskController::class);
 
 });
+
+Auth::routes(['verify' => true]);
+// routes/web.php
+Route::get('/{id}/login', [LoginController::class, 'showLoginForm'])->name('login');
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

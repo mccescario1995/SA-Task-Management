@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Session;
 
 
@@ -24,23 +25,23 @@ class SaManagerDashboardController extends Controller
         ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
         ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
         ->select(
-            'user_tasks_timelog.task_id', 
+            'user_tasks_timelog.task_id',
             'user_tasks_timelog.task_status',
-            'tasks.start_date', 
-            'tasks.start_time', 
-            'tasks.end_time', 
-            'tasks.preffred_program', 
-            'tasks.to_be_done', 
-            'tasks.assigned_office', 
+            'tasks.start_date',
+            'tasks.start_time',
+            'tasks.end_time',
+            'tasks.preffred_program',
+            'tasks.to_be_done',
+            'tasks.assigned_office',
             'tasks.number_of_sa',
-            DB::raw('SUM(user_tasks_timelog.total_hours) as accumulated_hours'), 
+            DB::raw('SUM(user_tasks_timelog.total_hours) as accumulated_hours'),
             'tasks.note',
             DB::raw("TIMESTAMPDIFF(HOUR, CONCAT(tasks.start_date, ' ', tasks.start_time), CONCAT(tasks.start_date, ' ', tasks.end_time)) as task_hours")
-            ) 
+            )
         ->groupBy('user_tasks_timelog.task_id', 'tasks.start_date', 'tasks.start_time', 'tasks.end_time', 'tasks.number_of_sa', 'tasks.preffred_program', 'tasks.to_be_done', 'tasks.assigned_office', 'tasks.note', 'task_status') // Group by all non-aggregated columns
         ->orderBy('user_tasks_timelog.task_id', 'asc')
-        ->get();  
-        
+        ->get();
+
         return view('sam.sam_dashboard_ongoing', compact('assignedTasks','user'));
     }
 
@@ -59,7 +60,7 @@ class SaManagerDashboardController extends Controller
             'tasks.to_be_done',
             'tasks.assigned_office',
             'tasks.number_of_sa',
-            DB::raw('SUM(user_tasks_timelog.total_hours) as accumulated_hours'), 
+            DB::raw('SUM(user_tasks_timelog.total_hours) as accumulated_hours'),
             'tasks.note',
             DB::raw("TIMESTAMPDIFF(HOUR, CONCAT(tasks.start_date, ' ', tasks.start_time), CONCAT(tasks.start_date, ' ', tasks.end_time)) as task_hours")
             )
@@ -71,8 +72,8 @@ class SaManagerDashboardController extends Controller
     }
 
     public function viewSaList(Request $request)
-    {   
-        $user_id = session('user_id');
+    {
+        $user_id = Auth::id();
         $user = User::find($user_id);
         $taskId = $request->route('taskId');
 
@@ -85,17 +86,17 @@ class SaManagerDashboardController extends Controller
             'sa_profiles.last_name',
             'sa_profiles.course_program',
             'user_tasks_timelog.id AS timelogId',
-            DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'), 
+            DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'),
             DB::raw('DATE_FORMAT(user_tasks_timelog.time_out, "%H:%i") AS timeout'),
             'user_tasks_timelog.is_Approved_in',
             'user_tasks_timelog.is_Approved_out',
             'user_tasks_timelog.total_hours' ,
-            'user_tasks_timelog.feedback' 
+            'user_tasks_timelog.feedback'
         )
         ->where('tasks.id','=', $taskId)
         ->where('user_tasks_timelog.task_status',1)
         ->get();
-       
+
         return view('sam.sam_salist_task_ongoing', compact('saLists','user','taskId'));
     }
 
@@ -115,7 +116,7 @@ class SaManagerDashboardController extends Controller
 
         // Redirect appropriately (e.g., back to the same page)
         return redirect()->back()->with('success', ' Student Time-In Successfully Approved!');
-    } 
+    }
 
     public function acceptTimeOut($id)
     {
@@ -133,11 +134,11 @@ class SaManagerDashboardController extends Controller
 
         // Redirect appropriately (e.g., back to the same page)
         return redirect()->back()->with('success', ' Student Time-Out Approved Successfully!');
-    } 
+    }
 
     public function viewSaListDone(Request $request)
-    {   
-        $user_id = session('user_id');
+    {
+        $user_id = Auth::id();
         $user = User::find($user_id);
         $taskId = $request->route('taskId');
 
@@ -150,14 +151,14 @@ class SaManagerDashboardController extends Controller
             'sa_profiles.last_name',
             'sa_profiles.course_program',
             'user_tasks_timelog.id AS timelogId',
-            DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'), 
+            DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'),
             DB::raw('DATE_FORMAT(user_tasks_timelog.time_out, "%H:%i") AS timeout'),
-            'user_tasks_timelog.total_hours' 
+            'user_tasks_timelog.total_hours'
         )
         ->where('tasks.id','=', $taskId)
         ->where('user_tasks_timelog.task_status','=',2)
         ->get();
-       
+
         return view('sam.sam_salist_task_done', compact('saLists','user','taskId'));
     }
 
@@ -182,7 +183,7 @@ class SaManagerDashboardController extends Controller
         $newTotalHours = $existingTotalHours + $request->add_hours;
 
         // Update the timelog or create a new one if it doesn't exist
-        
+
         $timeLog->total_hours = $newTotalHours;
         $timeLog->save();
 
@@ -192,7 +193,7 @@ class SaManagerDashboardController extends Controller
 
     public function getuserID()
     {
-        $user_id = session('user_id');
+        $user_id = Auth::id();
         $user = User::find($user_id);
         return $user;
     }

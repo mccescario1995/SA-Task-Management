@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\SaProfile;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Term;
 use App\Models\StudentSchedule;
-use Illuminate\Support\Facades\DB;  
+use Illuminate\Support\Facades\DB;
 use App\Models\UserTask;
 use App\Models\SaTaskTimeLog;
 use App\Models\User;
@@ -36,31 +37,31 @@ class SaDashboardController extends Controller
             'tasks.start_time',
             'tasks.end_time',
             'tasks.preffred_program',
-            'tasks.office_id' , 
-            'tasks.to_be_done', 
-            'tasks.assigned_office', 
+            'tasks.office_id' ,
+            'tasks.to_be_done',
+            'tasks.assigned_office',
             'tasks.note')
         ->orderby('user_tasks_timelog.created_at', 'asc')
-        ->paginate(5); 
-    
+        ->paginate(5);
+
         return view('sa.sa_dashboard', compact('urgentTasks','assignedTasks','user'));
     }
 
-    
+
 
     public function getuserID()
     {
         //
-        $user_id = session('user_id');
+        $user_id = Auth::id();
         $user = User::find($user_id);
         return $user;
     }
 
     public  function acceptTask(Task $task){
         $user = $this->getuserID();
-        
+
         $hasConflict = SaTaskTimeLog::where('user_id', $user->id)
-            ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id') 
+            ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
             ->where(function ($query) use ($task) {
                 $query->where('tasks.start_time', '<', $task->end_time)
                     ->where('tasks.end_time', '>', $task->start_time);
@@ -88,7 +89,7 @@ class SaDashboardController extends Controller
         ->where('task_id',$task->id)
         ->where('task_status_id',1)
         ->count();
-        
+
         return $saCount;
     }
 
@@ -104,12 +105,12 @@ class SaDashboardController extends Controller
         ->select(
             'tasks.id','tasks.start_date',
             'tasks.preffred_program',
-            'tasks.to_be_done', 
-            'tasks.assigned_office', 
-            'tasks.note', 
-            'user_tasks_timelog.time_in', 
-            'user_tasks_timelog.time_out', 
-            'user_tasks_timelog.feedback', 
+            'tasks.to_be_done',
+            'tasks.assigned_office',
+            'tasks.note',
+            'user_tasks_timelog.time_in',
+            'user_tasks_timelog.time_out',
+            'user_tasks_timelog.feedback',
             'user_tasks_timelog.total_hours'
             )
         ->orderby('user_tasks_timelog.id', 'asc')
@@ -123,7 +124,7 @@ class SaDashboardController extends Controller
         ->select(
             DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'),)
         ->get();
-        
+
         // dd($rendered);
 
         return view('sa.sa_profile', compact('user','userProfiles', 'taskHistories','rendered','schedule','term'));
@@ -144,36 +145,36 @@ class SaDashboardController extends Controller
     // 2. Get school year from terms table, considering is_ongoing flag
     $schoolYear = Term::where('id', $latestSchedule->term_id)
                       ->where('is_ongoing', true)
-                      ->value('school_year'); 
+                      ->value('school_year');
 
     return $schoolYear;
 }
 
-    public function getSchedule($id) 
-    {   
+    public function getSchedule($id)
+    {
         $schedule = StudentSchedule::where('student_id', $id)
             ->join('subject_offerings', 'subject_offerings.id', '=', 'student_schedules.subject_offering_id')
             ->join('subject_offering_details', 'subject_offering_details.subject_offering_id', '=', 'subject_offerings.id')
             ->select(
-                'subject_offerings.subject_code', 
-                'subject_offerings.section', 
-                'subject_offerings.day_id', 
-                'subject_offering_details.time_constraints', 
+                'subject_offerings.subject_code',
+                'subject_offerings.section',
+                'subject_offerings.day_id',
+                'subject_offering_details.time_constraints',
                 )
             ->get();
 
         $schedule = $this->convertDayIdsToNames($schedule);
-            
-        return $schedule; 
+
+        return $schedule;
     }
 
-    private function convertDayIdsToNames($schedule) 
+    private function convertDayIdsToNames($schedule)
     {
         $dayNames = [
-            1 => 'Mon', 
-            2 => 'Tue', 
-            3 => 'Wed', 
-            4 => 'Thu', 
+            1 => 'Mon',
+            2 => 'Tue',
+            3 => 'Wed',
+            4 => 'Thu',
             5 => 'Fri'];
 
         foreach ($schedule as $entry) {
@@ -184,7 +185,7 @@ class SaDashboardController extends Controller
     }
 
     public function addTimeIn(Request $request)
-    {   
+    {
         $taskId = $request->input('task_id');
         $userId = $request->input('user_id');
         $timein = now();
@@ -200,14 +201,14 @@ class SaDashboardController extends Controller
                             ->first();
 
         if ($timeLog) {
-            $task = Task::where('id', $taskId)->first(); 
+            $task = Task::where('id', $taskId)->first();
 
             if ($task && $timein >= $task->start_date && $timein > $task->start_time) {
                 $timeLog->time_in = $timein;
                 $timeLog->save();
 
                 return redirect()->back()->with('success', 'Time-in logged successfully.');
-            }             
+            }
             else {
                 return redirect()->back()->with('error', 'Time-in is not allowed before the task start date or start time.');
             }
@@ -228,7 +229,7 @@ class SaDashboardController extends Controller
 
     public function addTimeOut(Request $request)
 {
-    
+
     $taskId = $request->input('task_id');
     $userId = $request->input('user_id');
     $timeout = now();
@@ -239,7 +240,7 @@ class SaDashboardController extends Controller
         ->whereNull('time_out')
         //->where('time_in', '<=', $timeout->subMinutes(30)) // Enforce 30-minute rule
         ->first();
-    
+
     if ($timeLog) {
         $task = Task::where('id', $taskId)->first();
 
@@ -262,7 +263,7 @@ class SaDashboardController extends Controller
             return redirect()->back()->with('error', 'Time-out is not allowed before the task start date or start time.');
         }
 
-        
+
     } else {
         return redirect()->back()->with('error', 'No matching time-in record found or time-in is less than 30 minutes ago.');
     }
