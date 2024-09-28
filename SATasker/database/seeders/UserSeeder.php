@@ -50,6 +50,14 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
             ],
             [
+                'id_number' => 117,
+                'username' => 'guidance',
+                'faculty' => 'Guidance Office',
+                // 'account_type' => 'guidance_office',
+                'email' => 'guidance@email.com',
+                'password' => bcrypt('password'),
+            ],
+            [
                 'id_number' => 114,
                 'username' => 'infotech',
                 'faculty' => 'Information Technology',
@@ -78,7 +86,6 @@ class UserSeeder extends Seeder
         //Assign Student Assistant Role
 
         $SARole = Role::where('name', 'student_assistant')->first();
-
         $SA = User::where('email', 'jomercado99@email.com')->first();
         $SA->assignRole($SARole);
         $SA = User::where('email', 'alexreyes@email.com')->first();
@@ -100,5 +107,9 @@ class UserSeeder extends Seeder
         $oa = User::where('email', 'itro@email.com')->first();
         $oa->assignRole($oaRole);
 
+        // Assign Guidance Admin Role
+        $guidanceRole = Role::where('name', 'guidance_office')->first();
+        $guidance = User::where('email', 'guidance@email.com')->first();
+        $guidance->assignRole($guidanceRole);
     }
 }

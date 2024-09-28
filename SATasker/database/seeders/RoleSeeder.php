@@ -28,7 +28,7 @@ class RoleSeeder extends Seeder
         //     Role::create(['name' => 'member', 'guard_name' => $guardname]);
         // }
 
-        $roles = ['student_assistant', 'sa_manager', 'office_admin'];
+        $roles = ['student_assistant', 'sa_manager', 'office_admin', 'guidance_office'];
         $guardname = 'web';
 
         foreach ($roles as $role) {

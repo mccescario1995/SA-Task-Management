@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SaProfileSeeder::class,
             CoursesSeeder::class,
-
         ]);
     }
 }
+
+// php artisan migrate:refresh --seed --seeder=DatabaseSeeder
