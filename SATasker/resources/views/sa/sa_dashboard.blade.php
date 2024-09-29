@@ -42,12 +42,12 @@
                     <table class="table table-hover table-border rounded">
                         <thead class="background-accent1">
                             <tr>
-                                <th class="table-border2 rounded">TASK NO.</th>
-                                <th class="table-border2 rounded">DATE &amp; TIME</th>
-                                <th class="table-border2 rounded">PROGRAM</th>
-                                <th class="table-border2 rounded">OFFICE</th>
-                                <th class="table-border2 rounded">NOTE</th>
-                                <th class="table-border2 rounded"></th>
+                                <th class="table-border2 rounded text-center text-capitalize">Task No.</th>
+                                <th class="table-border2 rounded text-center text-capitalize">Date &amp; Time</th>
+                                <th class="table-border2 rounded text-center text-capitalize">Program</th>
+                                <th class="table-border2 rounded text-center text-capitalize">Office</th>
+                                <th class="table-border2 rounded text-center text-capitalize">Note</th>
+                                <th class="table-border2 rounded text-center text-capitalize"></th>
                             </tr>
                         </thead>
                         <tbody class="background-accent3">
@@ -70,18 +70,22 @@
                                         //dd($isAccepted);
                                     @endphp
                                     <tr class="background-accent3">
-                                        <td class="table-border2 rounded">{{ $task->id }}</td>
-                                        <td class="table-border2 rounded">{{ $task->start_date }}</td>
-                                        <td class="table-border2 rounded">{{ $task->preffred_program }}</td>
-                                        <td class="table-border2 rounded">{{ $task->assigned_office }}</td>
-                                        <td class="table-border2 rounded">{{ $task->note }}</td>
+                                        <td class="table-border2 rounded text-center">{{ $task->id }}</td>
+                                        <td class="table-border2 rounded text-center">
+                                            <p class="m-0">{{ $task->start_date }}</p>
+                                            <p class="m-0" style="font-size: 12px;">{{ $task->start_time }} -
+                                                {{ $task->end_time }}</p>
+                                        </td>
+                                        <td class="table-border2 rounded text-center">{{ $task->preffred_program }}</td>
+                                        <td class="table-border2 rounded text-center">{{ $task->assigned_office }}</td>
+                                        <td class="table-border2 rounded text-center">{{ $task->note }}</td>
                                         @if ($saCount == $task->number_of_sa)
-                                            <td class="table-border2 rounded">
+                                            <td class="table-border2 rounded text-center">
                                                 <input type="hidden" name="task_id" value="{{ $task->id }}">
                                                 <button type="submit" class="btn btn-secondary">Full</button>
                                             </td>
                                         @elseif ($isAccepted)
-                                            <td class="table-border2 rounded">
+                                            <td class="table-border2 rounded text-center">
                                                 <input type="hidden" name="task_id" value="{{ $task->id }}">
                                                 <button type="submit" class="btn btn-primary" disabled>Accepted</button>
                                             </td>
@@ -90,7 +94,7 @@
                                                 @csrf
                                                 <td class="table-border2 rounded">
                                                     <input type="hidden" name="task_id" value="{{ $task->id }}">
-                                                    <button type="submit" class="btn btn-primary">Accept</button>
+                                                    <button type="submit" class="btn background-accent2 text-accent1 w-100">Accept</button>
                                                 </td>
                                             </form>
                                         @endif
@@ -131,22 +135,22 @@
                             @else
                                 @foreach ($assignedTasks as $assignedtask)
                                     <tr>
-                                        <td class="table-border2 rounded">{{ $assignedtask->task_id }}</td>
-                                        <td class="table-border2 rounded">
+                                        <td class="table-border2 rounded text-center">{{ $assignedtask->task_id }}</td>
+                                        <td class="table-border2 rounded text-center">
                                             <p style="margin: 0px;">{{ $assignedtask->start_date }}</p>
                                             <p style="font-size: 12px;">{{ $assignedtask->start_time }} -
                                                 {{ $assignedtask->end_time }}</p>
                                         </td>
-                                        <td class="table-border2 rounded">{{ $assignedtask->preffred_program }}</td>
-                                        <td class="table-border2 rounded">{{ $assignedtask->to_be_done }}</td>
-                                        <td class="table-border2 rounded">
+                                        <td class="table-border2 rounded text-center">{{ $assignedtask->preffred_program }}</td>
+                                        <td class="table-border2 rounded text-center">{{ $assignedtask->to_be_done }}</td>
+                                        <td class="table-border2 rounded text-center">
                                             <p style="margin: 0px;">{{ $assignedtask->assigned_office }}</p>
                                             <p style="font-size: 12px;">
                                                 {{ DB::table('users')->where('users.id', '=', $assignedtask->office_id)->select('users.email')->first()->email }}
                                             </p>
                                         </td>
-                                        <td class="table-border2 rounded">{{ $assignedtask->note }}</td>
-                                        <td class="table-border2 rounded">
+                                        <td class="table-border2 rounded text-center">{{ $assignedtask->note }}</td>
+                                        <td class="table-border2 rounded text-center">
                                             <form action="{{ route('sa.timein') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="task_id" value="{{ $assignedtask->task_id }}">
@@ -159,7 +163,7 @@
                                                 @endif
                                             </form>
                                         </td>
-                                        <td class="table-border2 rounded">
+                                        <td class="table-border2 rounded text-center">
                                             <form action="{{ route('sa.timeout') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="task_id"

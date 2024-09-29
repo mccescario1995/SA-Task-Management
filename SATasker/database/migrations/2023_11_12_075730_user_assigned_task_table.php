@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('task_status');
             $table->timestamp('time_in')->nullable();
             $table->timestamp('time_out')->nullable();
-            $table->integer('total_hours');
+            $table->integer('total_hours')->nullable();
             $table->string('is_Approve_in');
             $table->string('is_Approve_out');
             $table->string('feedback');

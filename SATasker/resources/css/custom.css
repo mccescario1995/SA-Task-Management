@@ -270,3 +270,33 @@ svg.landing-img {
     border: 2px solid var(--accent2);
 }
 
+/* Pagination Styles */
+/* Style the pagination links */
+.pagination .page-link {
+    color: var(--accent2); /* Default link color */
+    background-color: var(--accent1); /* Background color */
+    border-color: var(--accent2); /* Border color */
+}
+
+/* Style for the active page link */
+.pagination .page-item.active .page-link {
+    z-index: 1;
+    color: var(--accent3); /* Text color of the active link */
+    background-color: var(--accent2); /* Background color for active page */
+    border-color: var(--accent2); /* Border color for active page */
+}
+
+/* Style for hover and focus states */
+.pagination .page-link:hover {
+    color: var(--accent1); /* Hover link color */
+    background-color: var(--accent2); /* Hover background */
+    border-color: var(--accent2);
+}
+
+/* Style for disabled page link */
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: var(--accent3);
+    border-color: var(--accent2);
+}
