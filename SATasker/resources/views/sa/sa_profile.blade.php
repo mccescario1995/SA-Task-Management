@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - Student Assistant')
+@section('title', 'Profile - Student Assistant')
 
 @section('content')
     <!-- Your content here -->
     @include('include.nav_bar')
-    <div class="main-background p-4 ">
-        <div class="profile-divider" style="padding: 3em;">
+    <div class="main-background p-4 pt-0 ">
+        <div class="profile-divider pt-3" style="padding: 3em;">
             @foreach ($userProfiles as $userProfile)
-                <div class="d-lg-flex align-items-lg-center mt-3">
+                <div class="d-lg-flex align-items-lg-center mt-2">
                     <p class="d-lg-flex  h4" style="font-weight: bold;">&nbsp; Name :&nbsp;</p>
                     <p class="mb-0">{{ $userProfile->first_name }} {{ $userProfile->middle_initial }}. {{ $userProfile->last_name }}</p>
                 </div>

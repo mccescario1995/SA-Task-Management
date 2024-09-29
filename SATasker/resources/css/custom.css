@@ -3,6 +3,7 @@
     --accent2: #00163e;
     --accent3: #faf3d8;
     --background1: #f4f4f4;
+    --green-accent: #d1e7dd;
     /* #{'--'+prefix+'offcanvas-width'}: #{$offcanvas-horizontal-width}; */
     /* --bs-offcanvas-width: 250px !important; */
 }
@@ -78,6 +79,42 @@
 
 .text-accent3 {
     color: var(--accent3);
+}
+
+.border-accent1 {
+    border: solid 2px var(--accent1);
+}
+
+.border-accent2 {
+    border: solid 2px var(--accent2);
+}
+
+.border-accent3 {
+    border: solid 2px var(--accent3);
+}
+
+.border-accent1 {
+    border: solid 2px var(--accent1);
+}
+
+.border-accent2 {
+    border: solid 2px var(--accent2);
+}
+
+.border-accent3 {
+    border: solid 2px var(--accent3);
+}
+
+.border-bottom-accent1 {
+    border-bottom: solid 2px var(--accent1);
+}
+
+.border-bottom-accent2 {
+    border-bottom: solid 2px var(--accent2);
+}
+
+.border-bottom-accent3 {
+    border-bottom: solid 2px var(--accent3);
 }
 
 .outlined-text-accent1 {
@@ -178,6 +215,17 @@ svg.landing-img {
     background-color: var(--accent1);
     color: var(--accent2);
     border: var(--accent2) solid 1px;
+}
+
+.btn.background-green-accent {
+    /* background-color: var(--green-accent); */
+    border:solid, 2px;
+}
+
+.btn.background-green-accent:hover {
+    /* background-color: var(--green-accent); */
+    color: var(--accent1) !important;
+    /* border: var(--accent1) solid 2px; */
 }
 
 .container .login {

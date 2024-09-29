@@ -32,7 +32,7 @@ class LoginController extends Controller
         }
 
         // Default redirection if no role is matched
-        return redirect()->route('home'); // Or wherever you want to send them
+        return redirect()->route('landing'); // Or wherever you want to send them
     }
 
     /**

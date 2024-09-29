@@ -1,5 +1,5 @@
-        <nav class="navbar navbar-light navbar-expand-sm background-accent1">
-            <div class="container ">
+        <nav class="navbar navbar-light navbar-expand-sm background-accent1 border-bottom-accent2">
+            <div class="container">
                 <button class="btn btn-primary" data-bss-hover-animate="rubberBand" type="button"
                     data-bs-toggle="offcanvas" data-bs-target="#offcanvas-1" aria-controls="offcanvasExample"
                     style="background: rgba(13,110,253,0);border-style: none;"><svg xmlns="http://www.w3.org/2000/svg"

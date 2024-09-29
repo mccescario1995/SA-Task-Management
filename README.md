@@ -1,9 +1,11 @@
-Todo:
+## Todo:
 - Implementation of Guidance Role
+  - 
 - Some UI Upgrades and Implementation
-
+- (fix): ROUTE
 
 ## Revisions
+
 ### Background: 
 Kaya nagiging SA/student assistant ang isang student, dahil sa scholarship niya. Kapag natanggal yung scholarship, hindi na siya magiging part SA.
 

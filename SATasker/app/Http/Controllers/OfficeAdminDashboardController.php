@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\SaTaskTimeLog;
 use App\Models\SaProfile;
 use Carbon\Carbon;
@@ -199,6 +200,7 @@ class OfficeAdminDashboardController extends Controller
     public function store(Request $request)
     {
         $user = $this->getuserID();
+        Log::info('got the user ID');
 
         $validator = Validator::make($request->all(), [
             'start_date' => 'required|date|after_or_equal:today',
@@ -238,6 +240,8 @@ class OfficeAdminDashboardController extends Controller
             'note' => 'nullable|string',
         ]);
 
+        Log::info('validating');
+
         if ($validator->fails()) {
             return redirect()->back()
                          ->withErrors($validator)
@@ -245,17 +249,22 @@ class OfficeAdminDashboardController extends Controller
         }
 
         $validatedData = $validator->validated(); // Get validated data
+        Log::info('validation complete');
         $task = new Task($validatedData);
         $task->office_id = $user->id;
         $task->assigned_office = $user->faculty;
-        $task->save();
+
 
         if ($task['assignment_type'] == 1) {
             $this->handleAutoAssignment($task, $validatedData);
+            $task->save();
+            Log::info('task auto handles');
         } else {
             $this->handleVoluntary($task);
+            Log::info('task should be saved');
         }
 
+        Log::info('Going to route');
         // Return success response
         return redirect()->route('office.dashboard')->with('success', 'Task added successfully!');
     }
@@ -370,6 +379,7 @@ class OfficeAdminDashboardController extends Controller
     {
         $task->status = 'pending';
         $task->save();
+        Log::info('task saved');
     }
 
     /**

@@ -77,7 +77,7 @@ Route::get('/office-report/', [OfficeAdminDashboardController::class, 'officeRep
 
 Auth::routes(['verify' => true]);
 // routes/web.php
-Route::get('/{id}/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/{id}/login', [LoginController::class, 'showLoginForm'])->name('login.page');
 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login')
+@section('title', 'SA Hub')
 
 @section('content')
     <div class="container position-relative landing m-auto vh-100 vw-100 align-content-center">
