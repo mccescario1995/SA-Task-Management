@@ -14,16 +14,20 @@
                             <div>
                                 <div>
                                     <div class="row">
-                                        <div class="col" style="margin: 1em;">
-                                            <div><label class="form-label"><strong>Date *</strong></label></div>
-                                            <div><input name="start_date" type="date"
+                                        <div class="col-11" style="margin: 1em;">
+                                            <div>
+                                                <label class="form-label"><strong>Date *</strong></label>
+                                            </div>
+                                            <div>
+                                                <input name="start_date" type="date"
                                                     style="width: 200px;font-size: 20px;" required
-                                                    value="{{ $task->start_date }}"></div>
+                                                    value="{{ $task->start_date }}">
+                                            </div>
                                         </div>
-                                        <div class="col" style="margin: 1em;">
+                                        <div class="col-11" style="margin: 1em;">
                                             <div><label class="form-label">
                                                     <strong>Time *</strong></label></div>
-                                            <div class="d-xl-flex align-items-xl-center">
+                                            <div class="row p-2">
                                                 <input name="start_time" type="time"
                                                     style="width: 150px;margin: auto;" value="{{ $task->start_time }}">
                                                 <input name="end_time" type="time" style="width: 150px;margin: auto;"
@@ -31,10 +35,10 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="col " style="margin: 1em;">
+                                            <div class="col-11" style="margin: 1em;">
                                                 <div><label class="form-label"><strong>No. of student assistant
                                                             *</strong></label></div>
-                                                <div><input name="number_of_sa" type="number"
+                                                <div><input  name="number_of_sa" type="number"
                                                         style="width: 5em;font-size: 20px;" required
                                                         value="{{ $task->number_of_sa }}"></div>
                                             </div>
@@ -64,7 +68,7 @@
                                     <div class="row">
                                         <div class="col" style="margin: 1em;">
                                             <div>
-                                                <label class="form-label"><strong>Task Assignment Type
+                                                <label class="form-label"><strong>Task Type
                                                     </strong>*</label>
                                             </div>
                                             <div class="d-xl-flex align-items-xl-center">

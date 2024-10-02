@@ -5,14 +5,18 @@
     --background1: #f4f4f4;
     --green-accent: #d1e7dd;
     /* #{'--'+prefix+'offcanvas-width'}: #{$offcanvas-horizontal-width}; */
-    /* --bs-offcanvas-width: 250px !important; */
+    /* --bs-offcanvas-width: 250px !important; #e7af41*/
+}
+
+body {
+    font-family: Roboto, Arial, sans-serif;
 }
 
 /* Initially hide the page with a fade effect */
-.fade {
+/* .fade {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-}
+} */
 
 /* When the page is fully visible */
 .fade-in {
@@ -22,12 +26,13 @@
 .offcanvas {
     --bs-offcanvas-width: 250px !important;
 }
-.offcanvas .offcanvas-title{
+
+.offcanvas .offcanvas-title {
     line-height: 20px !important;
 }
 
-.offcanvas .offcanvas-title em{
-    font-size: .8rem ;
+.offcanvas .offcanvas-title em {
+    font-size: .8rem;
 }
 
 /* Hide content on small screens (below 768px) */
@@ -150,6 +155,8 @@
     background: rgba(255, 255, 255, 0.897) url(../images/logo2.png) center no-repeat;
     background-size: contain;
     height: 90vh !important;
+    width: 90%;
+    margin: auto;
 }
 
 .landing-text {
@@ -219,7 +226,7 @@ svg.landing-img {
 
 .btn.background-green-accent {
     /* background-color: var(--green-accent); */
-    border:solid, 2px;
+    border: solid, 2px;
 }
 
 .btn.background-green-accent:hover {
@@ -236,6 +243,17 @@ svg.landing-img {
 .container .login-back {
     position: relative;
     top: 40% !important;
+}
+
+@media screen and (max-width: 1366px){
+    .container .login {
+        /* position: absolute; */
+        top: 5% !important;
+    }
+    .container .login-back {
+        position: relative;
+        top: 5% !important;
+    }
 }
 
 .login-form {
@@ -273,23 +291,31 @@ svg.landing-img {
 /* Pagination Styles */
 /* Style the pagination links */
 .pagination .page-link {
-    color: var(--accent2); /* Default link color */
-    background-color: var(--accent1); /* Background color */
-    border-color: var(--accent2); /* Border color */
+    color: var(--accent2);
+    /* Default link color */
+    background-color: var(--accent1);
+    /* Background color */
+    border-color: var(--accent2);
+    /* Border color */
 }
 
 /* Style for the active page link */
 .pagination .page-item.active .page-link {
     z-index: 1;
-    color: var(--accent3); /* Text color of the active link */
-    background-color: var(--accent2); /* Background color for active page */
-    border-color: var(--accent2); /* Border color for active page */
+    color: var(--accent3);
+    /* Text color of the active link */
+    background-color: var(--accent2);
+    /* Background color for active page */
+    border-color: var(--accent2);
+    /* Border color for active page */
 }
 
 /* Style for hover and focus states */
 .pagination .page-link:hover {
-    color: var(--accent1); /* Hover link color */
-    background-color: var(--accent2); /* Hover background */
+    color: var(--accent1);
+    /* Hover link color */
+    background-color: var(--accent2);
+    /* Hover background */
     border-color: var(--accent2);
 }
 
@@ -300,3 +326,37 @@ svg.landing-img {
     background-color: var(--accent3);
     border-color: var(--accent2);
 }
+
+.form-check-input:checked {
+    background-color: var(--accent2);
+    border-color: var(--accent2);
+}
+
+.btn.going {
+    width: 500px;
+    padding: 1rem 0rem;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.btn.going.active-going {
+    border: 5px solid var(--accent2) !important;
+    pointer-events: none;
+}
+
+.btn.opacity {
+    opacity: .7;
+}
+
+.btn.opacity:hover {
+    opacity: 1;
+}
+
+.disable{
+    pointer-events: none;
+    opacity: .8;
+}
+
+.sticky-offset{
+    margin-bottom: -150px;
+  }

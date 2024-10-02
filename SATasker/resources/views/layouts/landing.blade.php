@@ -5,13 +5,23 @@
 @section('content')
     <div class="container position-relative landing m-auto vh-100 vw-100 align-content-center">
         <div class="my-auto mb-3">
+            @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible show text-center w-50 mx-auto" role="alert" aria-label="Close">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    </div>
+                @endif
             <img class="imgleft" src="{{ asset('images/landing1.png') }}" alt="">
             <img class="imgright" src="{{ asset('images/logo 1.jpg') }}" alt="" width="200rem">
+
             <div class="row">
-                <p class="outlined-text-accent2 landing-text text-center h1 text-accent1 mb-5 fw-bolder">SA <em class="text-accent2 outlined-text-accent1">HUB</em></p>
+                <p class="outlined-text-accent2 landing-text text-center h1 text-accent1 mb-5 fw-bolder">SA <em
+                        class="text-accent2 outlined-text-accent1">HUB</em></p>
+
                 <div class="row card-selection m-auto pb-3">
                     <div class="col-5 col-md-3 p-0">
-                        <a class="selection-hover text-center" href="{{ route('login.page', ['id' => 'student-assistant']) }}">
+                        <a class="selection-hover text-center"
+                            href="{{ route('login.page', ['id' => 'student-assistant']) }}">
                             <div class="selection-hover px-3">
                                 <svg class="landing-img rounded-circle background-accent2 text-accent3 shadow-lg"
                                     xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor"
@@ -19,7 +29,8 @@
                                     <path
                                         d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
                                 </svg>
-                                <span class="h1  w-100 mt-4 badge rounded-pill text-accent3 background-accent2 p-3 shadow-lg">
+                                <span
+                                    class="h1  w-100 mt-4 badge rounded-pill text-accent3 background-accent2 p-3 shadow-lg">
                                     Student Portal
                                 </span>
                             </div>
@@ -27,7 +38,8 @@
                     </div>
 
                     <div class="col-5 col-md-3 p-0">
-                        <a class="selection-hover border-none text-center" href="{{ route('login.page', ['id' => 'office']) }}">
+                        <a class="selection-hover border-none text-center"
+                            href="{{ route('login.page', ['id' => 'office']) }}">
                             <div class="selection-hover px-3">
                                 <svg class=" landing-img rounded-circle background-accent2 text-accent3 shadow-lg"
                                     xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor"
@@ -63,7 +75,8 @@
                     </div>
 
                     <div class="col-5 col-md-3 p-0">
-                        <a class="selection-hover border-none text-center" href="{{ route('login.page', ['id' => 'guidance']) }}">
+                        <a class="selection-hover border-none text-center"
+                            href="{{ route('login.page', ['id' => 'guidance']) }}">
                             <div class="selection-hover px-3">
                                 <svg class=" landing-img rounded-circle background-accent2 text-accent3 shadow-lg"
                                     xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor"

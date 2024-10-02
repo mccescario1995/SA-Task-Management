@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
-class LoginController extends Controller
+class LoginController22 extends Controller
 {
     //
 

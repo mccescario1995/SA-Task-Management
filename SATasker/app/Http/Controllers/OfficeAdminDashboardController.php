@@ -117,7 +117,7 @@ class OfficeAdminDashboardController extends Controller
         //->groupBy( 'sa_profiles.user_id','sa_profiles.first_name', 'sa_profiles.last_name', 'sa_profiles.course_program','timein','timeout' )
         ->orderBy('user_tasks_timelog.updated_at', 'DESC')
         ->get();
-
+            // dd($saLists);
         return view('office.salist_task', compact('saLists','user','taskId'));
     }
 
@@ -200,7 +200,6 @@ class OfficeAdminDashboardController extends Controller
     public function store(Request $request)
     {
         $user = $this->getuserID();
-        Log::info('got the user ID');
 
         $validator = Validator::make($request->all(), [
             'start_date' => 'required|date|after_or_equal:today',
@@ -231,7 +230,7 @@ class OfficeAdminDashboardController extends Controller
                 'string',
                 function ($attribute, $value, $fail) {
                     if ($value && !DB::table('courses')->where('name', $value)->exists()) {
-                        $fail('The selected preferred program is invalid.');
+                        $fail('The selected program is invalid.');
                     }
                 },
             ],
@@ -240,8 +239,6 @@ class OfficeAdminDashboardController extends Controller
             'note' => 'nullable|string',
         ]);
 
-        Log::info('validating');
-
         if ($validator->fails()) {
             return redirect()->back()
                          ->withErrors($validator)
@@ -249,7 +246,6 @@ class OfficeAdminDashboardController extends Controller
         }
 
         $validatedData = $validator->validated(); // Get validated data
-        Log::info('validation complete');
         $task = new Task($validatedData);
         $task->office_id = $user->id;
         $task->assigned_office = $user->faculty;
@@ -258,13 +254,9 @@ class OfficeAdminDashboardController extends Controller
         if ($task['assignment_type'] == 1) {
             $this->handleAutoAssignment($task, $validatedData);
             $task->save();
-            Log::info('task auto handles');
         } else {
             $this->handleVoluntary($task);
-            Log::info('task should be saved');
         }
-
-        Log::info('Going to route');
         // Return success response
         return redirect()->route('office.dashboard')->with('success', 'Task added successfully!');
     }
@@ -379,7 +371,13 @@ class OfficeAdminDashboardController extends Controller
     {
         $task->status = 'pending';
         $task->save();
-        Log::info('task saved');
+    }
+
+    // Edit Task
+    public function edit(string $id){
+        $task = Task::find($id);
+        $courses = Courses::all();
+        return view('office.office_edit_task',compact('task','courses'));
     }
 
     /**
@@ -421,7 +419,7 @@ class OfficeAdminDashboardController extends Controller
             $this->handleAutoAssignment($task, $validatedData); // Trigger Auto-Assignment
         }
 
-        return redirect()->back()->with('success', 'Task edited successfully!');
+        return redirect()->route('office.dashboard')->with('success', 'Task edited successfully!');
     }
 
     public function addTask()
@@ -442,7 +440,8 @@ class OfficeAdminDashboardController extends Controller
         $task->deleted_at = now();
         $task->save();
 
-        return redirect()->back()->with('success', 'Task Deleted Successfully!');
+        return redirect()->route('office.dashboard')->with('success_delete', 'Task Deleted successfully!');
+
 
     }
     public function delete(string $id)
@@ -451,7 +450,8 @@ class OfficeAdminDashboardController extends Controller
         $task = Task::findOrFail($id);
         $task->delete();
 
-        return redirect()->back()->with('success', 'Task deleted successfully!');
+        return redirect()->route('office.dashboard')->with('success_delete', 'Task Deleted successfully!');
+
 
     }
 }

@@ -3,7 +3,7 @@
 @section('title', 'Login')
 
 @section('content')
-    <div class="container  vh-100">
+    <div class="container vh-100">
         <div class="row align-items-center">
             <div class="col">
                 <img class="imgleft" src="{{ asset('images/landing1.png') }}" alt="">
@@ -12,7 +12,6 @@
                     <div class="col-sm-8 col-md-6">
                         <div class="card login background-accent2 text-accent1 py-1 py-md-3 mb-2">
                             {{-- <div class="card-header">{{ __('Login') }}</div> --}}
-
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img class="img mb-2 d-none d-md-block" src="{{ asset('images/logo2.png') }}" alt=""
                                     width="100px">
@@ -20,7 +19,7 @@
                                 <h2 class="mb-5 text-capitalize font-monospace">{{ __('Log in') }}</h2>
                                 <form class="login-form" method="POST" action="{{ route('login') }}">
                                     @csrf
-
+                                    <input type="hidden" name="portal_details" value="{{$portalName}}">
                                     <div class="row mb-3">
                                         {{-- <label for="email"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label> --}}

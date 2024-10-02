@@ -14,6 +14,10 @@ class Controller extends BaseController
         return view('layouts.landing');
     }
 
+    // public function home(){
+    //     return view('welcome2');
+    // }
+
     // public function show(){
     //     return view('layouts.landing');
     // }

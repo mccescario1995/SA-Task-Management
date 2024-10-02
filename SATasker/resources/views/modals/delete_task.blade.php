@@ -1,8 +1,8 @@
-<div class="modal fade " role="dialog" tabindex="-1" id="deleteTaskModal-{{ $task->id }}">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+<div class="modal " tabindex="-1" id="deleteTaskModal-{{ $task->id }}" aria-labelledby="deleteTaskModal-{{ $task->id }}-Label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content border-accent2">
                     <div class="modal-header border-0" >
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close border-accent2" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="{{ route('office.cancel', $task->id) }}" method="POST">
                         @csrf
@@ -12,7 +12,7 @@
                             </svg>
                             <h1 style="color: rgb(109,109,109);">Are you sure?</h1>
                             <p>
-                                Do you really want to <strong> DELETE </strong>this Task.<br />
+                                Do you really want to <strong class="text-danger fw-bolder"> DELETE </strong>this Task.<br />
                             </p>
                         </div>
                         <div class="modal-footer d-xl-flex justify-content-xl-center">
@@ -22,4 +22,3 @@
                     </form>
             </div>
         </div>
-        

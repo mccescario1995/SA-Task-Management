@@ -11,7 +11,7 @@
         @endphp
         <div style="padding: 3em;">
             <section>
-                <h1>Voluntary Tasks</h1>
+                <h1 class="text-center">Voluntary Tasks</h1>
                 @if (session('accept_task_success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('accept_task_success') }}
@@ -112,7 +112,7 @@
 
         <div style="padding: 3em;border-top-style: groove;">
             <section>
-                <h1>Tasks</h1>
+                <h1 class="text-center">Tasks</h1>
                 <div class="table-responsive" style="padding: 1em;">
                     <table class="table table-hover table-border rounded">
                         <thead class="background-accent1">
@@ -138,14 +138,14 @@
                                         <td class="table-border2 rounded text-center">{{ $assignedtask->task_id }}</td>
                                         <td class="table-border2 rounded text-center">
                                             <p style="margin: 0px;">{{ $assignedtask->start_date }}</p>
-                                            <p style="font-size: 12px;">{{ $assignedtask->start_time }} -
+                                            <p class="mb-0" style="font-size: 12px;">{{ $assignedtask->start_time }} -
                                                 {{ $assignedtask->end_time }}</p>
                                         </td>
                                         <td class="table-border2 rounded text-center">{{ $assignedtask->preffred_program }}</td>
                                         <td class="table-border2 rounded text-center">{{ $assignedtask->to_be_done }}</td>
                                         <td class="table-border2 rounded text-center">
                                             <p style="margin: 0px;">{{ $assignedtask->assigned_office }}</p>
-                                            <p style="font-size: 12px;">
+                                            <p class="mb-0" style="font-size: 12px;">
                                                 {{ DB::table('users')->where('users.id', '=', $assignedtask->office_id)->select('users.email')->first()->email }}
                                             </p>
                                         </td>
