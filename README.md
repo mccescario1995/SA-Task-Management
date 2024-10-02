@@ -63,11 +63,12 @@ Check  scholarship status BEFORE assigning tasks to SAs
 - Add new tables for grades and major offenses...(?) (Not "?" Yes we need this)
 
 
+# Code References
 
-SATasker\vendor\laravel\ui\auth-backend\AuthenticatesUsers.php
-{
+## SATasker\vendor\laravel\ui\auth-backend\AuthenticatesUsers.php
 
-  <?php
+```
+<?php
 
 namespace Illuminate\Foundation\Auth;
 
@@ -299,6 +300,4 @@ trait AuthenticatesUsers
         return Auth::guard();
     }
 }
-
-
-}
+```
