@@ -23,13 +23,13 @@
             </li>
 
             <li class="nav-item">
-                <a href="{{ route('guidance.dashboard')}}" class="nav-link align-middle px-0 text-accent2">
+                <a href="{{ route('guidance.probation')}}" class="nav-link align-middle px-0 text-accent2">
                     <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Probation</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="{{ route('guidance.dashboard')}}" class="nav-link align-middle px-0 text-accent2">
+                <a href="{{ route('guidance.scholarship')}}" class="nav-link align-middle px-0 text-accent2">
                     <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Scholarship</span>
                 </a>
             </li>

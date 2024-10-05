@@ -1,6 +1,6 @@
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-1">
     <div class="offcanvas-header border-bottom text-end">
-        <h5 class="offcanvas-title w-100 pe-2 text-accent2">{{ Auth::user()->username }} - (SA) <br> <em
+        <h5 class="offcanvas-title w-100 pe-2 text-accent2">{{ Auth::user()->username }}<br> <em
                 class="fw-smaller">{{ Auth::user()->email }}</em></h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>

@@ -22,6 +22,10 @@ class SaDashboardController extends Controller
     public function index()
     {
         $user = $this->getuserID();
+        $saProfile = SaProfile::where('user_id', $user->id_number)->first();
+
+
+
         $urgentTasks = DB::table('tasks')
             ->where('assignment_type', 2)
             ->orderby('tasks.id', 'asc')->paginate(3);
@@ -46,7 +50,7 @@ class SaDashboardController extends Controller
             ->orderby('user_tasks_timelog.created_at', 'asc')
             ->paginate(5);
 
-        return view('sa.sa_dashboard', compact('urgentTasks', 'assignedTasks', 'user'));
+        return view('sa.sa_dashboard', compact('urgentTasks', 'assignedTasks', 'user', 'saProfile'));
     }
 
 
@@ -153,7 +157,7 @@ class SaDashboardController extends Controller
             ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
             ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
             ->where('users.id', $user->id)
-            ->where('task_status', 1)
+            ->where('task_status', 2)
             ->select(
                 DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'),
             )
@@ -194,6 +198,7 @@ class SaDashboardController extends Controller
                 'subject_offerings.section',
                 'subject_offerings.day_id',
                 'subject_offering_details.time_constraints',
+                'subject_offering_details.instructors',
             )
             ->get();
 

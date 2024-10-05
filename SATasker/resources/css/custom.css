@@ -360,3 +360,7 @@ svg.landing-img {
 .sticky-offset{
     margin-bottom: -150px;
   }
+
+.border-nav-end{
+    border-right: var(--accent1) solid 4px !important;
+}

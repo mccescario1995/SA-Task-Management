@@ -63,11 +63,11 @@ Check  scholarship status BEFORE assigning tasks to SAs
 - Add new tables for grades and major offenses...(?) (Not "?" Yes we need this)
 
 
-
+# ERROR in portalName
 SATasker\vendor\laravel\ui\auth-backend\AuthenticatesUsers.php
-{
 
-  <?php
+```
+<?php
 
 namespace Illuminate\Foundation\Auth;
 
@@ -89,7 +89,6 @@ trait AuthenticatesUsers
      */
     public function showLoginForm($id)
     {
-
 
         $portalNames = [
             'student-assistant' => 'Student Assistant',
@@ -300,5 +299,4 @@ trait AuthenticatesUsers
     }
 }
 
-
-}
+```
