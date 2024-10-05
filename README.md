@@ -91,6 +91,7 @@ trait AuthenticatesUsers
     public function showLoginForm($id)
     {
 
+
         $portalNames = [
             'student-assistant' => 'Student Assistant',
             'office' => 'Office Admin',
@@ -122,7 +123,16 @@ trait AuthenticatesUsers
     {
         $this->validateLogin($request);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::withTrashed()->where('email', $request->email)->first();
+
+        // dd($user);
+
+        // Check if the user is soft deleted
+        if ($user->trashed()) {
+            Auth::logout();
+            return redirect()->back()->withErrors(['email' => 'Your account has been deactivated.']);
+        }
+
         $portalSnake = Str::snake($request->portal_details);
         $role = $user->getRoleNames()->first();
         if ($portalSnake !== $role) {
@@ -299,4 +309,5 @@ trait AuthenticatesUsers
         return Auth::guard();
     }
 }
+
 ```
