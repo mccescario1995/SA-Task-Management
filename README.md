@@ -63,8 +63,9 @@ Check  scholarship status BEFORE assigning tasks to SAs
 - Add new tables for grades and major offenses...(?) (Not "?" Yes we need this)
 
 
-# ERROR in portalName
-SATasker\vendor\laravel\ui\auth-backend\AuthenticatesUsers.php
+# Code References
+
+## SATasker\vendor\laravel\ui\auth-backend\AuthenticatesUsers.php
 
 ```
 <?php
@@ -298,5 +299,4 @@ trait AuthenticatesUsers
         return Auth::guard();
     }
 }
-
 ```
