@@ -43,8 +43,8 @@
                                     @foreach ($SaLists as $sa)
                                         <tr>
                                             {{-- @php
-                                        $startDate = Carbon\Carbon::parse($task->date_started);
-                                        $endDate = Carbon\Carbon::parse($task->date_ended);
+                                        $startDate = Carbon\Carbon::parse($task->date_start);
+                                        $endDate = Carbon\Carbon::parse($task->date_end);
                                     @endphp --}}
                                             <td class="table-border2 rounded text-center">{{ $sa->first_name }}
                                                 {{ $sa->last_name }}

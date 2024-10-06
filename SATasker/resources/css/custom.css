@@ -362,5 +362,9 @@ svg.landing-img {
   }
 
 .border-nav-end{
-    border-right: var(--accent1) solid 4px !important;
+    border-right: var(--accent2) solid 2px !important;
+}
+
+.border-nav-right{
+    border-right: var(--accent2) solid 1px !important;
 }

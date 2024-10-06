@@ -52,21 +52,34 @@
                                         </td>
                                     </tr>
                                 @else
-                                    @foreach ($probationList as $task)
+                                    @foreach ($probationList as $userId => $task)
                                         <tr>
-                                            <td class="table-border2 rounded text-center">{{ $task->saProfile->first_name }}
-                                                {{ $task->saProfile->last_name }}</td>
-                                            <td class="table-border2 rounded text-center">{{ $task->description }}
-                                                {{-- @foreach ($task->offenses as $offense)
-
-                                                    @if (!$loop->last)
-                                                        ,
+                                            <td class="table-border2 rounded text-center">
+                                                {{ $task->first()->saProfile->first_name }}
+                                                {{ $task->first()->saProfile->last_name }}</td>
+                                            <td class="table-border2 rounded text-center">
+                                                {{-- {{ $task->description }} --}}
+                                                @foreach ($task as $item)
+                                                    {{ $item->description }}
+                                                    @if ($item->type == 'grade')
+                                                        (Grade)
+                                                    @elseif($item->type == 'major')
+                                                        (Major Offense)
                                                     @endif
-                                                @endforeach $startDate->format('M-d-Y')--}}
+                                                    @if (!$loop->last)
+                                                        <hr class="m-0">
+                                                    @endif
+                                                @endforeach
                                             </td>
-                                            <td class="table-border2 rounded text-center">{{ $task->date_started }}
+                                            <td class="table-border2 rounded text-center">
+                                                @foreach ($task as $item)
+                                                    {{ $item->date_start }}
+                                                @endforeach
                                             </td>
-                                            <td class="table-border2 rounded text-center">{{ $task->date_ended }}
+                                            <td class="table-border2 rounded text-center">
+                                                @foreach ($task as $item)
+                                                    {{ $item->date_end }}
+                                                @endforeach
                                             </td>
                                         </tr>
                                     @endforeach

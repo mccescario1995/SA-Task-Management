@@ -94,7 +94,7 @@
                                         @elseif ($saCount == $task->number_of_sa)
                                             <td class="table-border2 rounded text-center">
                                                 <input type="hidden" name="task_id" value="{{ $task->id }}">
-                                                <button type="submit" class="btn btn-secondary">Full</button>
+                                                <button type="submit" class="btn btn-secondary w-100">Full</button>
                                             </td>
                                         @elseif ($isAccepted)
                                             <td class="table-border2 rounded text-center">
@@ -176,7 +176,7 @@
                                                     value="{{ $assignedtask->task_id }}">
                                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                                 @if (!SaTaskTimeLog::where('task_id', $assignedtask->task_id)->where('user_id', $user->id)->whereDate('time_in', now()->toDateString())->exists())
-                                                    <button type="submit" class="btn btn-primary">Time-In</button>
+                                                    <button type="submit" class="btn btn-primary text-nowrap">Time-In</button>
                                                 @else
                                                     <button type="submit" class="btn btn-secondary disabled"
                                                         disabled>Time-In</button>
@@ -190,7 +190,7 @@
                                                     value="{{ $assignedtask->task_id }}">
                                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                                 @if (!SaTaskTimeLog::where('task_id', $assignedtask->task_id)->where('user_id', $user->id)->whereDate('time_out', now()->toDateString())->exists())
-                                                    <button type="submit" class="btn btn-primary">Time-Out</button>
+                                                    <button type="submit" class="btn btn-primary text-nowrap">Time-Out</button>
                                                 @else
                                                     <button type="submit" class="btn btn-secondary disabled"
                                                         disabled>Time-Out</button>

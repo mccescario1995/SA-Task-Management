@@ -56,7 +56,8 @@ class GuidanceController extends Controller
     public function probation()
     {
 
-        $probationList = Offense::whereIn('status', ['pending', 'probation', 'revoked'])->get();
+        $probationList = Offense::whereIn('status', ['pending', 'probation'])->with('SaProfile')->get()->groupBy('user_id');
+        // dd($probationList);
         $saLists = SaProfile::where('status', '=', 'probation')->get();
         $Sa = SaProfile::whereIn('status', ['probation', 'revoked'])->with('offenses')->get();
 
@@ -90,7 +91,6 @@ class GuidanceController extends Controller
         foreach ($tasks as $task) {
             $activeSA += $task->studentAssistants->count(); // Count active SAs in each task
         }
-
         return $activeSA;
     }
 

@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('offenses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('type')->default('minor'); // Minor Offence, Major Offence
+            $table->string('type')->default('grade'); // Minor Offence, Major Offence
             $table->string('description')->nullable();
             $table->string('status')->nullable();
-            $table->date('date_started')->nullable();
-            $table->date('date_ended')->nullable();
+            $table->date('date_start')->nullable();
+            $table->date('date_end')->nullable();
             $table->timestamps();
         });
     }

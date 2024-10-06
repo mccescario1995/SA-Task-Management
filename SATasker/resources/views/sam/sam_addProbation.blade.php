@@ -48,8 +48,8 @@
                                     <label for="" class="form-label fw-bolder">Category:</label>
                                     <select class="form-select @error('type') is-invalid @enderror" name="type"
                                         id="firstSelect">
-                                        <option selected>Degree of Offense</option>
-                                        <option value="grade">Low Grade</option>
+                                        <option value="">Degree of Offense</option>
+                                        <option value="grade">Failed Grade</option>
                                         <option value="major">Major Offense</option>
                                     </select>
                                 </div>
@@ -95,7 +95,7 @@
                                 </div>
                                 <div class="form-check ms-3">
                                     <input class="form-check-input @error('status') is-invalid @enderror" type="radio"
-                                        name="status" id="statusOption2" value="revoke" />
+                                        name="status" id="statusOption2" value="revoked" />
                                     <label class="form-check-label" for="statusOption2">Revoke Scholarship</label>
                                 </div>
                                 @error('status')
@@ -108,11 +108,11 @@
                         <div class="row">
                             <div class="mb-3">
                                 <label for=""
-                                    class="form-label fw-bolder @error('date_started') is-invalid @enderror">Date
+                                    class="form-label fw-bolder @error('date_start') is-invalid @enderror">Date
                                     Started</label>
-                                <input type="date" class="form-control" name="date_started" id=""
+                                <input type="date" class="form-control" name="date_start" id=""
                                     aria-describedby="helpId" placeholder="" />
-                                @error('date_started')
+                                @error('date_start')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -120,11 +120,11 @@
                             </div>
                             <div class="mb-3">
                                 <label for=""
-                                    class="form-label fw-bolder @error('date_ended') is-invalid @enderror">Date
+                                    class="form-label fw-bolder @error('date_end') is-invalid @enderror">Date
                                     Ended</label>
-                                <input type="date" class="form-control" name="date_ended" id=""
+                                <input type="date" class="form-control" name="date_end" id=""
                                     aria-describedby="helpId" placeholder="" />
-                                @error('date_ended')
+                                @error('date_end')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -167,8 +167,8 @@
             const revokeRadio = document.getElementById('statusOption2');
 
             // Get the date input fields
-            const dateStarted = document.querySelector('input[name="date_started"]');
-            const dateEnded = document.querySelector('input[name="date_ended"]');
+            const dateStarted = document.querySelector('input[name="date_start"]');
+            const dateEnded = document.querySelector('input[name="date_end"]');
 
             // Function to enable or disable the date fields based on status
             function toggleDateFields() {

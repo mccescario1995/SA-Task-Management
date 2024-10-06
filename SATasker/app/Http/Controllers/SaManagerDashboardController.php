@@ -34,7 +34,7 @@ class SaManagerDashboardController extends Controller
 
     public function addProbation()
     {
-        $SaLists = SaProfile::where('status','=','probation')->get();
+        $SaLists = SaProfile::get();
         $OffenseLists = OffenseItem::get();
         return view('sam.sam_addProbation', compact('SaLists', 'OffenseLists'));
     }
@@ -50,28 +50,31 @@ class SaManagerDashboardController extends Controller
         // dd($request->all());
         $request->validate([
             'stud_id' => 'required|exists:sa_profiles,user_id', // assuming you have a `student_assistants` table
+            'type' => 'required',
             'description' => 'required|string',
             'status' => 'required|string',
-            'date_started' => 'required|date',
-            'date_ended' => 'nullable|date|after_or_equal:date_started', // Ensure the end date is after the start date
+            'date_start' => 'nullable|date',
+            'date_end' => 'nullable|date|after_or_equal:date_start', // Ensure the end date is after the start date
         ]);
-
         // Store the data in the database
         $offense = Offense::create([
             'user_id' => $request->input('stud_id'),
+            'type' => $request->input('type'),
             'description' => $request->input('description'),
             'status' => $request->input('status'),
-            'date_started' => $request->input('date_started'),
-            'date_ended' => $request->input('date_ended'),
+            'date_start' => $request->input('date_start'),
+            'date_end' => $request->input('date_end'),
         ]);
 
-        $saProfile = SaProfile::where('user_id', '=', $offense->user_id)->first();
+        $saProfile = SaProfile::where('user_id', '=', $request->input('stud_id'))->first();
 
         if ($saProfile) {
             $saProfile->update([
                 'status' => $request->input('status'),
             ]);
         }
+
+        $user = User::where('id_number', '=', $saProfile->user_id)->delete();
 
         return redirect()->route('sa.manager.probation')->with('success', "Added a New Offense");
     }

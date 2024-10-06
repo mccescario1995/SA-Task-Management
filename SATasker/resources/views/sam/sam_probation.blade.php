@@ -19,7 +19,8 @@
                 <h2 class="text-accent2 mb-0">Probation</h2>
             </div>
             <div class="text-center d-flex justify-content-center">
-                <a href="{{ route('sa.manager.probation.add') }}" class="btn w-100 background-accent2 text-accent1 px-5 py-2 fs-5 my-2 d-flex align-items-center justify-content-center">
+                <a href="{{ route('sa.manager.probation.add') }}"
+                    class="btn w-100 background-accent2 text-accent1 px-5 py-2 fs-5 my-2 d-flex align-items-center justify-content-center">
                     <svg class="" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
                         viewBox="0 0 16 16" class="bi bi-plus-lg" style="width: 20px;height: 20px;">
                         <path fill-rule="evenodd"
@@ -35,8 +36,8 @@
                         <tr>
                             <th class="table-border2 rounded">Name</th>
                             <th class="table-border2 rounded">Reason</th>
-                            <th class="table-border2 rounded">Date Started</th>
-                            <th class="table-border2 rounded">Date Ended</th>
+                            <th class="table-border2 rounded">Start Date</th>
+                            <th class="table-border2 rounded">End Date</th>
                         </tr>
                     </thead>
                     <tbody class="background-accent3 align-items-center">
@@ -51,21 +52,45 @@
                         @else
                             @foreach ($probationList as $task)
                                 <tr>
-                                    @php
-                                        $startDate = Carbon\Carbon::parse($task->date_started);
-                                        $endDate = Carbon\Carbon::parse($task->date_ended);
-                                    @endphp
-                                    <td class="table-border2 rounded text-center">{{ $task->first_name }} {{ $task->last_name }}</td>
+                                    <td class="table-border2 rounded text-center">{{ $task->first_name }}
+                                        {{ $task->last_name }}</td>
                                     <td class="table-border2 rounded text-center">
+                                        {{-- {{$task->offenses}} --}}
                                         @foreach ($task->offenses as $offense)
                                             {{ $offense->description }}
+                                            @if ($offense->type == 'grade')
+                                                (Grade)
+                                            @elseif($offense->type == 'major')
+                                               (Major Offense)
+                                            @endif
                                             @if (!$loop->last)
-                                                ,
+                                                <hr class="m-0">
                                             @endif
                                         @endforeach
                                     </td>
-                                    <td class="table-border2 rounded text-center">{{ $startDate->format('M-d-Y') }}</td>
-                                    <td class="table-border2 rounded text-center">{{ $endDate->format('M-d-Y') }}</td>
+                                    <td class="table-border2 rounded text-center">
+                                        {{-- {{ $task->date_start }} --}}
+                                        @foreach ($task->offenses as $date)
+                                            @php
+                                                $startedDate = Carbon\Carbon::parse($date->date_start);
+                                            @endphp
+                                            {{ $startedDate->format('M.d.Y') }}
+                                            @if (!$loop->last)
+                                                <hr class="m-0">
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td class="table-border2 rounded text-center">
+                                        @foreach ($task->offenses as $date)
+                                            @php
+                                                $endDate = Carbon\Carbon::parse($date->date_end);
+                                            @endphp
+                                            {{ $endDate->format('M.d.Y') }}
+                                            @if (!$loop->last)
+                                                <hr class="m-0">
+                                            @endif
+                                        @endforeach
+                                    </td>
                                 </tr>
                             @endforeach
                         @endif

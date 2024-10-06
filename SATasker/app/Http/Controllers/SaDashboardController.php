@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StudentGrade;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SaProfile;
 use Illuminate\Http\Request;
@@ -52,8 +53,6 @@ class SaDashboardController extends Controller
 
         return view('sa.sa_dashboard', compact('urgentTasks', 'assignedTasks', 'user', 'saProfile'));
     }
-
-
 
     public function getuserID()
     {
@@ -141,6 +140,8 @@ class SaDashboardController extends Controller
             ->select(
                 'tasks.id',
                 'tasks.start_date',
+                'tasks.start_time',
+                'tasks.end_time',
                 'tasks.preffred_program',
                 'tasks.to_be_done',
                 'tasks.assigned_office',
@@ -306,5 +307,10 @@ class SaDashboardController extends Controller
         } else {
             return redirect()->back()->with('error', 'No matching time-in record found or time-in is less than 30 minutes ago.');
         }
+    }
+
+    public function probationDateChecker(){
+        $grade = StudentGrade::where('final_grade', '=', '0.0')->get();
+
     }
 }

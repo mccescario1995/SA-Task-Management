@@ -27,8 +27,8 @@ class OffenseSeeder extends Seeder
                 'type' => 'major',
                 'description' => 'Theft',
                 'status' => 'probation',
-                'date_started' => '2024-11-11',
-                'date_ended' => '2024-11-15',
+                'date_start' => '2024-11-11',
+                'date_end' => '2024-11-15',
             ]
         );
 
@@ -52,15 +52,15 @@ class OffenseSeeder extends Seeder
                 'user_id'      => $sa->user_id,  // Ensure correct field mapping
                 'type'         => $offenseType,  // Random type: 'grade' or 'major'
                 'description'  => $description,  // Determined based on offense type
-                'status'       => 'pending',     // Static status
-                'date_started' => now()->format('Y-m-d'),  // Use current date for date_started
-                'date_ended'   => now()->addDays(rand(5, 20))->format('Y-m-d'),  // Random end date between 5-20 days
+                'status'       => 'probation',     // Static status
+                'date_start' => now(),  // Use current date for date_start
+                'date_end'   => now()->addDays(rand(5, 20)),  // Random end date between 5-20 days
             ]);
 
             // Update user profile status
             $user = SaProfile::where('user_id', $sa->user_id)->first();
             if ($user) {
-                $user->status = 'pending';
+                $user->status = 'probation';
                 $user->save();
             }
         }

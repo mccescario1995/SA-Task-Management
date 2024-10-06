@@ -94,7 +94,9 @@
                                         </td>
                                         <td class="table-border2 rounded text-center text-capitalize fw-bolder
 
-                                            @if ($task->user->saProfile->status == 'active')
+                                            @if ($task->user->saProfile->status == 'pending')
+                                                table-success
+                                            @elseif ($task->user->saProfile->status == 'active')
                                                 table-success
                                             @elseif ($task->user->saProfile->status == 'probation')
                                                 table-warning
@@ -103,7 +105,7 @@
                                             @endif
 
                                         ">
-                                            {{ $task->user->saProfile->status }}
+                                            {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -142,7 +144,9 @@
                                             </strong>
                                         </td>
                                         <td class="table-border2 rounded text-center text-capitalize fw-bolder
-                                            @if ($task->user->saProfile->status == 'active')
+                                            @if ($task->user->saProfile->status == 'pending')
+                                                table-success
+                                            @elseif ($task->user->saProfile->status == 'active')
                                                 table-success
                                             @elseif ($task->user->saProfile->status == 'probation')
                                                 table-warning
@@ -151,7 +155,7 @@
                                             @endif
 
                                         ">
-                                            {{ $task->user->saProfile->status }}
+                                        {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status}}
                                         </td>
                                     </tr>
                                 @endforeach

@@ -72,7 +72,11 @@
                                             @endforeach
                                             {{-- {{ $timeDay['days'][0] }}</td> --}}
                                         <td class="table-border2 rounded" data-label="Time" aria-label="Time">
-                                            {{ $timeDay['time_start'] }} - {{ $timeDay['time_end'] }}</td>
+                                            @php
+                                                $startTime = \Carbon\Carbon::parse($timeDay['time_start']);
+                                                $endTime = \Carbon\Carbon::parse($timeDay['time_end']);
+                                            @endphp
+                                            {{ $startTime->format('h:ma') }} - {{ $endTime->format('h:ma') }}</td>
                                         <td class="table-border2 rounded" data-label="Instructor" aria-label="Instructor">
                                             {{ $class->instructors }}
                                         </td>
@@ -122,11 +126,19 @@
                             </thead>
                             <tbody class="background-accent3">
                                 @forelse($taskHistories as $taskHistory)
+                                    @php
+                                        $startTime = \Carbon\Carbon::parse($taskHistory->start_time);
+                                        $endTime = \Carbon\Carbon::parse($taskHistory->end_time);
+                                    @endphp
                                     <tr class="text-center">
                                         <td class="table-border2 rounded" data-label="Task No." scope="row">
                                             {{ $taskHistory->id }}</td>
                                         <td class="table-border2 rounded" data-label="Date &amp; Time">
-                                            {{ $taskHistory->start_date }}</td>
+                                            {{ $taskHistory->start_date }}
+                                            <p class="m-0" style="font-size: 9px">
+                                                {{ $startTime->format('h:ma') }} - {{ $endTime->format('h:ma') }}
+                                            </p>
+                                        </td>
                                         <td class="table-border2 rounded" data-label="Time In">
                                             {{ $taskHistory->time_in ?? 'No Time-In Yet' }}
                                         </td>

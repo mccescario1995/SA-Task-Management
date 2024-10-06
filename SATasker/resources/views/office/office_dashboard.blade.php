@@ -37,14 +37,19 @@
                 <table class="table table-hover table-border rounded">
                     <thead class="background-accent1">
                         <tr>
-                            <th class="table-border2 rounded">Task No.</th>
+                            <th class="table-border2 rounded text-nowrap">Task No.</th>
                             <th class="table-border2 rounded">Date &amp; Time</th>
                             <th class="table-border2 rounded">Program</th>
                             <th class="table-border2 rounded">Task</th>
                             <th class="table-border2 rounded">Hours</th>
                             <th class="table-border2 rounded">Note</th>
 
-                            <th class="table-border2 rounded">Status</th>
+                            <th class="table-border2 rounded text-center">
+                                Status<br>
+                                <p class="text-nowrap m-0" style="font-size: 9px">
+                                    (Click to Review)
+                                </p>
+                            </th>
                             <th class="table-border2 rounded">Actions</th>
                         </tr>
                     </thead>

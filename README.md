@@ -1,38 +1,3 @@
-## Todo:
-- Implementation of Guidance Role
-  - UI (Pending)
-  - Migrations (Table)
-  - Back-end (Logic)
-    - update SA Account logic:
-      - for task voluntary and autohandle -> cannot received tasks if under probation period for MAJOR OFFENSE
-
-- UI Upgrades and Implementation
-  - Ongoing UI Changes:
-    - DO
-      - Main Background
-      - Side Nav
-      - Tables
-      - Colors
-    - Guidance (New)
-    - ALL
-      - Center all Headers to center
-  - Change UI DONE:
-    - Student Assistant
-      - UI 
-    - Office
-      - UI
-    - Guidance
-      - Dashboard (New)
-
-- (fix): ROUTE??
-
-- To Test:
-  - Student Assistant:
-    - Timein/Timeout 
-  - Office:
-    - ADD Task Automation
-    - SA Task List Review
-
 
 ## Revisions
 
@@ -311,3 +276,7 @@ trait AuthenticatesUsers
 }
 
 ```
+
+## To RUN
+ - laravel scheduler:
+    - php artisan schedule:run

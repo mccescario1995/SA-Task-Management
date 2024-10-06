@@ -73,7 +73,7 @@
                                         </td>
                                         <td class="table-border2 rounded text-center">{{ $task->note }}</td>
                                         <td class="table-border2 rounded text-center">
-                                            <p style="margin: 0px;">
+                                            <p class="text-nowrap" style="margin: 0px;">
                                                 {{ $task->accumulated_hours == null ? 0 : $task->accumulated_hours }} /
                                                 {{ $task->number_of_sa * 90 }}</p>
                                         </td>
