@@ -52,11 +52,13 @@
                         @else
                             @foreach ($probationList as $task)
                                 <tr>
-                                    <td class="table-border2 rounded text-center">{{ $task->first_name }}
-                                        {{ $task->last_name }}</td>
                                     <td class="table-border2 rounded text-center">
-                                        {{-- {{$task->offenses}} --}}
-                                        @foreach ($task->offenses as $offense)
+                                        {{ $task->saProfile->first_name }}
+                                        {{ $task->saProfile->last_name }}
+                                    </td>
+                                    <td class="table-border2 rounded text-center">
+                                        Major Offense ({{ $task->description }})
+                                        {{-- @foreach ($task->offenses as $offense)
                                             {{ $offense->description }}
                                             @if ($offense->type == 'grade')
                                                 (Grade)
@@ -66,11 +68,19 @@
                                             @if (!$loop->last)
                                                 <hr class="m-0">
                                             @endif
-                                        @endforeach
+                                        @endforeach --}}
                                     </td>
                                     <td class="table-border2 rounded text-center">
-                                        {{-- {{ $task->date_start }} --}}
-                                        @foreach ($task->offenses as $date)
+                                        @if ($task->date_start == null)
+                                            No Start Date
+                                        @else
+                                            @php
+                                                $startDate = Carbon\Carbon::parse($task->date_start);
+                                            @endphp
+                                            {{ $startDate->format('M.d.Y') }}
+                                        @endif
+
+                                        {{-- @foreach ($task->offenses as $date)
                                             @php
                                                 $startedDate = Carbon\Carbon::parse($date->date_start);
                                             @endphp
@@ -78,18 +88,25 @@
                                             @if (!$loop->last)
                                                 <hr class="m-0">
                                             @endif
-                                        @endforeach
+                                        @endforeach --}}
                                     </td>
                                     <td class="table-border2 rounded text-center">
-                                        @foreach ($task->offenses as $date)
+                                        @if ($task->date_end == null)
+                                            No End date
+                                        @else
                                             @php
-                                                $endDate = Carbon\Carbon::parse($date->date_end);
+                                                $endDate = Carbon\Carbon::parse($task->date_end);
                                             @endphp
+                                            {{ $endDate->format('M.d.Y') }}
+                                        @endif
+
+                                        {{-- @foreach ($task->offenses as $date)
+
                                             {{ $endDate->format('M.d.Y') }}
                                             @if (!$loop->last)
                                                 <hr class="m-0">
                                             @endif
-                                        @endforeach
+                                        @endforeach --}}
                                     </td>
                                 </tr>
                             @endforeach

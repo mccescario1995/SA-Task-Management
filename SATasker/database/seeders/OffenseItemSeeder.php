@@ -15,12 +15,6 @@ class OffenseItemSeeder extends Seeder
     {
         $offenseItems = [
             [
-                'offense_name' => 'Cheating',
-                'description' => 'Dishonesty',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
                 'offense_name' => 'Littering',
                 'description' => 'Improper disposal of trash within the campus',
                 'created_at' => now(),

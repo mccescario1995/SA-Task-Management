@@ -40,24 +40,24 @@
                         @else
                             @foreach ($SaLists as $sa)
                                 <tr>
-                                    <td class="table-border2 rounded text-center">{{ $sa->first_name }} {{ $sa->last_name }}
+                                    <td class="table-border2 rounded text-center">{{ $sa->SaProfile->first_name }} {{ $sa->SaProfile->last_name }}
                                     </td>
                                     <td class="table-border2 rounded text-center">
-
-                                        @foreach ($sa->offenses as $offence)
+                                        {{ $sa->description }}
+                                        {{-- @foreach ($sa->offenses as $offence)
                                             {{ $offence->description }}
                                             @if (!$loop->last)
                                                 ,
                                             @endif
-                                        @endforeach
+                                        @endforeach --}}
 
 
                                     </td>
                                     <td class="table-border2 rounded text-center">
                                         <div class="row px-3">
-                                            @if ($sa->status == 'probation' || $sa->status == 'active')
+                                            @if ($sa->status == 'probation' || $sa->SaProfile->status == 'active')
                                                 <div class="col mb-1">
-                                                    <form action="{{ route('sa.manager.scholarship.probe', $sa->user_id) }}"
+                                                    <form action="{{ route('sa.manager.scholarship.probe', $sa->SaProfile->user_id) }}"
                                                         method="post">
                                                         @csrf
                                                         <button type="submit" class="btn btn-secondary w-100">
@@ -67,7 +67,7 @@
                                                 </div>
                                                 <div class="col mb-1">
                                                     <form
-                                                        action="{{ route('sa.manager.scholarship.revoke', $sa->user_id) }}"
+                                                        action="{{ route('sa.manager.scholarship.revoke', $sa->SaProfile->user_id) }}"
                                                         method="post"
                                                         onsubmit="return confirm('Are you sure you want to revoke this scholarship?');">
                                                         @csrf

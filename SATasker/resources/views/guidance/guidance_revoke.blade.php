@@ -26,7 +26,7 @@
                                 <tr>
                                     <th class="table-border2 rounded">Name</th>
                                     <th class="table-border2 rounded">Reason</th>
-                                    <th class="table-border2 rounded" colspan="2">Scholarship Status</th>
+                                    <th class="table-border2 rounded" colspan="2"></th>
                                     {{-- <th class="table-border2 rounded">Date Ended</th> --}}
                                 </tr>
                             </thead>
@@ -41,35 +41,37 @@
                                     </tr>
                                 @else
                                     @foreach ($SaLists as $sa)
+
                                         <tr>
-                                            {{-- @php
-                                        $startDate = Carbon\Carbon::parse($task->date_start);
-                                        $endDate = Carbon\Carbon::parse($task->date_end);
-                                    @endphp --}}
-                                            <td class="table-border2 rounded text-center">{{ $sa->first_name }}
-                                                {{ $sa->last_name }}
+                                            @php
+                                        // dd($sa);
+                                    @endphp
+                                            <td class="table-border2 rounded text-center">
+                                                {{ $sa->saProfile->first_name }}
+                                                {{ $sa->saProfile->last_name }}
                                             </td>
                                             <td class="table-border2 rounded text-center">
-
-                                                @foreach ($sa->offenses as $offence)
+                                                Grade {{ $sa->description }}
+                                                {{-- @foreach ($sa->offenses as $offence)
                                                     {{ $offence->description }}
                                                     @if (!$loop->last)
                                                         ,
                                                     @endif
-                                                @endforeach
+                                                @endforeach --}}
 
 
                                             </td>
                                             <td class="table-border2 rounded text-center">
                                                 <div class="row px-3">
-                                                    @if ($sa->status == 'probation' || $sa->status == 'active' || $sa->status == 'pending')
+                                                    @if ($sa->status == 'probation')
                                                         <div class="col mb-1">
                                                             <form
                                                                 action="{{ route('guidance.scholarship.probe', $sa->user_id) }}"
                                                                 method="post">
                                                                 @csrf
-                                                                <button type="submit" class="btn btn-secondary w-100" {{$sa->status == 'probation' ? 'disabled' : ''}}>
-                                                                    {{$sa->status == 'probation' ? 'Probation' : 'Probe'}}
+                                                                <button type="submit"
+                                                                    class="btn w-100 {{ $sa->status == 'probation' ? 'btn-warning' : 'btn-success' }}">
+                                                                    {{ $sa->status == 'probation' ? 'Cancel Probation' : 'Probe' }}
                                                                 </button>
                                                             </form>
                                                         </div>
@@ -91,6 +93,23 @@
                                                             </button>
                                                         </div>
                                                     @endif
+                                                    @if (config('app.debug'))
+                                                    {{-- TO BE REMOVED ON BUILD/DEPLOYMENT --}}
+                                                        @php
+                                                            $user = App\Models\User::where('id_number', $sa->user_id)->withTrashed()->first();
+                                                            // dd($user->id);
+                                                        @endphp
+                                                        @if ($user->deleted_at)
+                                                            <form action="{{ route('users.restore', $user->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit" class="btn btn-dark">Restore
+                                                                    User</button>
+                                                            </form>
+                                                        @endif
+                                                    @endif
+
                                                 </div>
                                             </td>
                                         </tr>

@@ -38,8 +38,8 @@
                                 <tr>
                                     <th class="table-border2 rounded">Name</th>
                                     <th class="table-border2 rounded">Reason</th>
-                                    <th class="table-border2 rounded">Date Started</th>
-                                    <th class="table-border2 rounded">Date Ended</th>
+                                    {{-- <th class="table-border2 rounded">Date Started</th>
+                                    <th class="table-border2 rounded">Date Ended</th> --}}
                                 </tr>
                             </thead>
                             <tbody class="background-accent3 align-items-center">
@@ -52,15 +52,15 @@
                                         </td>
                                     </tr>
                                 @else
-                                    @foreach ($probationList as $userId => $task)
+                                    @foreach ($probationList as $task)
                                         <tr>
                                             <td class="table-border2 rounded text-center">
-                                                {{ $task->first()->saProfile->first_name }}
-                                                {{ $task->first()->saProfile->last_name }}</td>
+                                                {{ $task->saProfile->first_name }}
+                                                {{ $task->saProfile->last_name }}</td>
                                             <td class="table-border2 rounded text-center">
-                                                {{-- {{ $task->description }} --}}
-                                                @foreach ($task as $item)
-                                                    {{ $item->description }}
+                                                Grade {{ $task->description }}
+                                                {{-- @foreach ($task as $item)
+                                                    {{ $task->description }}
                                                     @if ($item->type == 'grade')
                                                         (Grade)
                                                     @elseif($item->type == 'major')
@@ -69,9 +69,9 @@
                                                     @if (!$loop->last)
                                                         <hr class="m-0">
                                                     @endif
-                                                @endforeach
+                                                @endforeach --}}
                                             </td>
-                                            <td class="table-border2 rounded text-center">
+                                            {{-- <td class="table-border2 rounded text-center">
                                                 @foreach ($task as $item)
                                                     {{ $item->date_start }}
                                                 @endforeach
@@ -80,7 +80,7 @@
                                                 @foreach ($task as $item)
                                                     {{ $item->date_end }}
                                                 @endforeach
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 @endif

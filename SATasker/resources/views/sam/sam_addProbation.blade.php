@@ -2,6 +2,10 @@
 
 @section('title', 'Add Major Offense - Student Assistant Manager')
 
+@section('css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
+@endsection
+
 @section('content')
     <!-- Your content here -->
     @include('include.nav_bar')
@@ -25,9 +29,9 @@
                                 <div class="mb-3">
                                     <label for="" class="form-label fw-bolder">Student
                                         Assistant:</label>
-                                    <select class="form-select @error('stud_id') is-invalid @enderror" name="stud_id"
-                                        id="StudId">
-                                        <option selected>Select a Student Assistant</option>
+                                    <select class="form-select row @error('stud_id') is-invalid @enderror" name="stud_id"
+                                        id="StudId" placeholder="Select a Student Assistant">
+                                        <option></option>
                                         @foreach ($SaLists as $saList)
                                             <option value="{{ $saList->user_id }}">{{ $saList->first_name }}
                                                 {{ $saList->last_name }}</option>
@@ -42,10 +46,10 @@
                             </div>
 
                         </div>
-                        <div class="col-11">
+                        {{-- <div class="col-11">
                             <div class="row">
                                 <div class="mb-3">
-                                    <label for="" class="form-label fw-bolder">Category:</label>
+                                    <label for="" class="form-label fw-bolder">Major Offense:</label>
                                     <select class="form-select @error('type') is-invalid @enderror" name="type"
                                         id="firstSelect">
                                         <option value="">Degree of Offense</option>
@@ -60,17 +64,17 @@
                                 @enderror
                             </div>
 
-                        </div>
+                        </div> --}}
                         <div class="col-11">
                             <div class="row">
                                 <div class="mb-3">
-                                    {{-- <label for="" class="form-label fw-bolder">Type Offense:</label> --}}
-                                    <select class="form-select @error('description') is-invalid @enderror"
-                                        name="description" id="secondSelect">
-                                        <option selected>Type of Offense</option>
-                                        <option class="low-grade-option" style="display: none;" value="0.0">0.0</option>
+                                    <label for="" class="form-label fw-bolder">Major Offense:</label>
+                                    <select class="form-select row @error('description') is-invalid @enderror"
+                                        name="description" id="MajorOffence" placeholder="Type of Offense">
+                                        <option></option>
+                                        {{-- <option class="low-grade-option" style="display: none;" value="0.0">0.0</option> --}}
                                         @foreach ($OffenseLists as $offense)
-                                            <option class="major-offense-option" style="display: none;"
+                                            <option class="major-offense-option"
                                                 value="{{ $offense->offense_name }}">{{ $offense->offense_name }}</option>
                                         @endforeach
                                     </select>
@@ -89,12 +93,12 @@
                             <div class="col">
                                 <label class="fw-bolder">Status:</label>
                                 <div class="form-check ms-3">
-                                    <input class="form-check-input @error('status') is-invalid @enderror" type="radio"
+                                    <input class="custom-radio @error('status') is-invalid @enderror" type="radio"
                                         name="status" id="statusOption1" value="probation" selected />
                                     <label class="form-check-label" for="statusOption1">Probation</label>
                                 </div>
                                 <div class="form-check ms-3">
-                                    <input class="form-check-input @error('status') is-invalid @enderror" type="radio"
+                                    <input class="custom-radio @error('status') is-invalid @enderror" type="radio"
                                         name="status" id="statusOption2" value="revoked" />
                                     <label class="form-check-label" for="statusOption2">Revoke Scholarship</label>
                                 </div>
@@ -107,7 +111,7 @@
                         </div>
                         <div class="row">
                             <div class="mb-3">
-                                <label for=""
+                                <label id="dateStartLabel"
                                     class="form-label fw-bolder @error('date_start') is-invalid @enderror">Date
                                     Started</label>
                                 <input type="date" class="form-control" name="date_start" id=""
@@ -119,7 +123,7 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for=""
+                                <label for="" id="dateEndLabel"
                                     class="form-label fw-bolder @error('date_end') is-invalid @enderror">Date
                                     Ended</label>
                                 <input type="date" class="form-control" name="date_end" id=""
@@ -154,7 +158,19 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+
     <script>
+        $(document).ready(function() {
+            $('#StudId').select2({
+                placeholder: "Select a Student Assistant",
+                allowClear: true
+            });
+            $('#MajorOffence').select2({
+                placeholder: "Type of Offence",
+                allowClear: true
+            });
+        });
         document.addEventListener('DOMContentLoaded', function() {
 
             const firstSelect = document.getElementById('firstSelect');
@@ -166,6 +182,10 @@
             const probationRadio = document.getElementById('statusOption1');
             const revokeRadio = document.getElementById('statusOption2');
 
+            // get the Date Fields
+            // Get the date label fields
+            const dateStartedLabel = document.getElementById('dateStartLabel');
+            const dateEndedLabel = document.getElementById('dateEndLabel');
             // Get the date input fields
             const dateStarted = document.querySelector('input[name="date_start"]');
             const dateEnded = document.querySelector('input[name="date_end"]');
@@ -174,40 +194,44 @@
             function toggleDateFields() {
                 if (probationRadio.checked) {
                     // If probation is selected, enable date fields
-                    dateStarted.disabled = false;
-                    dateEnded.disabled = false;
+                    dateStartedLabel.hidden = false;
+                    dateEndedLabel.hidden = false;
+                    dateStarted.hidden = false;
+                    dateEnded.hidden = false;
                 } else {
                     // If revoke is selected, disable date fields
-                    dateStarted.disabled = true;
-                    dateEnded.disabled = true;
+                    dateStartLabel.hidden = true;
+                    dateEndedLabel.hidden = true;
+                    dateStarted.hidden = true;
+                    dateEnded.hidden = true;
                 }
             }
 
-            // Listen for changes on the radio buttons
-            probationRadio.addEventListener('change', toggleDateFields);
-            revokeRadio.addEventListener('change', toggleDateFields);
+             // Listen for changes on the radio buttons
+             probationRadio.addEventListener('change', toggleDateFields);
+             revokeRadio.addEventListener('change', toggleDateFields);
 
-            // Initialize the state on page load
-            toggleDateFields();
+             // Initialize the state on page load
+             toggleDateFields();
 
-            firstSelect.addEventListener('change', function () {
-            // Clear all options in the second select
-            secondSelect.innerHTML = '<option selected>Type of Offense</option>'; // Reset
+             firstSelect.addEventListener('change', function() {
+                 // Clear all options in the second select
+                 secondSelect.innerHTML = '<option selected>Type of Offense</option>'; // Reset
 
-            if (firstSelect.value === 'grade') {
-                // Show low grade options
-                lowGradeOptions.forEach(option => {
-                    option.style.display = 'block';
-                    secondSelect.appendChild(option);
-                });
-            } else if (firstSelect.value === 'major') {
-                // Show major offense options
-                majorOffenseOptions.forEach(option => {
-                    option.style.display = 'block';
-                    secondSelect.appendChild(option);
-                });
-            }
-        });
+                 if (firstSelect.value === 'grade') {
+                     // Show low grade options
+                     lowGradeOptions.forEach(option => {
+                         option.style.display = 'block';
+                         secondSelect.appendChild(option);
+                     });
+                 } else if (firstSelect.value === 'major') {
+                     // Show major offense options
+                     majorOffenseOptions.forEach(option => {
+                         option.style.display = 'block';
+                         secondSelect.appendChild(option);
+                     });
+                 }
+             });
         });
     </script>
 @endsection
