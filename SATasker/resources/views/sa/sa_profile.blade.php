@@ -106,7 +106,7 @@
                                 {{ $render->total_hours }}
                             @endif
                         @endforeach
-                        / {{ $taskHistories->total() * 90 }} Hour(s) Rendered
+                        / 90 Hour(s) Rendered
                     </h6>
                     <div class="table-responsive" style="padding: 1em;">
                         <table class="table table-hover table-border rounded">

@@ -40,7 +40,7 @@ class SaManagerDashboardController extends Controller
 
     public function revoke()
     {
-        $SaLists = Offense::distinct('user_id')->where('type', 'major')->where('status', 'revoked')->get();
+        $SaLists = Offense::distinct('user_id')->where('type', 'major')->where('status', 'pending_revoke')->get();
         return view('sam.sam_revoke', compact('SaLists'));
     }
 
@@ -74,7 +74,7 @@ class SaManagerDashboardController extends Controller
             ]);
         }
 
-        $user = User::where('id_number', '=', $saProfile->user_id)->delete();
+        // $user = User::where('id_number', '=', $saProfile->user_id)->delete();
 
         return redirect()->route('sa.manager.probation')->with('success', "Added a New Offense");
     }
@@ -93,6 +93,13 @@ class SaManagerDashboardController extends Controller
         $user = User::where('id_number', '=', $saProfileID)->delete();
         $offense = Offense::where('user_id', $saProfileID)->update(['status' => 'revoked']);
         return redirect()->back()->with('success', 'Status updated to revoked');
+    }
+
+    public function cancelPendingRevoke(Request $request, $saProfileID, $offenseId)
+    {
+        $saProfile = SaProfile::where('user_id', '=', $saProfileID)->update(['status' => 'active']);
+        $offense = Offense::where('id', $offenseId)->delete();
+        return redirect()->back()->with('success', 'Removed in Revoke Page');
     }
 
     public function onGoing()
@@ -161,22 +168,22 @@ class SaManagerDashboardController extends Controller
         if ($list == 'on-going') {
             $saList = 1;
             $saLists = SaProfile::join('users', 'sa_profiles.user_id', '=', 'users.id_number')
-            ->join('user_tasks_timelog', 'users.id', '=', 'user_tasks_timelog.user_id')
-            ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
-            ->select(
-                'sa_profiles.user_id',
-                'sa_profiles.first_name',
-                'sa_profiles.last_name',
-                'sa_profiles.course_program',
-                'user_tasks_timelog.id AS timelogId',
-                DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'),
-                DB::raw('DATE_FORMAT(user_tasks_timelog.time_out, "%H:%i") AS timeout'),
-                'user_tasks_timelog.total_hours',
-                'user_tasks_timelog.feedback'
-            )
-            ->where('tasks.id', $taskId)
-            ->where('user_tasks_timelog.task_status', $saList)
-            ->get();
+                ->join('user_tasks_timelog', 'users.id', '=', 'user_tasks_timelog.user_id')
+                ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
+                ->select(
+                    'sa_profiles.user_id',
+                    'sa_profiles.first_name',
+                    'sa_profiles.last_name',
+                    'sa_profiles.course_program',
+                    'user_tasks_timelog.id AS timelogId',
+                    DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'),
+                    DB::raw('DATE_FORMAT(user_tasks_timelog.time_out, "%H:%i") AS timeout'),
+                    'user_tasks_timelog.total_hours',
+                    'user_tasks_timelog.feedback'
+                )
+                ->where('tasks.id', $taskId)
+                ->where('user_tasks_timelog.task_status', $saList)
+                ->get();
         } elseif ($list == 'completed') {
             $saList = 2;
             $saLists = SaTaskTimeLog::where('task_status', $saList)->where('task_id', $taskId)->get();

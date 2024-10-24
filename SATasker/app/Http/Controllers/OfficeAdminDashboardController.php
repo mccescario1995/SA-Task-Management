@@ -190,6 +190,7 @@ class OfficeAdminDashboardController extends Controller
         )
             ->where('task_status', '=', 2)
             ->groupBy('user_id')
+            ->having('total_rendered_hours', '=', 90)
             ->get();
 
         // Select the appropriate list based on status

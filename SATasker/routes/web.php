@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/sa_manager/revoke', [SAManagerDashboardController::class, 'revoke'])->name('sa.manager.revoke');
         Route::post('/sa_manager/scholarship/{saProfile}/probe', [SAManagerDashboardController::class, 'setToProbation'])->name('sa.manager.scholarship.probe');
         Route::post('/sa_manager/scholarship/{saProfile}/revoke', [SAManagerDashboardController::class, 'setToRevoke'])->name('sa.manager.scholarship.revoke');
+        Route::post('/sa_manager/scholarship/{saProfileID}/{offenseId}/revoke', [SAManagerDashboardController::class, 'cancelPendingRevoke'])->name('sa.manager.scholarship.revoke.cancel');
     });
 
     //Office Admin Routes
@@ -88,7 +89,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     // Guidance Routes
-    Route::group(['middleware' => [RoleMiddleware::class . 'guidance_office']], function () {
+    Route::group(['middleware' => [RoleMiddleware::class . ':guidance_office']], function () {
         Route::get('/guidance_office/dashboard', [GuidanceController::class, 'dashboard'])->name('guidance.dashboard');
         Route::get('/guidance_office/probation', [GuidanceController::class, 'probation'])->name('guidance.probation');
         Route::get('/guidance_office/scholarship', [GuidanceController::class, 'scholarship'])->name('guidance.scholarship');

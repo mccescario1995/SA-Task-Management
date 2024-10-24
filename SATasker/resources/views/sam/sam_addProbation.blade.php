@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="form-check ms-3">
                                     <input class="custom-radio @error('status') is-invalid @enderror" type="radio"
-                                        name="status" id="statusOption2" value="revoked" />
+                                        name="status" id="statusOption2" value="pending_revoke" />
                                     <label class="form-check-label" for="statusOption2">Revoke Scholarship</label>
                                 </div>
                                 @error('status')

@@ -60,7 +60,7 @@ trait AuthenticatesUsers
         $portalNames = [
             'student-assistant' => 'Student Assistant',
             'office' => 'Office Admin',
-            'do' => 'Sa Manager',
+            'do' => 'SA Manager',
             'guidance' => 'Guidance Office',
         ];
         // Set the login name based on the provided ID or default to 'Unknown Portal'
@@ -97,8 +97,12 @@ trait AuthenticatesUsers
             Auth::logout();
             return redirect()->back()->withErrors(['email' => 'Your account has been deactivated.']);
         }
+        if ($request->portal_details == 'SA Manager') {
+            $portalSnake = Str::snake('Sa Manager');
+        }else {
+            $portalSnake = Str::snake($request->portal_details);
+        }
 
-        $portalSnake = Str::snake($request->portal_details);
         $role = $user->getRoleNames()->first();
         if ($portalSnake !== $role) {
             return redirect()->route('landing')->with('error', 'Entered Wrong Portal');

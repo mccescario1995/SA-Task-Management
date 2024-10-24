@@ -158,7 +158,7 @@ class SaDashboardController extends Controller
             ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
             ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
             ->where('users.id', $user->id)
-            ->where('task_status', 2)
+            // ->where('task_status', 2)
             ->select(
                 DB::raw('SUM(user_tasks_timelog.total_hours) as total_hours'),
             )

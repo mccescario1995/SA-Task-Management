@@ -59,7 +59,7 @@
                     <tbody class="background-accent3">
                         @if ($saLists->count() == 0)
                             <tr>
-                                <td class="table-border2 rounded text-center" colspan="4">
+                                <td class="table-border2 rounded text-center" colspan="5">
                                     <strong>No SA with {{ $status === 'ongoing' ? 'On-going' : 'Completed' }} Tasks</strong>
                                 </td>
                             </tr>
