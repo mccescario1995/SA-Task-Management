@@ -8,9 +8,9 @@
     <div class="main-background p-4 py-0 ">
         <div class="mt-3">
             <div class="pb-3 pt-2 border-bottom-accent2 row" style="padding: 3em;">
-                <div class="col-2 ">
+                {{-- <div class="col-2 ">
                     <img class="img float-end" src="https://placehold.co/200" alt="">
-                </div>
+                </div> --}}
                 <div class="col">
                     {{-- @foreach ($userProfiles as $userProfile) --}}
                     <div class="d-lg-flex align-items-lg-center mt-2">

@@ -63,11 +63,19 @@ class OffenseSeeder extends Seeder
 
         DB::table('offenses')->insert($offenses);
 
-        for ($userId = 119; $userId <= 123; $userId++) {
+        for ($userId = 119; $userId <= 121; $userId++) {
             $profile = SaProfile::where('user_id', $userId)->first();
 
             if ($profile) {
                 $profile->update(['status' => 'probation']);
+            }
+        }
+
+        for ($userId = 122; $userId <= 123; $userId++) {
+            $profile = SaProfile::where('user_id', $userId)->first();
+
+            if ($profile) {
+                $profile->update(['status' => 'pending_revoke']);
             }
         }
     }

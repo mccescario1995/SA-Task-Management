@@ -20,12 +20,12 @@ class GuidanceController extends Controller
     public function dashboard()
     {
         // Guidance Dashboard Cards
-        $totalSA = SaProfile::whereIn('status', ['active'])->whereNotIn('status', ['probation', 'revoked'])->count();
+        $totalSA = SaProfile::whereIn('status', ['active', 'pending_revoke', 'probation'])->whereNotIn('status', ['revoked'])->count();
         $activeSA = $this->countActiveSa();
         $inactiveSA = $totalSA - $activeSA;
 
         //Scholarship Status Pie Chart
-        $activeScholar = SaProfile::where('status', '=', 'active')->count();
+        $activeScholar = SaProfile::whereIn('status',['active','pending_revoke'])->count();
         $probationScholar = SaProfile::where('status', '=', 'probation')->count();
         $revokedScholar = SaProfile::where('status', '=', 'revoked')->count();
 
