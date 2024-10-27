@@ -36,7 +36,8 @@
 
             <div class="px-3">
                 <section>
-                    <div class="background-accent1 py-2 border-accent2 rounded mb-3 d-xl-flex justify-content-xl-center align-items-xl-center mt-4">
+                    <div
+                        class="background-accent1 py-2 border-accent2 rounded mb-3 d-xl-flex justify-content-xl-center align-items-xl-center mt-4">
                         <h2 class="text-accent2 mb-0">Class Schedule</h2>
                     </div>
                     <h6 style="text-align: center;margin-bottom: 0px;">SY {{ $term }} Term 1</h6>
@@ -64,8 +65,8 @@
                                         <td class="table-border2 rounded" data-label="Section" aria-label="Section">
                                             {{ $class->section }}</td>
                                         <td class="table-border2 rounded" data-label="Day" aria-label="Day">
-                                            @foreach($timeDay['days'] as $day)
-                                                {{$day}}
+                                            @foreach ($timeDay['days'] as $day)
+                                                {{ $day }}
                                                 @if (!$loop->last)
                                                     ,
                                                 @endif
@@ -95,7 +96,8 @@
             <hr>
             <div class="px-3">
                 <section>
-                    <div class="background-accent1 py-2 border-accent2 rounded mb-1 d-xl-flex justify-content-xl-center align-items-xl-center mt-4">
+                    <div
+                        class="background-accent1 py-2 border-accent2 rounded mb-1 d-xl-flex justify-content-xl-center align-items-xl-center mt-4">
                         <h2 class="text-accent2 mb-0">Task History</h2>
                     </div>
                     <h6 style="text-align: center;margin-bottom: 0px;">
@@ -129,8 +131,9 @@
                                     @php
                                         $startTime = \Carbon\Carbon::parse($taskHistory->start_time);
                                         $endTime = \Carbon\Carbon::parse($taskHistory->end_time);
-                                        $timeIn = \Carbon\Carbon::parse($taskHistory->time_in);
-                                        $OutTime = \Carbon\Carbon::parse($taskHistory->time_out);
+                                        $timeIn = $taskHistory->time_in ? \Carbon\Carbon::parse($taskHistory->time_in) : null;
+                                        $timeOut = $taskHistory->time_out ? \Carbon\Carbon::parse($taskHistory->time_out) : null;
+                                    @endphp
                                     @endphp
                                     <tr class="text-center">
                                         <td class="table-border2 rounded" data-label="Task No." scope="row">
@@ -141,11 +144,11 @@
                                                 {{ $startTime->format('h:ma') }} - {{ $endTime->format('h:ma') }}
                                             </p>
                                         </td>
-                                        <td class="table-border2 rounded" data-label="Time In">
-                                            {{ $timeIn->format('h:m A') ?? 'No Time-In Yet' }}
+                                        <td class="table-border2 rounded">
+                                            {{ $timeIn ? $timeIn->format('h:i A') : 'No Time-In Yet' }}
                                         </td>
-                                        <td class="table-border2 rounded" data-label="Time Out">
-                                            {{ $OutTime}}
+                                        <td class="table-border2 rounded">
+                                            {{ $timeOut ? $timeOut->format('h:i A') : 'No Time-Out Yet' }}
                                         </td>
                                         <td class="table-border2 rounded" data-label="Total Hours">
                                             {{ $taskHistory->total_hours ?? 'No Rendered Hrs' }}
