@@ -77,8 +77,13 @@
                                         <td class="table-border2 rounded text-center">{{ $task->id }}</td>
                                         <td class="table-border2 rounded text-center">
                                             <p class="m-0">{{ $task->start_date }}</p>
-                                            <p class="m-0" style="font-size: 12px;">{{ $task->start_time }} -
-                                                {{ $task->end_time }}</p>
+                                            <p class="m-0" style="font-size: 12px;">
+                                                @php
+                                                    $start_time = \Carbon\Carbon::parse($task->start_time);
+                                                    $end_time = \Carbon\Carbon::parse($task->end_time);
+                                                @endphp
+                                                {{ $start_time->format('h:m A') }} -
+                                                {{ $end_time->format('h:m A') }}</p>
                                         </td>
                                         <td class="table-border2 rounded text-center">{{ $task->preffred_program }}
                                         </td>
@@ -157,8 +162,13 @@
                                         <td class="table-border2 rounded text-center">{{ $assignedtask->task_id }}</td>
                                         <td class="table-border2 rounded text-center">
                                             <p style="margin: 0px;">{{ $assignedtask->start_date }}</p>
-                                            <p class="mb-0" style="font-size: 12px;">{{ $assignedtask->start_time }} -
-                                                {{ $assignedtask->end_time }}</p>
+                                            <p class="mb-0" style="font-size: 12px;">
+                                                @php
+                                                    $start_time = \Carbon\Carbon::parse($assignedtask->start_time);
+                                                    $end_time = \Carbon\Carbon::parse($assignedtask->end_time);
+                                                @endphp
+                                                {{ $start_time->format('h:m A') }} -
+                                                {{ $end_time->format('h:m A') }}</p>
                                         </td>
                                         <td class="table-border2 rounded text-center">
                                             {{ $assignedtask->preffred_program }}</td>

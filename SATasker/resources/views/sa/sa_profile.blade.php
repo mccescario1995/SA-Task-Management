@@ -129,8 +129,8 @@
                                     @php
                                         $startTime = \Carbon\Carbon::parse($taskHistory->start_time);
                                         $endTime = \Carbon\Carbon::parse($taskHistory->end_time);
-                                        $time_in = \Carbon\Carbon::parse($taskHistory->time_in);
-                                        $time_out = \Carbon\Carbon::parse($taskHistory->time_out);
+                                        $timeIn = \Carbon\Carbon::parse($taskHistory->time_in);
+                                        $timeOut = \Carbon\Carbon::parse($taskHistory->time_out);
                                     @endphp
                                     <tr class="text-center">
                                         <td class="table-border2 rounded" data-label="Task No." scope="row">
@@ -142,10 +142,10 @@
                                             </p>
                                         </td>
                                         <td class="table-border2 rounded" data-label="Time In">
-                                            {{ $time_in->format('h:mA') ?? 'No Time-In Yet' }}
+                                            {{ $timeIn->format('h:m A') ?? 'No Time-In Yet' }}
                                         </td>
                                         <td class="table-border2 rounded" data-label="Time Out">
-                                            {{ $time_out->format('h:mA') ?? 'No Time-Out Yet' }}
+                                            {{ $timeOut->format('h:m A') ?? 'No Time-Out Yet' }}
                                         </td>
                                         <td class="table-border2 rounded" data-label="Total Hours">
                                             {{ $taskHistory->total_hours ?? 'No Rendered Hrs' }}
