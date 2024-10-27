@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Student Assistant Manager Routes
     Route::group(['middleware' => [RoleMiddleware::class . ':sa_manager']], function () {
+        Route::get('/sa_manager/dashboard', [SAManagerDashboardController::class, 'dashboard'])->name('sa.manager.dashboard');
         Route::get('/sa_manager/dashboard/on-going', [SAManagerDashboardController::class, 'onGoing'])->name('sa.manager.dashboard.ongoing');
         Route::get('/sa_manager/dashboard/done', [SAManagerDashboardController::class, 'finished'])->name('sa.manager.dashboard.done');
         Route::get('/sa_manager/probation', [SAManagerDashboardController::class, 'probation'])->name('sa.manager.probation');
@@ -79,7 +80,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/office_admin/{task}/cancel', [OfficeAdminDashboardController::class, 'cancel'])->name('office.cancel');
         Route::get('/office_admin/{taskId}/sa_list', [OfficeAdminDashboardController::class, 'taskSaList'])->name('office.saList');
         Route::get('/office_admin/{taskId}/sa_list_complete', [OfficeAdminDashboardController::class, 'taskSaListComplete'])->name('office.saList.complete');
-        Route::put('/office_admin/feedback', [OfficeAdminDashboardController::class, 'addFeedback'])->name('office.feedback');
+        Route::post('/office_admin/feedback', [OfficeAdminDashboardController::class, 'addFeedback'])->name('office.feedback');
     });
 
     //Reports

@@ -24,6 +24,63 @@ class SaManagerDashboardController extends Controller
         return view('sam.sam_dashboard');
     }
 
+    public function dashboard()
+    {
+        // Guidance Dashboard Cards
+        $totalSA = SaProfile::whereIn('status', ['active', 'pending_revoke', 'probation'])->whereNotIn('status', ['revoked'])->count();
+        $activeSA = $this->countActiveSa();
+        $inactiveSA = $totalSA - $activeSA;
+
+        //Scholarship Status Pie Chart
+        $activeScholar = SaProfile::whereIn('status',['active','pending_revoke'])->count();
+        $probationScholar = SaProfile::where('status', '=', 'probation')->count();
+        $revokedScholar = SaProfile::where('status', '=', 'revoked')->count();
+
+        // Offence Status Bar Chart
+        $zeroProbation = Offense::where('type', 'grade')
+            ->whereHas('saProfile', function ($query) {
+                $query->where('status', 'probation');
+            })
+            ->count();
+        $zeroRevoked = Offense::where('type', 'grade')
+            ->whereHas('saProfile', function ($query) {
+                $query->where('status', 'revoked');
+            })
+            ->count();
+        $majorProbation = Offense::where('type', 'major')
+            ->whereHas('saProfile', function ($query) {
+                $query->where('status', 'probation');
+            })
+            ->count();
+        $majorRevoked = Offense::where('type', 'major')
+            ->whereHas('saProfile', function ($query) {
+                $query->where('status', 'revoked');
+            })
+            ->count();
+
+        return view('sam.sam_dashboard', compact('totalSA', 'activeSA', 'inactiveSA', 'activeScholar', 'probationScholar', 'revokedScholar', 'zeroProbation', 'zeroRevoked', 'majorRevoked', 'majorProbation'));
+    }
+
+    private function countActiveSa()
+    {
+        // Get tasks with student assistants where the pivot table status is 'active'
+        $tasks = Task::with([
+            'studentAssistants' => function ($query) {
+                // Only include active student assistants
+                $query->wherePivot('task_status', '1');
+            }
+        ])->distinct()->get();
+
+        // Initialize a count for active student assistants
+        $activeSA = 0;
+
+        // Loop through each task to count the number of active student assistants
+        foreach ($tasks as $task) {
+            $activeSA += $task->studentAssistants->count(); // Count active SAs in each task
+        }
+        return $activeSA;
+    }
+
     public function probation()
     {
 
@@ -52,7 +109,7 @@ class SaManagerDashboardController extends Controller
             // 'type' => 'major',
             'description' => 'required|string',
             'status' => 'required|string',
-            'date_start' => 'nullable|date',
+            'date_start' => 'nullable|date|after_or_equal:now',
             'date_end' => 'nullable|date|after_or_equal:date_start', // Ensure the end date is after the start date
         ]);
 
@@ -250,12 +307,13 @@ class SaManagerDashboardController extends Controller
             ->where('tasks.id', '=', $taskId)
             ->where('user_tasks_timelog.task_status', '=', 2)
             ->get();
-        dd($saLists);
+
         return view('sam.sam_salist_task_done', compact('saLists', 'user', 'taskId'));
     }
 
     public function editHours(Request $request)
     {
+        // dd($request->all());
         // Validate the incoming request data
         $request->validate([
             'add_hours' => 'required|numeric',

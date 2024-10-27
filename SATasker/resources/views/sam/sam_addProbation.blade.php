@@ -175,16 +175,19 @@
         });
 
         const today = new Date().toISOString().split('T')[0];
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrowString = tomorrow.toISOString().split('T')[0];
 
         // Set the min attribute of the start date to today
-        document.getElementById("date_start").setAttribute("min", today);
+        document.getElementById("date_end").setAttribute("min", tomorrowString);
 
         // Set the min attribute of the end date when the start date changes
-        document.getElementById("date_start").addEventListener("change", function() {
-            const startDate = this.value;
-            // Set the min for end date to the selected start date
-            document.getElementById("date_end").setAttribute("min", startDate);
-        });
+        // document.getElementById("date_start").addEventListener("change", function() {
+        //     const dateNowTommoroe = this.value;
+        //     // Set the min for end date to the selected start date
+        //     document.getElementById("date_end").setAttribute("min", startDate);
+        // });
 
         document.addEventListener('DOMContentLoaded', function() {
 

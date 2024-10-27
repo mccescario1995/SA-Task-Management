@@ -154,7 +154,11 @@ class GuidanceController extends Controller
         if ($user && $user->trashed()) {
             $user->restore(); // Restore the soft-deleted user
             SaProfile::where('user_id', $user->id_number)->update(['status' => "active"]);
-            return redirect()->back()->with('success', 'User cancelled revoke successfully.');
+            $withOffense = Offense::where('user_id', $user->id_number)->where('type','grade')->get();
+            foreach ($withOffense as $offense) {
+                $offense->delete();
+            }
+            return redirect()->back()->with('success', 'SA Restored as Active Successfully.');
         }
 
         return redirect()->back()->with('error', 'User not found or already active.');

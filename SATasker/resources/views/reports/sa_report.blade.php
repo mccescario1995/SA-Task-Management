@@ -6,6 +6,9 @@
     <!-- Your content here -->
     @include('include.nav_bar')
     <div class="text-center main-background">
+        @php
+            use App\Models\Offense;
+        @endphp
         <div
             class="background-accent1 py-2 border-accent2 rounded mb-1 d-xl-flex justify-content-xl-center align-items-xl-center mt-4">
             <h2 class="text-accent2 mb-0">SA Records</h2>
@@ -65,6 +68,11 @@
                             </tr>
                         @else
                             @foreach ($saLists as $task)
+                                @php
+                                    // dd($task->user->id_number);
+                                    $scholarshipStatus = $offenses[$task->user->id_number] ?? null;
+                                    // dd($scholarshipStatus->type);
+                                @endphp
                                 <tr>
                                     <td class="table-border2 rounded text-center">
                                         {{ $task->user->saProfile->first_name ?? 'N/A' }}
@@ -85,7 +93,25 @@
                                     <!-- Display SA status logic -->
                                     <td class="table-border2 rounded text-center text-capitalize fw-bolder">
                                         {{-- {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status }} --}}
-                                        {{ $task->user->saProfile->status ?? 'No Status' }}
+                                        @if ($task->user->saProfile->status === 'pending_revoke')
+                                            Probation
+                                            @if ($scholarshipStatus && $scholarshipStatus->type === 'major')
+                                                (D.O.)
+                                            @elseif($scholarshipStatus && $scholarshipStatus->type === 'grade')
+                                                (Guidance)
+                                            @endif
+                                        @else
+                                            {{ $task->user->saProfile->status ?? 'No Status' }}
+                                            @if ($task->user->saProfile->status)
+                                                @if ($scholarshipStatus && $scholarshipStatus->type === 'major')
+                                                    (D.O.)
+                                                @elseif($scholarshipStatus && $scholarshipStatus->type === 'grade')
+                                                    (Guidance)
+                                                @endif
+                                            @endif
+                                        @endif
+
+                                        {{-- {{ $task->user->saProfile->status ?? 'No Status' }} --}}
                                     </td>
                                 </tr>
                             @endforeach
