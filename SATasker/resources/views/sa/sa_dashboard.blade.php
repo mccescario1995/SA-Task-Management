@@ -84,14 +84,15 @@
                                         </td>
                                         <td class="table-border2 rounded text-center">{{ $task->assigned_office }}</td>
                                         <td class="table-border2 rounded text-center">{{ $task->note }}</td>
-                                        @if ($saProfile && $saProfile->offenses()->where('type', 'major')->where('status', 'probation')->exists())
-                                            {{-- The SA is on probation for a major offense --}}
+                                        {{-- @if ($saProfile && $saProfile->offenses()->where('type', 'major')->where('status', 'probation')->exists())
+                                            The SA is on probation for a major offense
                                             <td class="table-border2 rounded text-center">
                                                 <button type="button" class="btn btn-secondary" disabled>
                                                     Unavailable
                                                     (Under Probation)</button>
                                             </td>
-                                        @elseif ($saCount == $task->number_of_sa)
+                                        @else --}}
+                                        @if ($saCount == $task->number_of_sa)
                                             <td class="table-border2 rounded text-center">
                                                 <input type="hidden" name="task_id" value="{{ $task->id }}">
                                                 <button type="submit" class="btn btn-secondary w-100">Full</button>
