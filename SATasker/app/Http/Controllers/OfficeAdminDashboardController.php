@@ -178,7 +178,7 @@ class OfficeAdminDashboardController extends Controller
         )
             ->where('task_status', '=', 1)
             ->groupBy('user_id')
-            ->get();
+            ->paginate(10);
 
         // Query for completed tasks
         $saListsCompleted = SaTaskTimeLog::select(
@@ -189,7 +189,7 @@ class OfficeAdminDashboardController extends Controller
             ->where('task_status', '=', 2)
             ->groupBy('user_id')
             ->having('total_rendered_hours', '=', 90)
-            ->get();
+            ->paginate(10);
 
         // Select the appropriate list based on status
         $saLists = $status === 'ongoing' ? $saListsOngoing : $saListsCompleted;

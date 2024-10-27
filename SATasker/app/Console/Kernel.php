@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('check:sa-grades')->daily();
         $schedule->command('check:sa-probation')->daily();
+        $schedule->command('check:sa-end-probation')->daily();
     }
 
     /**
