@@ -134,7 +134,7 @@
                                         $timeIn = $taskHistory->time_in ? \Carbon\Carbon::parse($taskHistory->time_in) : null;
                                         $timeOut = $taskHistory->time_out ? \Carbon\Carbon::parse($taskHistory->time_out) : null;
                                     @endphp
-                                    @endphp
+                                    
                                     <tr class="text-center">
                                         <td class="table-border2 rounded" data-label="Task No." scope="row">
                                             {{ $taskHistory->id }}</td>
