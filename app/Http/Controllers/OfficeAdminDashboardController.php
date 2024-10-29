@@ -199,7 +199,6 @@ class OfficeAdminDashboardController extends Controller
 
         // Select the appropriate list based on status
         $saLists = $status === 'ongoing' ? $saListsOngoing : $saListsCompleted;
-        // dd($saLists);
         $offenses = Offense::whereIn('user_id', $saLists->pluck('user.id_number'))->get()->keyBy('user_id');
         return view('reports.sa_report', compact('status', 'saLists', 'user', 'offenses'));
     }

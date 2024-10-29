@@ -69,7 +69,7 @@
                         @else
                             @foreach ($saLists as $task)
                                 @php
-                                    $scholarshipStatus = $offenses[optional($task->user)->id_number] ?? null;
+                                    $scholarshipStatus = $offenses[$task->user->id_number] ?? null;
                                 @endphp
 
                                 <tr>
@@ -92,19 +92,14 @@
                                     <!-- Display SA status logic -->
                                     <td class="table-border2 rounded text-center text-capitalize fw-bolder">
                                         {{-- {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status }} --}}
-                                        @if (optional(optional($task->user)->saProfile)->status === 'pending_revoke')
+                                        @if ($task->user->saProfile->status === 'pending_revoke')
                                             Pending Revocation
-                                            @if (optional($scholarshipStatus)->type === 'major')
-                                                (D.O.)
-                                            @elseif(optional($scholarshipStatus)->type === 'grade')
-                                                (Guidance)
-                                            @endif
                                         @else
-                                            {{ optional(optional($task->user)->saProfile)->status ?? 'No Status' }}
-                                            @if (optional(optional($task->user)->saProfile)->status)
-                                                @if (optional($scholarshipStatus)->type === 'major')
+                                            {{ $task->user->saProfile->status ?? 'No Status' }}
+                                            @if ($task->user->saProfile->status)
+                                                @if ($scholarshipStatus->type === 'major')
                                                     (D.O.)
-                                                @elseif(optional($scholarshipStatus)->type === 'grade')
+                                                @elseif($scholarshipStatus->type === 'grade')
                                                     (Guidance)
                                                 @endif
                                             @endif

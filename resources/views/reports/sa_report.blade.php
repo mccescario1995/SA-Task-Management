@@ -94,11 +94,6 @@
                                         {{-- {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status }} --}}
                                         @if (optional(optional($task->user)->saProfile)->status === 'pending_revoke')
                                             Pending Revocation
-                                            @if (optional($scholarshipStatus)->type === 'major')
-                                                (D.O.)
-                                            @elseif(optional($scholarshipStatus)->type === 'grade')
-                                                (Guidance)
-                                            @endif
                                         @else
                                             {{ optional(optional($task->user)->saProfile)->status ?? 'No Status' }}
                                             @if (optional(optional($task->user)->saProfile)->status)

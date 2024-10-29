@@ -183,6 +183,8 @@ class OfficeAdminDashboardController extends Controller
             ->having('total_rendered_hours', '<', 90)
             ->paginate(10);
 
+            
+
         // Query for completed tasks (exclude revoked SA)
         $saListsCompleted = SaTaskTimeLog::select(
             'user_id',
