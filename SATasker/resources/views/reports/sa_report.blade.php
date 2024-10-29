@@ -93,7 +93,7 @@
                                     <td class="table-border2 rounded text-center text-capitalize fw-bolder">
                                         {{-- {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status }} --}}
                                         @if (optional(optional($task->user)->saProfile)->status === 'pending_revoke')
-                                            Probation
+                                            Pending Revocation
                                             @if (optional($scholarshipStatus)->type === 'major')
                                                 (D.O.)
                                             @elseif(optional($scholarshipStatus)->type === 'grade')
@@ -109,119 +109,11 @@
                                                 @endif
                                             @endif
                                         @endif
-
-
-                                        {{-- {{ $task->user->saProfile->status ?? 'No Status' }} --}}
                                     </td>
                                 </tr>
                             @endforeach
                         @endif
-
-                        {{-- @if ($saLists->count() == 0)
-                            <tr>
-                                <td class="table-border2 rounded text-center" colspan="4">
-                                    <strong> No SA w/ On-going Task </strong>
-                                </td>
-                            </tr>
-                        @else
-                            @foreach ($saLists as $task)
-                                <tr>
-                                    <td class="table-border2 rounded text-center">
-                                        {{ $task->user->saProfile->first_name }}
-                                        {{ $task->user->saProfile->last_name }}
-                                    </td>
-                                    <td class="table-border2 rounded text-center">
-                                        {{ $task->user->id_number }}
-                                    </td>
-                                    <td class="table-border2 rounded text-center">
-                                        {{ $task->user->email }}
-                                    </td>
-                                    <td
-                                        class="
-                                            @if ($task->total_rendered_hours == 0) table-danger rounded table-border2
-                                            @elseif ($task->total_rendered_hours > 0)
-                                                table-primary rounded table-border2 @endif
-                                        ">
-                                        <strong>
-                                            @if ($task->total_rendered_hours == 0 || $task->total_rendered_hours == null)
-                                                Not Started
-                                            @elseif($task->total_rendered_hours >= 90)
-                                                (Completed)
-                                            @else
-                                                {{ $task->total_rendered_hours }}
-                                            @endif
-                                        </strong>
-                                    </td>
-                                    <td
-                                        class="table-border2 rounded text-center text-capitalize fw-bolder
-
-                                            @if ($task->user->saProfile->status == 'pending') table-success
-                                            @elseif ($task->user->saProfile->status == 'active')
-                                                table-success
-                                            @elseif ($task->user->saProfile->status == 'probation')
-                                                table-warning
-                                            @elseif ($task->user->saProfile->status == 'revoked')
-                                                table-danger @endif
-
-                                        ">
-                                        {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif --}}
                     </tbody>
-                    {{-- @endif --}}
-                    {{-- @if ($status === 'completed')
-                        <tbody class="background-accent3">
-                            @if ($saListscompleted->count() == 0)
-                                <tr>
-                                    <td class="table-border2 rounded text-center" colspan="4">
-                                        <strong> No SA w/ Completed Task </strong>
-                                    </td>
-                                </tr>
-                            @else
-                                @foreach ($saListscompleted as $task)
-                                    <tr>
-                                        <td class="table-border2 rounded text-center">
-                                            {{ $task->user->saProfile->first_name }}
-                                            {{ $task->user->saProfile->last_name }}
-                                        </td>
-                                        <td class="table-border2 rounded text-center">
-                                            {{ $task->user->id_number }}
-                                        </td>
-                                        <td class="table-border2 rounded text-center">
-                                            {{ $task->user->email }}
-                                        </td>
-                                        <td class="table-success rounded table-border2">
-                                            <strong>
-                                                @if ($task->total_rendered_hours == 0 || $task->total_rendered_hours == null)
-                                                    Not Started
-                                                @elseif($task->total_rendered_hours >= 90)
-                                                    (Completed)
-                                                @else
-                                                {{ $task->total_rendered_hours }}
-                                                @endif
-                                            </strong>
-                                        </td>
-                                        <td class="table-border2 rounded text-center text-capitalize fw-bolder
-                                            @if ($task->user->saProfile->status == 'pending')
-                                                table-success
-                                            @elseif ($task->user->saProfile->status == 'active')
-                                                table-success
-                                            @elseif ($task->user->saProfile->status == 'probation')
-                                                table-warning
-                                            @elseif ($task->user->saProfile->status == 'revoked')
-                                                table-danger
-                                            @endif
-
-                                        ">
-                                        {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status}}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    @endif --}}
                 </table>
             </div>
         </section>
