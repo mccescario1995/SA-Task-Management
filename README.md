@@ -1,286 +1,66 @@
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-## Revisions
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-### Background: 
-Kaya nagiging SA/student assistant ang isang student, dahil sa scholarship niya. Kapag natanggal yung scholarship, hindi na siya magiging part SA.
+## About Laravel
 
-### Added Module/Features: 
-Check  scholarship status BEFORE assigning tasks to SAs 
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-### New User: Guidance Office 
-- Dashboard 
-- Probation Page: Shows lists SAs with 0.0 at the end of school year
-- Revoke Scholarship page: Shows lists SAs with 0.0 for TWO CONSECUTIVE school YEARS
-- Revoke Scholarship page: Enter his/her verdict on SA's scholarship status; "probation", "remove scholarship"
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-### New features on SA Manager Side:
-- Dashboard
-- Can Add Major Offense: name, type of offense, offense status, duration(can add only if offense status is "probation")
-- Probation Page: Track students with probation for major offenses
-- Revoke Scholarship Page: Enter his/her verdict on SA's scholarship status; "probation", "remove scholarship"
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-### New features on SA:
-- Account is deactivated once guidance/sa manager revoked SA's scholarship
-- Account cannot received tasks if under probation period for MAJOR OFFENSE
-- Account can still receive tasks and be opened when under probation for 0.0 GRADE
+## Learning Laravel
 
-### Database: 
-- Add new tables for grades and major offenses...(?) (Not "?" Yes we need this)
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-# Code References
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## SATasker\vendor\laravel\ui\auth-backend\AuthenticatesUsers.php
+## Laravel Sponsors
 
-```
-<?php
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-namespace Illuminate\Foundation\Auth;
+### Premium Partners
 
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Str;
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
 
-trait AuthenticatesUsers
-{
-    use RedirectsUsers, ThrottlesLogins;
+## Contributing
 
-    /**
-     * Show the application's login form.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function showLoginForm($id)
-    {
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
+## Code of Conduct
 
-        $portalNames = [
-            'student-assistant' => 'Student Assistant',
-            'office' => 'Office Admin',
-            'do' => 'SA Manager',
-            'guidance' => 'Guidance Office',
-        ];
-        // Set the login name based on the provided ID or default to 'Unknown Portal'
-        $portalName = $portalNames[$id] ?? 'Unknown Portal';
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-        // Optionally, you could log a warning or redirect if the portal is unknown
-        if ($portalName === 'Unknown Portal') {
-            // Log warning, redirect or handle this scenario
-            // dd("Unknown login ID: $portalNames[$id]"); // Example logging (if you use logging)
-            abort(404); // Or redirect to a 404 page
-        }
+## Security Vulnerabilities
 
-        return view('auth.login', compact('portalName'));
-    }
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-    /**
-     * Handle a login request to the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function login(Request $request)
-    {
-        $this->validateLogin($request);
+## License
 
-        $user = User::withTrashed()->where('email', $request->email)->first();
-
-        // dd($user);
-
-        // Check if the user is soft deleted
-        if ($user->trashed()) {
-            Auth::logout();
-            return redirect()->back()->withErrors(['email' => 'Your account has been deactivated.']);
-        }
-        if ($request->portal_details == 'SA Manager') {
-            $portalSnake = Str::snake('Sa Manager');
-        }else {
-            $portalSnake = Str::snake($request->portal_details);
-        }
-
-        $role = $user->getRoleNames()->first();
-        if ($portalSnake !== $role) {
-            return redirect()->route('landing')->with('error', 'Entered Wrong Portal');
-        }
-
-        // dd($portalSnake == $role , $portalSnake, $role);
-
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-
-            return $this->sendLockoutResponse($request);
-        }
-
-        if ($this->attemptLogin($request)) {
-            if ($request->hasSession()) {
-                $request->session()->put('auth.password_confirmed_at', time());
-            }
-
-            return $this->sendLoginResponse($request);
-        }
-
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
-        // user surpasses their maximum number of attempts they will get locked out.
-        $this->incrementLoginAttempts($request);
-
-        return $this->sendFailedLoginResponse($request);
-    }
-
-    /**
-     * Validate the user login request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    protected function validateLogin(Request $request)
-    {
-        $request->validate([
-            $this->username() => 'required|string',
-            'password' => 'required|string',
-        ]);
-    }
-
-    /**
-     * Attempt to log the user into the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
-     */
-    protected function attemptLogin(Request $request)
-    {
-        return $this->guard()->attempt(
-            $this->credentials($request), $request->boolean('remember')
-        );
-    }
-
-    /**
-     * Get the needed authorization credentials from the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    protected function credentials(Request $request)
-    {
-        return $request->only($this->username(), 'password');
-    }
-
-    /**
-     * Send the response after the user was authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendLoginResponse(Request $request)
-    {
-        $request->session()->regenerate();
-
-        $this->clearLoginAttempts($request);
-
-        if ($response = $this->authenticated($request, $this->guard()->user())) {
-            return $response;
-        }
-
-        return $request->wantsJson()
-                    ? new JsonResponse([], 204)
-                    : redirect()->intended($this->redirectPath());
-    }
-
-    /**
-     * The user has been authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return mixed
-     */
-    protected function authenticated(Request $request, $user)
-    {
-        //
-    }
-
-    /**
-     * Get the failed login response instance.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    protected function sendFailedLoginResponse(Request $request)
-    {
-        throw ValidationException::withMessages([
-            $this->username() => [trans('auth.failed')],
-        ]);
-    }
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function username()
-    {
-        return 'email';
-    }
-
-    /**
-     * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    public function logout(Request $request)
-    {
-        $this->guard()->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        if ($response = $this->loggedOut($request)) {
-            return $response;
-        }
-
-        return $request->wantsJson()
-            ? new JsonResponse([], 204)
-            : redirect('/');
-    }
-
-    /**
-     * The user has logged out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
-     */
-    protected function loggedOut(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Get the guard to be used during authentication.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard();
-    }
-}
-
-```
-
-## To RUN
- - laravel scheduler:
-    - php artisan schedule:run
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

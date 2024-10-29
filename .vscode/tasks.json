@@ -23,7 +23,8 @@
         {
             "label": "SATasker: Run Vite Server",
             "type": "shell",
-            "command": "cd SATasker ; php artisan serve:dev",
+            // "command": "cd SATasker ; php artisan serve:dev",
+            "command": " php artisan serve:dev",
             "group": {
                 "kind": "build"
             }
