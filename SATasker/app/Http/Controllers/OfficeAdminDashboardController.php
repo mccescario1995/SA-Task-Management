@@ -134,7 +134,7 @@ class OfficeAdminDashboardController extends Controller
             $timeLog->feedback = $request->feedback;
             $timeLog->save();
 
-            return redirect()->route('office.saList.complete', $timeLog->task_id)->with('success', 'Feedback saved successfully!');
+            return redirect()->route('office.saList', $timeLog->task_id)->with('success', 'Feedback saved successfully!');
         } else {
             // Handle the error case where a time log is not found
             return redirect()->back()->with('error', 'Cannot provide feedback before the time out is recorded.');
