@@ -41,11 +41,10 @@
                                     </tr>
                                 @else
                                     @foreach ($SaLists as $sa)
-
                                         <tr>
                                             @php
-                                        // dd($sa);
-                                    @endphp
+                                                // dd($sa);
+                                            @endphp
                                             <td class="table-border2 rounded text-center">
                                                 {{ $sa->saProfile->first_name }}
                                                 {{ $sa->saProfile->last_name }}
@@ -64,27 +63,89 @@
                                             <td class="table-border2 rounded text-center">
                                                 <div class="row px-3">
                                                     @if ($sa->status == 'probation')
+
+                                                        {{-- Probation Button --}}
                                                         <div class="col mb-1">
-                                                            <form
-                                                                action="{{ route('guidance.scholarship.probe', $sa->user_id) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                <button type="submit"
-                                                                    class="btn w-100 {{ $sa->status == 'probation' ? 'btn-warning' : 'btn-success' }}">
-                                                                    {{ $sa->status == 'probation' ? 'Cancel Probation' : 'Probe' }}
-                                                                </button>
-                                                            </form>
+                                                            <button type="button" class="btn w-100 {{ $sa->status == 'probation' ? 'btn-warning' : 'btn-success' }}"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#probationModal-{{ $sa->user_id }}">
+                                                                {{ $sa->status == 'probation' ? 'Cancel Probation' : 'Probe' }}
+                                                            </button>
                                                         </div>
+                                                        <!-- Probation Modal -->
+                                                        <div class="modal fade" id="probationModal-{{ $sa->user_id }}"
+                                                            tabindex="-1" aria-labelledby="probationModalLabel"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="probationModalLabel">
+                                                                            Confirm
+                                                                            Cancellation of Probation Status</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Are you sure you want to remove
+                                                                        <strong>{{ $sa->saProfile->first_name }}
+                                                                            {{ $sa->saProfile->last_name }}</strong> Probation?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Cancel</button>
+                                                                        <form
+                                                                            action="{{ route('guidance.scholarship.probe', $sa->user_id) }}"
+                                                                            method="post" id="probationForm">
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger">Proceed</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {{-- Revoke Button --}}
                                                         <div class="col mb-1">
-                                                            <form
-                                                                action="{{ route('guidance.scholarship.revoke', $sa->user_id) }}"
-                                                                method="post"
-                                                                onsubmit="return confirm('Are you sure you want to revoke this scholarship?');">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-danger w-100">
-                                                                    Revoke
-                                                                </button>
-                                                            </form>
+                                                            <button type="button" class="btn btn-danger w-100"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#revokeModal-{{ $sa->user_id }}">
+                                                                Revoke
+                                                            </button>
+                                                        </div>
+                                                        <!-- Revoke Modal -->
+                                                        <div class="modal fade" id="revokeModal-{{ $sa->user_id }}"
+                                                            tabindex="-1" aria-labelledby="revokeModalLabel"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="revokeModalLabel">
+                                                                            Confirm
+                                                                            Revocation</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Are you sure you want to revoke <strong>{{ $sa->saProfile->first_name }}
+                                                                            {{ $sa->saProfile->last_name }}</strong> scholarship?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Cancel</button>
+                                                                        <form
+                                                                            action="{{ route('guidance.scholarship.revoke', $sa->user_id) }}"
+                                                                            method="post" id="revokeForm">
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger">Confirm
+                                                                                Revoke</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     @elseif($sa->status == 'revoked')
                                                         <div class="col mb-1">
@@ -94,9 +155,11 @@
                                                         </div>
                                                     @endif
                                                     @if (config('app.debug'))
-                                                    {{-- TO BE REMOVED ON BUILD/DEPLOYMENT --}}
+                                                        {{-- TO BE REMOVED ON BUILD/DEPLOYMENT --}}
                                                         @php
-                                                            $user = App\Models\User::where('id_number', $sa->user_id)->withTrashed()->first();
+                                                            $user = App\Models\User::where('id_number', $sa->user_id)
+                                                                ->withTrashed()
+                                                                ->first();
                                                             // dd($user->id);
                                                         @endphp
                                                         @if ($user->deleted_at)

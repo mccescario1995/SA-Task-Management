@@ -57,7 +57,7 @@
                                     <td class="table-border2 rounded text-center">
                                         <div class="row px-3">
                                             @if ($sa->status == 'probation' || $sa->SaProfile->status == 'active' || $sa->status == 'pending_revoke')
-                                                <div class="col mb-1">
+                                                {{-- <div class="col mb-1">
                                                     <form
                                                         action="{{ route('sa.manager.scholarship.revoke.cancel', ['saProfileID' => $sa->SaProfile->user_id, 'offenseId' => $sa->id]) }}"
                                                         method="post">
@@ -66,7 +66,51 @@
                                                             Cancel
                                                         </button>
                                                     </form>
+                                                </div> --}}
+
+                                                {{-- Cancel Button --}}
+                                                <div class="col mb-1">
+                                                    <button type="button" class="btn w-100 btn-secondary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#cancelModal-{{ $sa->user_id }}">
+                                                        Cancel
+                                                    </button>
                                                 </div>
+                                                <!-- Cancel Modal -->
+                                                <div class="modal fade" id="cancelModal-{{ $sa->user_id }}"
+                                                    tabindex="-1" aria-labelledby="cancelModalLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="cancelModalLabel">
+                                                                    Confirm
+                                                                    Removal in Revoke Page</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to remove
+                                                                <strong>{{ $sa->saProfile->first_name }}
+                                                                {{ $sa->saProfile->last_name }}</strong> in Revoke Page?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Cancel</button>
+                                                                <form
+                                                                    action="{{ route('sa.manager.scholarship.revoke.cancel', ['saProfileID' => $sa->SaProfile->user_id, 'offenseId' => $sa->id]) }}"
+                                                                    method="post" id="probationForm">
+                                                                    @csrf
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">Proceed</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- Revoke Button --}}
                                                 <div class="col mb-1">
                                                     <button type="button" class="btn btn-danger w-100"
                                                         data-bs-toggle="modal" data-bs-target="#revokeModal">
@@ -85,7 +129,8 @@
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Are you sure you want to revoke this scholarship?
+                                                                Are you sure you want to revoke <strong>{{ $sa->saProfile->first_name }}
+                                                                    {{ $sa->saProfile->last_name }}</strong> scholarship?
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
