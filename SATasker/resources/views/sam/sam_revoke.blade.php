@@ -40,7 +40,8 @@
                         @else
                             @foreach ($SaLists as $sa)
                                 <tr>
-                                    <td class="table-border2 rounded text-center">{{ $sa->SaProfile->first_name }} {{ $sa->SaProfile->last_name }}
+                                    <td class="table-border2 rounded text-center">{{ $sa->SaProfile->first_name }}
+                                        {{ $sa->SaProfile->last_name }}
                                     </td>
                                     <td class="table-border2 rounded text-center">
                                         {{ $sa->description }}
@@ -57,7 +58,8 @@
                                         <div class="row px-3">
                                             @if ($sa->status == 'probation' || $sa->SaProfile->status == 'active' || $sa->status == 'pending_revoke')
                                                 <div class="col mb-1">
-                                                    <form action="{{ route('sa.manager.scholarship.revoke.cancel', ['saProfileID' => $sa->SaProfile->user_id, 'offenseId' => $sa->id]) }}"
+                                                    <form
+                                                        action="{{ route('sa.manager.scholarship.revoke.cancel', ['saProfileID' => $sa->SaProfile->user_id, 'offenseId' => $sa->id]) }}"
                                                         method="post">
                                                         @csrf
                                                         <button type="submit" class="btn btn-secondary w-100">
@@ -66,15 +68,38 @@
                                                     </form>
                                                 </div>
                                                 <div class="col mb-1">
-                                                    <form
-                                                        action="{{ route('sa.manager.scholarship.revoke', $sa->SaProfile->user_id) }}"
-                                                        method="post"
-                                                        onsubmit="return confirm('Are you sure you want to revoke this scholarship?');">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-danger w-100">
-                                                            Revoke
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-danger w-100"
+                                                        data-bs-toggle="modal" data-bs-target="#revokeModal">
+                                                        Revoke
+                                                    </button>
+                                                </div>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="revokeModal" tabindex="-1"
+                                                    aria-labelledby="revokeModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="revokeModalLabel">Confirm
+                                                                    Revocation</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to revoke this scholarship?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Cancel</button>
+                                                                <form
+                                                                    action="{{ route('sa.manager.scholarship.revoke', $sa->SaProfile->user_id) }}"
+                                                                    method="post" id="revokeForm">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-danger">Confirm
+                                                                        Revoke</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             @elseif($sa->status == 'revoked')
                                                 <div class="col mb-1">

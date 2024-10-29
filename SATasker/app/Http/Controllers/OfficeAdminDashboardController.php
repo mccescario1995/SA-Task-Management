@@ -178,6 +178,7 @@ class OfficeAdminDashboardController extends Controller
         )
             ->where('task_status', '=', 1)
             ->groupBy('user_id')
+            ->having('total_rendered_hours', '<', 90)
             ->paginate(10);
 
         // Query for completed tasks
@@ -188,7 +189,7 @@ class OfficeAdminDashboardController extends Controller
         )
             ->where('task_status', '=', 2)
             ->groupBy('user_id')
-            ->having('total_rendered_hours', '=', 90)
+            ->having('total_rendered_hours', '>=', 90)
             ->paginate(10);
 
         // Select the appropriate list based on status

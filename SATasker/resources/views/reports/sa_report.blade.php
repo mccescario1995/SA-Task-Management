@@ -52,7 +52,7 @@
                     <thead class="background-accent1">
                         <tr>
                             <th class="table-border2 rounded">Student Name</th>
-                            <th class="table-border2 rounded">Student ID</th>
+                            <th class="table-border2 rounded">Student ID Number</th>
                             <th class="table-border2 rounded">Student Email</th>
                             <th class="table-border2 rounded">Hours Rendered</th>
                             <th class="table-border2 rounded">SA Scholarship Status</th>
@@ -69,10 +69,9 @@
                         @else
                             @foreach ($saLists as $task)
                                 @php
-                                    // dd($task->user->id_number);
-                                    $scholarshipStatus = $offenses[$task->user->id_number] ?? null;
-                                    // dd($scholarshipStatus->type);
+                                    $scholarshipStatus = $offenses[optional($task->user)->id_number] ?? null;
                                 @endphp
+
                                 <tr>
                                     <td class="table-border2 rounded text-center">
                                         {{ $task->user->saProfile->first_name ?? 'N/A' }}
@@ -93,23 +92,24 @@
                                     <!-- Display SA status logic -->
                                     <td class="table-border2 rounded text-center text-capitalize fw-bolder">
                                         {{-- {{ $task->user->saProfile->status == 'active' || $task->user->saProfile->status == 'pending' ? 'Active' : $task->user->saProfile->status }} --}}
-                                        @if ($task->user->saProfile->status === 'pending_revoke')
+                                        @if (optional(optional($task->user)->saProfile)->status === 'pending_revoke')
                                             Probation
-                                            @if ($scholarshipStatus && $scholarshipStatus->type === 'major')
+                                            @if (optional($scholarshipStatus)->type === 'major')
                                                 (D.O.)
-                                            @elseif($scholarshipStatus && $scholarshipStatus->type === 'grade')
+                                            @elseif(optional($scholarshipStatus)->type === 'grade')
                                                 (Guidance)
                                             @endif
                                         @else
-                                            {{ $task->user->saProfile->status ?? 'No Status' }}
-                                            @if ($task->user->saProfile->status)
-                                                @if ($scholarshipStatus && $scholarshipStatus->type === 'major')
+                                            {{ optional(optional($task->user)->saProfile)->status ?? 'No Status' }}
+                                            @if (optional(optional($task->user)->saProfile)->status)
+                                                @if (optional($scholarshipStatus)->type === 'major')
                                                     (D.O.)
-                                                @elseif($scholarshipStatus && $scholarshipStatus->type === 'grade')
+                                                @elseif(optional($scholarshipStatus)->type === 'grade')
                                                     (Guidance)
                                                 @endif
                                             @endif
                                         @endif
+
 
                                         {{-- {{ $task->user->saProfile->status ?? 'No Status' }} --}}
                                     </td>
