@@ -170,24 +170,29 @@ class OfficeAdminDashboardController extends Controller
     {
         $user = $this->getuserID();
 
-        // Query for ongoing tasks
         $saListsOngoing = SaTaskTimeLog::select(
             'user_id',
             DB::raw('SUM(total_hours) as total_rendered_hours'),
             DB::raw('COUNT(DISTINCT task_id) as total_tasks_accepted')
         )
             ->where('task_status', '=', 1)
+            ->whereHas('user.saProfile', function ($query) {
+                $query->where('status', '!=', 'revoked');
+            })
             ->groupBy('user_id')
             ->having('total_rendered_hours', '<', 90)
             ->paginate(10);
 
-        // Query for completed tasks
+        // Query for completed tasks (exclude revoked SA)
         $saListsCompleted = SaTaskTimeLog::select(
             'user_id',
             DB::raw('SUM(total_hours) as total_rendered_hours'),
             DB::raw('COUNT(DISTINCT task_id) as total_tasks_accepted')
         )
-            ->where('task_status', '=', 2)
+            // ->where('task_status', '=', 2)
+            ->whereHas('user.saProfile', function ($query) {
+                $query->where('status', '!=', 'revoked');
+            })
             ->groupBy('user_id')
             ->having('total_rendered_hours', '>=', 90)
             ->paginate(10);
