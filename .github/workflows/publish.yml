@@ -33,7 +33,7 @@ jobs:
           host: 45.84.205.136 # ${{ secrets.HOSTINGER_SSH_HOST }}
           username: u992745133 # ${{ secrets.HOSTINGER_SSH_USER }}
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
-          source: "./SATasker/"  # Include the folder name containing Laravel files
+          source: "./"  # Include the folder name containing Laravel files
           target: ${{ secrets.HOSTINGER_SATASKER_PATH }}  # Hostinger's target path
           rm: true
           port: 65002 # ${{ secrets.HOSTINGER_SSH_PORT }}
@@ -108,7 +108,7 @@ jobs:
             echo "VITE_PUSHER_SCHEME=\"\${PUSHER_SCHEME}\"" >> .env
             echo "VITE_PUSHER_APP_CLUSTER=\"\${PUSHER_APP_CLUSTER}\"" >> .env
 
-            composer2 install --optimize-autoloader --no-dev
+            composer install --optimize-autoloader --no-dev
             php artisan key:generate
             php artisan migrate:refresh --seed --seeder=DatabaseSeeder
 
