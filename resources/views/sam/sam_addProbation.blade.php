@@ -169,27 +169,54 @@
                 allowClear: true
             });
             $('#MajorOffence').select2({
-                placeholder: "Type of Offence",
+                placeholder: "Type of Offense",
                 allowClear: true
             });
         });
 
-        const today = new Date().toISOString().split('T')[0];
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowString = tomorrow.toISOString().split('T')[0];
+        // // Get today's date as a Date object
+        // const today = new Date();
 
-        // Set the min attribute of the start date to today
-        document.getElementById("date_end").setAttribute("min", tomorrowString);
+        // // Calculate yesterday's date
+        // const yesterday = new Date(today);
+        // yesterday.setDate(today.getDate() - 1);
+        // const yesterdayString = yesterday.toISOString().split('T')[0];
 
-        // Set the min attribute of the end date when the start date changes
-        // document.getElementById("date_start").addEventListener("change", function() {
-        //     const dateNowTommoroe = this.value;
-        //     // Set the min for end date to the selected start date
-        //     document.getElementById("date_end").setAttribute("min", startDate);
-        // });
+        // // Calculate tomorrow's date
+        // const tomorrow = new Date(today);
+        // tomorrow.setDate(today.getDate() + 1);
+        // const tomorrowString = tomorrow.toISOString().split('T')[0];
+
+        // // Set the min attribute on the date input
+        // document.getElementById('date_start').setAttribute('min', yesterdayString);
+        // // Set the min attribute for the end date to tomorrow
+        // document.getElementById("date_end").setAttribute("min", tomorrowString);
 
         document.addEventListener('DOMContentLoaded', function() {
+
+            const dateStartInput = document.getElementById('date_start');
+            const dateEndInput = document.getElementById('date_end');
+
+            // Set the initial minimum value for the start date (yesterday)
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+            dateStartInput.setAttribute("min", yesterday.toISOString().split('T')[0]);
+
+            // Set the minimum date for date_end whenever date_start changes
+            dateStartInput.addEventListener("change", function() {
+                const selectedStartDate = new Date(dateStartInput.value);
+
+                if (!isNaN(selectedStartDate)) { // Check for valid date
+                    // Reset date_end to one day after the new date_start
+                    const minEndDate = new Date(selectedStartDate);
+                    minEndDate.setDate(selectedStartDate.getDate()); // Add 1 day
+                    dateEndInput.value = minEndDate.toISOString().split('T')[
+                    0]; // Reset value to one day after start
+                    dateEndInput.setAttribute("min", minEndDate.toISOString().split('T')[
+                    0]); // Set min for end date
+                }
+            });
 
             const firstSelect = document.getElementById('firstSelect');
             const secondSelect = document.getElementById('secondSelect');

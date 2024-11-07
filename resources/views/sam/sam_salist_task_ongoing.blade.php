@@ -67,17 +67,17 @@
                                     @endphp
                                     <td class="table-border2 rounded text-center">
                                         @if ($status == 1)
-                                            {{ $saList->timein == null ? 'No Time-In Yet' : $timein->format('h:m A') }}
+                                            {{ $saList->time_in == null ? 'No Time-In Yet' : $time_in->format('h:i A') }}
                                         @elseif($status == 2)
-                                            {{ $saList->time_in == null ? 'No Time-In Yet' : $time_in->format('h:m A') }}
+                                            {{ $saList->time_in == null ? 'No Time-In Yet' : $time_in->format('h:i A') }}
                                         @endif
                                     </td>
 
                                     <td class="table-border2 rounded text-center">
                                         @if ($status == 1)
-                                            {{ $saList->timeout == null ? 'No Time-Out Yet' : $timeout->format('h:m A') }}
+                                            {{ $saList->time_out == null ? 'No Time-Out Yet' : $time_out->format('h:i A') }}
                                         @elseif($status == 2)
-                                            {{ $saList->time_out == null ? 'No Time-Out Yet' : $time_out->format('h:m A') }}
+                                            {{ $saList->time_out == null ? 'No Time-Out Yet' : $time_out->format('h:i A') }}
                                         @endif
                                     </td>
 
@@ -90,13 +90,13 @@
                                     <td class="table-border2 rounded text-center">
                                         <button
                                             class="btn background-accent1
-                                            @if ($status == 1) {{ $saList->timeout ? '' : 'disable' }} @endif  "
+                                            @if ($status == 1) {{ $saList->time_out ? '' : 'disable' }} @endif  "
                                             type="button" data-bs-toggle="modal"
                                             data-bs-target="#editHoursModal-{{ $saList->timelogId }}">
                                             {{-- {{ $saList->timeout ? 'Edit Hour/s' : 'No Time-out' }} --}}
 
                                             @if ($status == 1)
-                                                {{ $saList->timeout ? 'Edit Hour/s' : 'No Time-out' }}
+                                                {{ $saList->time_out ? 'Edit Hour/s' : 'No Time-out' }}
                                             @elseif($status == 2)
                                                 {{ $saList->time_out ? 'Edit Hour/s' : 'No Time-out' }}
                                             @endif

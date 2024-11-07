@@ -37,7 +37,7 @@
                                             <div>
                                                 <input class="form-control w-100" id="start_date" name="start_date"
                                                     type="date" style="width: 200px;font-size: 20px;" required
-                                                    value="{{ $task->start_date }}">
+                                                    value="{{ $task->start_date }}" disabled>
                                             </div>
                                         </div>
                                         <div class="col-11" style="margin: 1em;">
@@ -45,10 +45,10 @@
                                             <div class="row p-2">
                                                 <input class="form-control col" id="start_time" name="start_time"
                                                     type="time" style="width: 150px; margin:5px;"
-                                                    value="{{ $task->start_time }}">
+                                                    value="{{ $task->start_time }}" disabled>
                                                 <input class="form-control col" id="end_time" name="end_time"
                                                     type="time" style="width: 150px; margin:5px;"
-                                                    value="{{ $task->end_time }}">
+                                                    value="{{ $task->end_time }}" disabled>
                                             </div>
 
                                         </div>
@@ -67,7 +67,7 @@
                                             <div><label class="form-label"><strong>Program </strong>(optional)</label></div>
                                             <div>
                                                 <select class="form-select" id="preffred_program" name="preffred_program"
-                                                    aria-label="Default select example">
+                                                    aria-label="Default select example" disabled>
                                                     @foreach ($courses as $course)
                                                         <option value="{{ $course->name }}"
                                                             {{ $task->preffred_program == $course->name ? 'selected' : '' }}>
@@ -95,7 +95,7 @@
                                                     <input class="form-check-input" type="radio" name="assignment_type"
                                                         id="formCheck-3" value="1"
                                                         {{ $task->assignment_type == 1 ? 'checked' : '' }}
-                                                        {{ $task->assignment_type == 2 ? '' : 'checked' }}>
+                                                        {{ $task->assignment_type == 2 ? '' : 'checked' }} disabled>
                                                     <label class="form-check-label" for="formCheck-3">Auto
                                                         Assignment</label>
                                                 </div>
@@ -103,7 +103,7 @@
                                                     <input class="form-check-input" type="radio" name="assignment_type"
                                                         id="formCheck-4" value="2"
                                                         {{ $task->assignment_type == 2 ? 'checked' : '' }}
-                                                        {{ $task->assignment_type == 1 ? '' : 'checked' }}>
+                                                        {{ $task->assignment_type == 1 ? '' : 'checked' }} disabled>
                                                     <label class="form-check-label" for="formCheck-4">Voluntary</label>
                                                 </div>
                                             </div>

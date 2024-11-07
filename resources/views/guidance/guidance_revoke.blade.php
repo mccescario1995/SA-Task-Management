@@ -63,10 +63,10 @@
                                             <td class="table-border2 rounded text-center">
                                                 <div class="row px-3">
                                                     @if ($sa->status == 'probation')
-
                                                         {{-- Probation Button --}}
                                                         <div class="col mb-1">
-                                                            <button type="button" class="btn w-100 {{ $sa->status == 'probation' ? 'btn-warning' : 'btn-success' }}"
+                                                            <button type="button"
+                                                                class="btn w-100 {{ $sa->status == 'probation' ? 'btn-warning' : 'btn-success' }}"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#probationModal-{{ $sa->user_id }}">
                                                                 {{ $sa->status == 'probation' ? 'Cancel Probation' : 'Probe' }}
@@ -89,7 +89,8 @@
                                                                     <div class="modal-body">
                                                                         Are you sure you want to remove
                                                                         <strong>{{ $sa->saProfile->first_name }}
-                                                                            {{ $sa->saProfile->last_name }}</strong> Probation?
+                                                                            {{ $sa->saProfile->last_name }}</strong>
+                                                                        Probation?
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary"
@@ -129,8 +130,10 @@
                                                                             aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Are you sure you want to revoke <strong>{{ $sa->saProfile->first_name }}
-                                                                            {{ $sa->saProfile->last_name }}</strong> scholarship?
+                                                                        Are you sure you want to revoke
+                                                                        <strong>{{ $sa->saProfile->first_name }}
+                                                                            {{ $sa->saProfile->last_name }}</strong>
+                                                                        scholarship?
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary"
@@ -154,9 +157,9 @@
                                                             </button>
                                                         </div>
                                                     @endif
-                                                    @if (config('app.debug'))
-                                                        {{-- TO BE REMOVED ON BUILD/DEPLOYMENT --}}
+                                                    {{-- @if (config('app.debug'))
                                                         @php
+                                                            // TO BE REMOVED ON BUILD/DEPLOYMENT
                                                             $user = App\Models\User::where('id_number', $sa->user_id)
                                                                 ->withTrashed()
                                                                 ->first();
@@ -171,7 +174,7 @@
                                                                     User</button>
                                                             </form>
                                                         @endif
-                                                    @endif
+                                                    @endif --}}
 
                                                 </div>
                                             </td>

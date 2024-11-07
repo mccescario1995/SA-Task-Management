@@ -72,7 +72,7 @@
                                                 {{ $task->endTimeFormatted }}</div>
                                         </div>
                                     </td>
-                                    <td class="table-border2 rounded text-center">{{ $task->preffred_program }}</td>
+                                    <td class="table-border2 rounded text-center">{{ $task->preffred_program != 0 ? $task->preffred_program : 'Any Program' }}</td>
                                     <td class="table-border2 rounded text-center">{{ $task->to_be_done }}</td>
                                     <td class="table-border2 rounded text-center">{{ $task->totalHours }}</td>
                                     <td class="table-border2 rounded text-center">{{ $task->note }}</td>

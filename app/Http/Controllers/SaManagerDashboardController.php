@@ -233,8 +233,8 @@ class SaManagerDashboardController extends Controller
                     'sa_profiles.last_name',
                     'sa_profiles.course_program',
                     'user_tasks_timelog.id AS timelogId',
-                    DB::raw('DATE_FORMAT(user_tasks_timelog.time_in, "%H:%i") AS timein'),
-                    DB::raw('DATE_FORMAT(user_tasks_timelog.time_out, "%H:%i") AS timeout'),
+                    'user_tasks_timelog.time_in',
+                    'user_tasks_timelog.time_out',
                     'user_tasks_timelog.total_hours',
                     'user_tasks_timelog.feedback'
                 )

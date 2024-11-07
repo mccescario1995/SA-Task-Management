@@ -25,18 +25,34 @@ class SaDashboardController extends Controller
         $user = $this->getuserID();
         $saProfile = SaProfile::where('user_id', $user->id_number)->first();
 
-
-
         $urgentTasks = DB::table('tasks')
             ->where('assignment_type', 2)
-            ->orderby('tasks.id', 'asc')->paginate(3);
+            ->orderby('tasks.id', 'asc')
+            ->paginate(3, ['*'], 'urgentTasksPage'); // Custom page parameter
 
+        // $assignedTasks = DB::table('user_tasks_timelog')
+        //     ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
+        //     ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
+        //     ->where('users.id', $user->id)
+        //     ->where('task_status', 1)
+        //     ->select(
+        //         'user_tasks_timelog.id AS timelog_id',
+        //         'tasks.id AS taskId',
+        //         'tasks.start_date',
+        //         'tasks.start_time',
+        //         'tasks.end_time',
+        //         'tasks.preffred_program',
+        //         'tasks.office_id',
+        //         'tasks.to_be_done',
+        //         'tasks.assigned_office',
+        //         'tasks.note'
+        //     )
+        //     ->orderby('user_tasks_timelog.created_at', 'asc')
         $assignedTasks = DB::table('user_tasks_timelog')
             ->join('tasks', 'user_tasks_timelog.task_id', '=', 'tasks.id')
-            ->join('users', 'user_tasks_timelog.user_id', '=', 'users.id')
-            ->where('users.id', $user->id)
+            ->where('user_tasks_timelog.user_id', $user->id)
             ->where('task_status', 1)
-            ->select(
+            ->select([
                 'user_tasks_timelog.id AS timelog_id',
                 'tasks.id AS task_id',
                 'tasks.start_date',
@@ -47,9 +63,9 @@ class SaDashboardController extends Controller
                 'tasks.to_be_done',
                 'tasks.assigned_office',
                 'tasks.note'
-            )
-            ->orderby('user_tasks_timelog.created_at', 'asc')
-            ->paginate(5);
+            ])
+            ->orderBy('user_tasks_timelog.created_at', 'asc')
+            ->paginate(5, ['*'], 'assignedTasksPage'); // Custom page parameter
 
         return view('sa.sa_dashboard', compact('urgentTasks', 'assignedTasks', 'user', 'saProfile'));
     }
@@ -72,6 +88,7 @@ class SaDashboardController extends Controller
                 $query->where('start_time', '<', $task->end_time)
                     ->where('end_time', '>', $task->start_time);
             })
+            ->where('task_status' , 1)
             ->exists();
 
         // Handle time conflict
@@ -266,7 +283,7 @@ class SaDashboardController extends Controller
                 $totalHours = number_format($timeOutCarbon->diffInSeconds($timeInCarbon) / 3600, 2);
 
                 $timeLog->time_out = $timeout;
-                $timeLog->task_status = 2;
+                // $timeLog->task_status = 2;
                 $timeLog->total_hours = $totalHours;
                 // $timeLog->is_Approved_out = 'Pending';
                 $timeLog->save();

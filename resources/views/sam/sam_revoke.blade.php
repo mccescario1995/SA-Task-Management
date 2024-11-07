@@ -113,12 +113,12 @@
                                                 {{-- Revoke Button --}}
                                                 <div class="col mb-1">
                                                     <button type="button" class="btn btn-danger w-100"
-                                                        data-bs-toggle="modal" data-bs-target="#revokeModal">
+                                                        data-bs-toggle="modal" data-bs-target="#revokeModal-{{ $sa->user_id }}">
                                                         Revoke
                                                     </button>
                                                 </div>
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="revokeModal" tabindex="-1"
+                                                <div class="modal fade" id="revokeModal-{{ $sa->user_id }}" tabindex="-1"
                                                     aria-labelledby="revokeModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">

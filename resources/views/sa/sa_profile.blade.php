@@ -77,7 +77,7 @@
                                                 $startTime = \Carbon\Carbon::parse($timeDay['time_start']);
                                                 $endTime = \Carbon\Carbon::parse($timeDay['time_end']);
                                             @endphp
-                                            {{ $startTime->format('h:ma') }} - {{ $endTime->format('h:ma') }}</td>
+                                            {{ $startTime->format('h:i a') }} - {{ $endTime->format('h:i a') }}</td>
                                         <td class="table-border2 rounded" data-label="Instructor" aria-label="Instructor">
                                             {{ $class->instructors }}
                                         </td>
@@ -134,14 +134,14 @@
                                         $timeIn = $taskHistory->time_in ? \Carbon\Carbon::parse($taskHistory->time_in) : null;
                                         $timeOut = $taskHistory->time_out ? \Carbon\Carbon::parse($taskHistory->time_out) : null;
                                     @endphp
-                                    
+
                                     <tr class="text-center">
                                         <td class="table-border2 rounded" data-label="Task No." scope="row">
                                             {{ $taskHistory->id }}</td>
                                         <td class="table-border2 rounded" data-label="Date &amp; Time">
                                             {{ $taskHistory->start_date }}
                                             <p class="m-0" style="font-size: 9px">
-                                                {{ $startTime->format('h:ma') }} - {{ $endTime->format('h:ma') }}
+                                                {{ $startTime->format('h:i a') }} - {{ $endTime->format('h:i a') }}
                                             </p>
                                         </td>
                                         <td class="table-border2 rounded">

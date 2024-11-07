@@ -82,10 +82,10 @@
                                                     $start_time = \Carbon\Carbon::parse($task->start_time);
                                                     $end_time = \Carbon\Carbon::parse($task->end_time);
                                                 @endphp
-                                                {{ $start_time->format('h:m A') }} -
-                                                {{ $end_time->format('h:m A') }}</p>
+                                                {{ $start_time->format('h:i A') }} -
+                                                {{ $end_time->format('h:i A') }}</p>
                                         </td>
-                                        <td class="table-border2 rounded text-center">{{ $task->preffred_program }}
+                                        <td class="table-border2 rounded text-center">{{ $task->preffred_program != 0 ? $task->preffred_program : 'Any Program' }}
                                         </td>
                                         <td class="table-border2 rounded text-center">{{ $task->assigned_office }}</td>
                                         <td class="table-border2 rounded text-center">{{ $task->note }}</td>
@@ -167,11 +167,13 @@
                                                     $start_time = \Carbon\Carbon::parse($assignedtask->start_time);
                                                     $end_time = \Carbon\Carbon::parse($assignedtask->end_time);
                                                 @endphp
-                                                {{ $start_time->format('h:m A') }} -
-                                                {{ $end_time->format('h:m A') }}</p>
+                                                {{ $start_time->format('h:i A') }} -
+                                                {{ $end_time->format('h:i A') }}</p>
                                         </td>
                                         <td class="table-border2 rounded text-center">
-                                            {{ $assignedtask->preffred_program }}</td>
+                                            {{ $assignedtask->preffred_program != 0 ? $assignedtask->preffred_program : 'Any Program' }}
+
+                                        </td>
                                         <td class="table-border2 rounded text-center">{{ $assignedtask->to_be_done }}</td>
                                         <td class="table-border2 rounded text-center">
                                             <p style="margin: 0px;">{{ $assignedtask->assigned_office }}</p>

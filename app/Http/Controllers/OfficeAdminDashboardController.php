@@ -172,10 +172,10 @@ class OfficeAdminDashboardController extends Controller
 
         $saListsOngoing = SaTaskTimeLog::select(
             'user_id',
-            DB::raw('SUM(total_hours) as total_rendered_hours'),
+            DB::raw('SUM(COALESCE(CAST(total_hours AS DECIMAL(10, 0)), 0)) as total_rendered_hours'),
             DB::raw('COUNT(DISTINCT task_id) as total_tasks_accepted')
         )
-            ->where('task_status', '=', 1)
+            // ->where('task_status', '=', 1)
             ->whereHas('user.saProfile', function ($query) {
                 $query->where('status', '!=', 'revoked');
             })
@@ -186,7 +186,7 @@ class OfficeAdminDashboardController extends Controller
         // Query for completed tasks (exclude revoked SA)
         $saListsCompleted = SaTaskTimeLog::select(
             'user_id',
-            DB::raw('SUM(total_hours) as total_rendered_hours'),
+            DB::raw('SUM(COALESCE(CAST(total_hours AS DECIMAL(10, 0)), 0)) as total_rendered_hours'),
             DB::raw('COUNT(DISTINCT task_id) as total_tasks_accepted')
         )
             // ->where('task_status', '=', 2)
@@ -477,6 +477,17 @@ class OfficeAdminDashboardController extends Controller
     {
         //
         $task = Task::findOrFail($id);
+
+        // Check if there are any pending or ongoing tasks for the same user (or associated to this task)
+        $hasPendingTask = SaTaskTimeLog::where('task_id', $task->id)
+            ->where('time_out', null)
+            ->exists();
+
+        if ($hasPendingTask) {
+            // If there is a pending or ongoing task, prevent deletion and show an error
+            return redirect()->route('office.dashboard')->with('error', 'Cannot delete task. There are still a SA doing a Task.');
+        }
+
         $task->isActive = false;
         $task->deleted_at = now();
         $task->save();

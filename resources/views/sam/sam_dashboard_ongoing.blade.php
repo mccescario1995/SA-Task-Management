@@ -65,7 +65,7 @@
                                                     $startTime = \Carbon\Carbon::parse($task->start_time);
                                                     $endTime = \Carbon\Carbon::parse($task->end_time);
                                                 @endphp
-                                                {{ $startTime->format('h:mA') }}-{{ $endTime->format('h:mA') }}</p>
+                                                {{ $startTime->format('h:i A') }}-{{ $endTime->format('h:i A') }}</p>
                                         </td>
                                         <td class="table-border2 rounded text-center">{{ $task->preffred_program }}</td>
                                         <td class="table-border2 rounded text-center">{{ $task->to_be_done }}</td>

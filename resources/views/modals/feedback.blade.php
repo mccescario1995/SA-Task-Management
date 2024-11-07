@@ -1,4 +1,4 @@
-<div class="modal fade modal-lg text-start" role="dialog" tabindex="-1" id="feedbackModal-{{ $saList->timelogId }}"
+<div class="modal fade modal-lg text-start" role="dialog" tabindex="-1" id="feedbackModal-{{ $saList->user_id }}"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -43,7 +43,7 @@
                             <div style="padding: 0% 2%;">
                                 <h5 class="text-start d-xl-flex">Feedback</h5>
                                 <textarea style="width: 100%;" name="feedback"
-                                    placeholder="{{ $saList->feedback ? $saList->feedback : 'Add Feedback' }}"></textarea>
+                                    placeholder="{{ $saList->feedback ?? 'Add Feedback' }}"></textarea>
                                 <input type="hidden" name="timelogId" value="{{ $saList->id }}">
                             </div>
                         </div>

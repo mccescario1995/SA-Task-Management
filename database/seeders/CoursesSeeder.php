@@ -39,6 +39,13 @@ class CoursesSeeder extends Seeder
                 'name' => 'BS Computer Science',
                 'is_offered' => 1,
             ],
+            [
+                'campus_id' => 'Laguna',
+                'code' => 'BA123',
+                'name' => 'BS Business Administration',
+                'is_offered' => 1,
+            ],
+
         ]);
     }
 }

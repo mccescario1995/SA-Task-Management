@@ -23,8 +23,8 @@ return new class extends Migration
             $table->integer('number_of_sa');
             $table->string('status')->default('pending');
             $table->string('assignment_type');
-            $table->string('to_be_done');
-            $table->string('note')->nullable();
+            $table->string('to_be_done')->nullable()->default('-');
+            $table->string('note')->nullable()->default('-');
             $table->string('assigned_office');
             $table->timestamps();
             $table->softDeletes();

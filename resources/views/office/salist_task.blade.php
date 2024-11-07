@@ -60,14 +60,14 @@
                                             @if ($saList->time_in == null)
                                                 No Time-In Yet
                                             @else
-                                                {{ $time_in->format('h:m a')}}
+                                                {{ $time_in->format('h:i a')}}
                                             @endif
                                         </td>
                                         <td class="table-border2 rounded text-center">
                                             @if ($saList->time_out == null)
                                                 No Time-Out Yet
                                             @else
-                                                {{ $time_out->format('h:m a')}}
+                                                {{ $time_out->format('h:i a')}}
                                             @endif
                                         </td>
 
@@ -82,7 +82,7 @@
                                             <button
                                                 class="btn {{ $saList->timeout ? 'background-accent2 text-accent1' : 'background-accent1 text-accent2 ' }}"
                                                 type="button" data-bs-toggle="modal"
-                                                data-bs-target="#feedbackModal-{{ $saList->timelogId }}"
+                                                data-bs-target="#feedbackModal-{{ $saList->user_id }}"
                                                 {{ $saList->time_out ? ' ' : 'disabled' }}>
                                                 {{ $saList->time_out ? 'Add/Edit Feedback' : 'Finish Task First' }}
                                             </button>
