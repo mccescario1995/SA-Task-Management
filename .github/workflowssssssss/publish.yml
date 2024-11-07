@@ -1,5 +1,4 @@
 # name: Deploy SATasker to Hostinger
-
 # on:
 #   push:
 #     branches:
