@@ -109,7 +109,7 @@ jobs:
             echo "VITE_PUSHER_APP_CLUSTER=\"\${PUSHER_APP_CLUSTER}\"" >> .env
 
             # Install dependencies and run migrations
-            composer install --optimize-autoloader --no-dev
+            composer2 install --optimize-autoloader --no-dev
             php artisan key:generate
             php artisan migrate:refresh --seed --seeder=DatabaseSeeder
 
