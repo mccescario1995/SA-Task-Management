@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          composer install --optimize-autoloader --no-dev
+          composer install --optimize-autoloader
           npm install
           npm run build  # If using Vite or similar for front-end assets
 
