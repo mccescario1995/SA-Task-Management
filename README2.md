@@ -93,10 +93,16 @@ trait AuthenticatesUsers
         // dd($user);
 
         // Check if the user is soft deleted
-        if ($user->trashed()) {
+        if ($user && $user->trashed()) {
             Auth::logout();
             return redirect()->back()->withErrors(['email' => 'Your account has been deactivated.']);
         }
+
+        // If the user does not exist or is not trashed, handle accordingly
+        if (!$user) {
+            return redirect()->back()->withErrors(['email' => 'The provided email does not exist in our records.']);
+        }
+
         if ($request->portal_details == 'SA Manager') {
             $portalSnake = Str::snake('Sa Manager');
         }else {
